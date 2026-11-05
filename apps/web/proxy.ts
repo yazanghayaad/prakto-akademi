@@ -1,5 +1,5 @@
 import { getAPIUrl } from './services/config/config'
-import { isSelfSignupDisabled } from './services/config/signup'
+import { isLoginFirst, isSelfSignupDisabled } from './services/config/signup'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { isLocalhost as isLocalhostCheck } from './services/utils/ts/hostUtils'
@@ -627,6 +627,17 @@ export default async function proxy(req: NextRequest) {
     const resolved = await resolveTenant(req, instance)
     const robotsUrl = new URL(`/api/robots`, req.url)
     return NextResponse.rewrite(robotsUrl, orgslugRequestHeaders('X-Robots-Orgslug', resolved.slug))
+  }
+
+  // -------------------------------------------------------------------------
+  // 9b. Login-first root (LEARNHOUSE_LOGIN_FIRST=true, Prakto Akademi).
+  //     A visitor without a session starts on /login instead of the public
+  //     org landing page; signed-in members keep the normal home at `/`. Same
+  //     best-effort LH_session marker as the apex branch below (the page
+  //     re-verifies). No loop: /login sends a session holder back to `/`.
+  // -------------------------------------------------------------------------
+  if (pathname === '/' && isLoginFirst() && !req.cookies.get('LH_session')?.value) {
+    return NextResponse.redirect(new URL(`/login${search}`, req.url))
   }
 
   // -------------------------------------------------------------------------
