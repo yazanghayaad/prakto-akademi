@@ -76,7 +76,6 @@ export default function AuthBrandingPanel({ org, welcomeText, title, subtitle }:
     }
   }
 
-  const displayMessage = welcome_message || welcomeText || ''
   const wideLogo = useTrimmedLogo(getOrgWideLogoUrl(org))
   // No-org platform copy (defaults mirror the platform login illustration).
   const noOrgTitle = title || t('auth.image_title_login')
@@ -177,71 +176,62 @@ export default function AuthBrandingPanel({ org, welcomeText, title, subtitle }:
               </p>
             </div>
           ) : (
-            /* Org panel: centered logo + name (unchanged). */
+            /* Org panel, Prakto: no centered name or welcome line. The photo
+               carries the panel; the org wordmark sits bottom-left as a
+               "<logo> × Akademi" lockup. */
             <>
-              <div className="flex-1 flex items-center justify-center">
-                <div className={cn(
-                  "flex flex-col items-center text-center gap-6",
+              <div className="flex-1" />
+              <Link
+                prefetch
+                href={getUriWithOrg(org?.slug, '/')}
+                className={cn(
+                  "flex w-fit items-center gap-3",
                   text_color === 'light' ? "text-white" : "text-gray-900"
-                )}>
-                  {/* Organization logo: a wordmark gets a wide plate so it reads
-                      in full; otherwise the square tile. */}
-                  <Link prefetch href={getUriWithOrg(org?.slug, '/')}>
-                    {wideLogo ? (
-                      // Prakto: the wordmark sits straight on the photo, no white
-                      // plate. On light text (dark photo) it is rendered white;
-                      // brightness-0 + invert turns every opaque pixel white.
-                      <img
-                        src={wideLogo}
-                        alt={org?.name || ''}
-                        className={cn(
-                          "block h-auto w-auto max-h-14 max-w-[240px]",
-                          text_color === 'light' && "brightness-0 invert drop-shadow-sm"
-                        )}
-                      />
-                    ) : (
-                    <div className="w-24 h-24 rounded-2xl ring-1 ring-inset ring-white/10 bg-white flex items-center justify-center overflow-hidden">
-                      <OrgSquareLogo
-                        org={org}
-                        wideInsetClassName="p-3"
-                        fallback={
-                          isWhiteLabel ? (
-                            <span className="text-4xl font-black text-gray-800">
-                              {(org?.name || '?').charAt(0).toUpperCase()}
-                            </span>
-                          ) : (
-                            <Image
-                              quality={100}
-                              width={96}
-                              height={96}
-                              src={learnhouseIcon}
-                              alt="LearnHouse"
-                              className="object-contain"
-                            />
-                          )
-                        }
-                      />
-                    </div>
+                )}
+              >
+                {wideLogo ? (
+                  // Straight on the photo, no plate. brightness-0 + invert turns
+                  // every opaque pixel white on light-text (dark photo) panels.
+                  <img
+                    src={wideLogo}
+                    alt={org?.name || ''}
+                    className={cn(
+                      "block h-7 w-auto max-w-[180px]",
+                      text_color === 'light' && "brightness-0 invert drop-shadow-sm"
                     )}
-                  </Link>
-
-                  {/* Text content */}
-                  <div className="space-y-1">
-                    <h1 className="font-black text-3xl tracking-tight">{org?.name || 'LearnHouse'}</h1>
-                    {displayMessage && (
-                      <p className={cn(
-                        "text-lg max-w-sm leading-relaxed",
-                        text_color === 'light' ? "text-white/70" : "text-gray-600"
-                      )}>
-                        {displayMessage}
-                      </p>
-                    )}
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-lg ring-1 ring-inset ring-white/10 bg-white flex items-center justify-center overflow-hidden shrink-0">
+                    <OrgSquareLogo
+                      org={org}
+                      wideInsetClassName="p-1.5"
+                      fallback={
+                        isWhiteLabel ? (
+                          <span className="text-lg font-black text-gray-800">
+                            {(org?.name || '?').charAt(0).toUpperCase()}
+                          </span>
+                        ) : (
+                          <Image
+                            quality={100}
+                            width={40}
+                            height={40}
+                            src={learnhouseIcon}
+                            alt="LearnHouse"
+                            className="object-contain"
+                          />
+                        )
+                      }
+                    />
                   </div>
-                </div>
-              </div>
-
-              {/* Bottom spacer for visual balance */}
-              <div className="h-10" />
+                )}
+                <span
+                  aria-hidden
+                  className={cn("text-2xl font-light leading-none", text_color === 'light' ? "text-white/60" : "text-gray-400")}
+                >
+                  ×
+                </span>
+                <span className="text-2xl font-semibold leading-none tracking-tight">Akademi</span>
+              </Link>
             </>
           )}
 

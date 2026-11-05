@@ -29,7 +29,6 @@ export default function AuthMobileHeader({ org, welcomeText }: AuthMobileHeaderP
     unsplash_photo_url = '',
     welcome_message = '',
   } = authBranding
-  const displayMessage = welcome_message || welcomeText || ''
   const wideLogo = useTrimmedLogo(getOrgWideLogoUrl(org))
   const UNSPLASH_UTM = '?utm_source=LearnHouse&utm_medium=referral'
   const withUtm = (url: string) => (url ? `${url}${UNSPLASH_UTM}` : '')
@@ -85,13 +84,15 @@ export default function AuthMobileHeader({ org, welcomeText }: AuthMobileHeaderP
           <LanguageSwitcher primaryColor="#000000" />
         </div>
 
-        <Link prefetch href={getUriWithOrg(org?.slug, '/')} className="relative z-10 w-fit">
+        {/* Prakto: a "<logo> × Akademi" lockup bottom-left, no name or welcome
+            line (same as the desktop panel). */}
+        <Link prefetch href={getUriWithOrg(org?.slug, '/')} className="relative z-10 flex w-fit items-center gap-2.5 text-white">
           {wideLogo ? (
-            // Prakto: white wordmark straight on the (always dark) card, no plate.
+            // White wordmark straight on the (always dark) card, no plate.
             <img
               src={wideLogo}
               alt={org?.name || ''}
-              className="block h-auto w-auto max-h-8 max-w-[150px] brightness-0 invert drop-shadow-sm"
+              className="block h-6 w-auto max-w-[140px] brightness-0 invert drop-shadow-sm"
             />
           ) : (
           <div className="w-14 h-14 rounded-2xl ring-1 ring-inset ring-white/10 bg-white flex items-center justify-center overflow-hidden shrink-0">
@@ -117,14 +118,9 @@ export default function AuthMobileHeader({ org, welcomeText }: AuthMobileHeaderP
             />
           </div>
           )}
+          <span aria-hidden className="text-xl font-light leading-none text-white/60">×</span>
+          <span className="text-xl font-semibold leading-none tracking-tight">Akademi</span>
         </Link>
-
-        <div className="relative z-10 mt-4 min-w-0">
-          <p className="truncate text-xl font-black tracking-tight text-white">{org?.name || 'LearnHouse'}</p>
-          {displayMessage && (
-            <p className="mt-0.5 line-clamp-2 text-sm font-medium text-white/65">{displayMessage}</p>
-          )}
-        </div>
 
         {/* Unsplash attribution (required by Unsplash API guidelines) */}
         {background_type === 'unsplash' && background_image && unsplash_photographer_name && (
