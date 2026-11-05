@@ -188,10 +188,17 @@ export default function AuthBrandingPanel({ org, welcomeText, title, subtitle }:
                       in full; otherwise the square tile. */}
                   <Link prefetch href={getUriWithOrg(org?.slug, '/')}>
                     {wideLogo ? (
-                      // The plate hugs the (trimmed) image, so the padding alone sets the margins.
-                      <div className="rounded-lg bg-white px-7 py-5 shadow-sm ring-1 ring-inset ring-black/5">
-                        <img src={wideLogo} alt={org?.name || ''} className="block h-auto w-auto max-h-14 max-w-[240px]" />
-                      </div>
+                      // Prakto: the wordmark sits straight on the photo, no white
+                      // plate. On light text (dark photo) it is rendered white;
+                      // brightness-0 + invert turns every opaque pixel white.
+                      <img
+                        src={wideLogo}
+                        alt={org?.name || ''}
+                        className={cn(
+                          "block h-auto w-auto max-h-14 max-w-[240px]",
+                          text_color === 'light' && "brightness-0 invert drop-shadow-sm"
+                        )}
+                      />
                     ) : (
                     <div className="w-24 h-24 rounded-2xl ring-1 ring-inset ring-white/10 bg-white flex items-center justify-center overflow-hidden">
                       <OrgSquareLogo

@@ -11,17 +11,19 @@
 import React from 'react'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
-import { getPlatformUrl } from '@services/config/config'
+import { getConfig } from '@services/config/config'
 
-const TERMS_URL = getPlatformUrl('/terms') || 'https://www.learnhouse.io/terms'
-const PRIVACY_URL = getPlatformUrl('/privacy') || 'https://www.learnhouse.io/privacy'
+// Prakto Akademi: the legal pages are Prakto's own, on prakto.se. Overridable
+// per deployment with NEXT_PUBLIC_LEARNHOUSE_TERMS_URL / _PRIVACY_URL.
+const TERMS_URL = getConfig('NEXT_PUBLIC_LEARNHOUSE_TERMS_URL') || 'https://prakto.se/terms'
+const PRIVACY_URL = getConfig('NEXT_PUBLIC_LEARNHOUSE_PRIVACY_URL') || 'https://prakto.se/privacy'
 
 export function AuthFooter({ className = '' }: { className?: string }) {
   const { t } = useTranslation()
   return (
     <div className={`pb-8 pt-6 text-center px-6 ${className}`}>
       <p className="text-[13px] text-black/30 font-medium">
-        {t('auth.terms_text', { defaultValue: "By continuing, you agree to LearnHouse's" })}{' '}
+        {t('auth.terms_text', { defaultValue: "By continuing, you agree to Prakto's" })}{' '}
         <Link
           href={TERMS_URL}
           target="_blank"

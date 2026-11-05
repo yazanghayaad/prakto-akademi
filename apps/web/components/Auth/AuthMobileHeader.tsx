@@ -87,9 +87,12 @@ export default function AuthMobileHeader({ org, welcomeText }: AuthMobileHeaderP
 
         <Link prefetch href={getUriWithOrg(org?.slug, '/')} className="relative z-10 w-fit">
           {wideLogo ? (
-            <div className="rounded-md bg-white px-4 py-3 ring-1 ring-inset ring-black/5">
-              <img src={wideLogo} alt={org?.name || ''} className="block h-auto w-auto max-h-8 max-w-[150px]" />
-            </div>
+            // Prakto: white wordmark straight on the (always dark) card, no plate.
+            <img
+              src={wideLogo}
+              alt={org?.name || ''}
+              className="block h-auto w-auto max-h-8 max-w-[150px] brightness-0 invert drop-shadow-sm"
+            />
           ) : (
           <div className="w-14 h-14 rounded-2xl ring-1 ring-inset ring-white/10 bg-white flex items-center justify-center overflow-hidden shrink-0">
             <OrgSquareLogo
