@@ -1,43 +1,35 @@
-import { Callout } from 'nextra/components'
+# Användargrupper
 
-# User Groups
+Med användargrupper samlar du medlemmar så att du kan ge dem åtkomst till innehåll i ett enda steg. I stället för att öppna en kurs för alla i organisationen kopplar du den till en grupp, och då är det bara gruppens medlemmar som kommer åt den.
 
-User groups bundle members together so you can give them access to content in one step. Instead of opening a course to everyone in the organization, you link it to a group, and only that group's members can reach it.
+## Skapa en grupp
 
-<Callout type="info">
-User groups need the **Standard** plan or higher on LearnHouse Cloud. They are included on every self-hosted instance.
-</Callout>
+1. Gå till **Användare** → **Användargrupper**.
+2. Klicka på **Skapa en användargrupp** och ange ett **Namn** (obligatoriskt) och en **Beskrivning**.
+3. Klicka på **Hantera användare** på gruppens rad för att lägga till medlemmar. Filtrera på **Alla användare**, **I gruppen** eller **Inte i gruppen** och klicka sedan på **Länka** eller **Avlänka**. Du kan också markera flera personer och lägga till eller ta bort dem på en gång.
 
-## Creating a group
+Med **Redigera** byter du namn på en grupp. Med **Radera** tar du bort den, och alla gruppens medlemmar förlorar den åtkomst som gruppen gav.
 
-1. Go to **Users** → **UserGroups**.
-2. Click **Create a UserGroup**, enter a **Name** (required) and a **Description**.
-3. Click **Manage Users** on the group's row to add members. Filter by **All Users**, **In Group** or **Not in Group**, then **Link** or **Unlink** people, or select several and use **Add to Group** / **Remove from Group**.
+<img src="/docs/img/pages/users/user-groups.webp" alt="Fliken Användargrupper med två grupper, var och en med Hantera användare, Redigera och Radera" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-**Edit** renames a group. **Delete** removes it, and every member of the group loses the access it granted.
+## Vad en grupp kan låsa upp
 
-<img src="/img/pages/users/user-groups.webp" alt="The UserGroups tab with two groups, each with Manage Users, Edit and Delete" width={1600} height={900} style={{ borderRadius: 10 }} />
+Du kopplar en grupp i innehållets egna åtkomstinställningar, inte på sidan Användare. De här resurserna kan kopplas till en grupp:
 
-## What a group can unlock
-
-You link a group from the resource's own access settings, not from the Users page. These resources can be linked to a group:
-
-| Resource | Where to link it |
+| Resurs | Var du kopplar den |
 | --- | --- |
-| Courses | The course's **Access** tab in the dashboard |
-| Communities | The community's access settings |
-| Folders | The folder's access popover in the Library |
-| Boards | The board's access tab |
-| Podcasts | The podcast's access settings |
+| Kurser | Kursens flik **Åtkomst** i adminpanelen |
+| Communities | Communityns åtkomstinställningar |
+| Mappar | Mappens åtkomstmeny i **Bibliotek** |
+| Tavlor | Tavlans flik för åtkomst |
+| Poddar | Poddens åtkomstinställningar |
 
-Inside a course, chapters and lessons can also be locked to user groups. Locked lessons are hidden from everyone outside the group, including in [search](/platform/search).
+Inne i en kurs kan du också låsa kapitel och lektioner till användargrupper. Låsta lektioner är dolda för alla utanför gruppen, även i [sökningen](/platform/search).
 
-To limit a course to a group, set **Access to the course** to **Users Only** on the course's **Access** tab, then click **Link to a UserGroup** and pick the group. Members outside the group lose access to the course.
+För att begränsa en kurs till en grupp ställer du in **Åtkomst till kursen** på **Endast användare** på kursens flik **Åtkomst**. Klicka sedan på **Länka till en användargrupp** och välj gruppen. Medlemmar utanför gruppen förlorar åtkomsten till kursen.
 
-<img src="/img/pages/users/course-access-usergroup.webp" alt="The Access tab of a course set to Users Only, with the Partner agencies user group linked" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/users/course-access-usergroup.webp" alt="Fliken Åtkomst för en kurs inställd på Endast användare, med en användargrupp kopplad" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-## Other ways members join a group
+## Andra sätt att gå med i en grupp
 
-- **Invite codes** can be linked to a group. Everyone who signs up with the code is added to it. See [Invite codes](/platform/users/members-and-invites#invite-codes).
-- **Payments**: a payment group can be synced to a user group, so buyers are added automatically. See [Groups & Bundles](/platform/payments/groups).
-- **API**: API tokens with the **User Groups** permission can manage groups and their members.
+Inbjudningskoder kan kopplas till en grupp. Alla som registrerar sig med koden läggs till i gruppen. Läs mer i [Inbjudningskoder](/platform/users/members-and-invites#inbjudningskoder).

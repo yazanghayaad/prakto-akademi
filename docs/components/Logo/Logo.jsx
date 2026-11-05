@@ -1,8 +1,8 @@
 function Logo() {
   return (
     <img
-      src="/img/logos/learnhouse-dark.svg"
-      alt="LearnHouse"
+      src="/docs/img/logos/prakto.png"
+      alt="Prakto Akademi"
       style={{ height: 20, width: 'auto' }}
     />
   )

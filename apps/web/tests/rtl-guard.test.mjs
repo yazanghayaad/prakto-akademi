@@ -43,15 +43,16 @@ describe('language registry', () => {
   const entries = [...src.matchAll(/\{\s*code:\s*'([a-z]+)'[^}]*\}/g)]
 
   test('every language declares a direction', () => {
-    expect(entries.length).toBeGreaterThan(20)
+    expect(entries.length).toBeGreaterThanOrEqual(2)
     for (const entry of entries) {
       expect(entry[0]).toMatch(/dir:\s*'(ltr|rtl)'/)
     }
   })
 
-  test('ar and fa are the RTL entries', () => {
+  // Prakto: only Swedish and English are offered, so no entry is RTL.
+  test('no RTL entries are offered', () => {
     const rtl = entries.filter((e) => /dir:\s*'rtl'/.test(e[0])).map((e) => e[1]).sort()
-    expect(rtl).toEqual(['ar', 'fa'])
+    expect(rtl).toEqual([])
   })
 
   // A locale that loads but isn't in the registry can never be picked, and one
@@ -136,23 +137,5 @@ describe('globals.css', () => {
   }, 60_000)
 })
 
-describe('Arabic translations', () => {
-  const en = JSON.parse(read('locales/en.json'))
-  const ar = JSON.parse(read('locales/ar.json'))
-
-  const flatten = (obj, prefix = '') =>
-    Object.entries(obj).flatMap(([k, v]) =>
-      v && typeof v === 'object' && !Array.isArray(v)
-        ? flatten(v, `${prefix}${k}.`)
-        : [`${prefix}${k}`]
-    )
-
-  test('ar.json covers every en.json key', () => {
-    // Build the Arabic key set once. Inside the filter it was rebuilt (and
-    // the whole file re-flattened) for every English key, which put the test
-    // on the edge of its own timeout.
-    const arabicKeys = new Set(flatten(ar))
-    const missing = flatten(en).filter((k) => !arabicKeys.has(k))
-    expect(missing).toEqual([])
-  })
-})
+// Prakto: the Arabic translation was removed along with every language other
+// than Swedish and English; missing Swedish keys fall back to English.

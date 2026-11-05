@@ -1,66 +1,37 @@
 <p align="center">
-  <a href="https://docs.learnhouse.app">
-    <img alt="LearnHouse" src=".github/images/learnhouse-github.png" width="600" />
+  <a href="https://prakto.se/docs">
+    <img alt="Prakto Akademi" src=".github/images/prakto-academy.png" width="600" />
   </a>
 </p>
 
 <p align="center">
-  <strong>LearnHouse Documentation</strong>
+  <strong>Prakto Akademi – dokumentation</strong>
 </p>
 
 <p align="center">
-  Official documentation for <a href="https://learnhouse.app">LearnHouse</a>, the open-source learning management system.
-</p>
-
-<p align="center">
-  <a href="https://docs.learnhouse.app">docs.learnhouse.app</a>
+  Hjälp och guider för elever, lärare och administratörer på <a href="https://prakto.se">Prakto Akademi</a>.
+  Publiceras på <a href="https://prakto.se/docs">prakto.se/docs</a>.
 </p>
 
 ---
 
-## Local Development
+## Köra lokalt
 
-This site lives in the [`learnhouse/learnhouse`](https://github.com/learnhouse/learnhouse)
-monorepo under `docs/`. Run all commands from that directory.
-
-**Prerequisites:** [Bun](https://bun.sh) installed.
+Kräver [Bun](https://bun.sh).
 
 ```bash
-# Clone the monorepo and move into the docs app
-git clone https://github.com/learnhouse/learnhouse.git
-cd learnhouse/docs
-
-# Install dependencies
 bun install
-
-# Start the dev server
-bun dev
+bun run dev -- -p 3002
 ```
 
-The site will be available at `http://localhost:3000`.
+Öppna sedan http://localhost:3002/docs.
 
-## Project Structure
+## Bygga
 
-```
-content/          # MDX documentation pages
-  getting-started/
-  platform/
-  self-hosting/
-  developers/
-  enterprise/
-  cli/
-app/              # Next.js App Router
-components/       # React components
-public/           # Static assets
-scripts/          # Build scripts
+```bash
+bun run build
+bun run start
 ```
 
-## Built With
-
-- [Next.js](https://nextjs.org)
-- [Nextra](https://nextra.site)
-- [Tailwind CSS](https://tailwindcss.com)
-
-## License
-
-MIT - see [LICENSE](LICENSE) for details.
+Sajten ligger under `basePath: '/docs'` (se `next.config.mjs`), så bilder i innehållet
+skrivs som `/docs/img/...`.

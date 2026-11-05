@@ -25,15 +25,6 @@ import { usePathname, useSearchParams } from 'next/navigation'
 import { getGoogleFontUrl, DEFAULT_FONT } from '@/lib/fonts'
 import { useShowLearnHouseBranding } from '@components/Hooks/useLearnHouseBranding'
 
-// Helper to convert hex to rgba
-const hexToRgba = (hex: string, alpha: number): string => {
-  if (!hex || hex.length < 7) return 'transparent'
-  const r = parseInt(hex.slice(1, 3), 16)
-  const g = parseInt(hex.slice(3, 5), 16)
-  const b = parseInt(hex.slice(5, 7), 16)
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`
-}
-
 function OrgFooter() {
   const org = useOrg() as any
   const footerText = org?.config?.config?.customization?.general?.footer_text || org?.config?.config?.general?.footer_text || ''
@@ -62,7 +53,6 @@ function OrgFooter() {
 
 function LayoutContent({ children, orgslug }: { children: ReactNode; orgslug: string }) {
   const org = useOrg() as any
-  const primaryColor = org?.config?.config?.customization?.general?.color || org?.config?.config?.general?.color || ''
   const customFont = org?.config?.config?.customization?.general?.font || org?.config?.config?.general?.font || ''
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -120,7 +110,9 @@ function LayoutContent({ children, orgslug }: { children: ReactNode; orgslug: st
       style={{
         // Room for the phone tab bar / activity bar (0 on desktop).
         paddingBottom: 'var(--lh-mobile-nav-h)',
-        backgroundColor: primaryColor ? hexToRgba(primaryColor, 0.05) : 'transparent',
+        // Prakto: one warm paper ground everywhere. A 5% wash of the org colour
+        // turned the page pink-grey.
+        backgroundColor: 'var(--color-paper)',
         ...(customFont ? { fontFamily: `'${customFont}', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif` } : {}),
       }}
     >

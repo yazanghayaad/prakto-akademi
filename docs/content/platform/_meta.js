@@ -1,0 +1,20 @@
+export default {
+  "index": "Översikt",
+  "courses": "Kurser",
+  "paths": "Lärvägar",
+  "editor": "Redigeraren",
+  "assignments": "Uppgifter",
+  "code-execution": "Kodkörning",
+  "playgrounds": "Lekplatser",
+  "discussions": "Communities",
+  "messages": "Meddelanden",
+  "boards": "Tavlor",
+  "podcasts": "Poddar",
+  "calendar": "Kalender",
+  "certifications": "Certifikat",
+  "analytics": "Statistik",
+  "search": "Sök",
+  "ai": "AI",
+  "users": "Användare och åtkomst",
+  "organizations": "Organisation"
+}

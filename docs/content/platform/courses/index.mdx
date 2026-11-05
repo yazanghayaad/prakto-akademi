@@ -1,61 +1,54 @@
 import { Callout } from 'nextra/components'
 
-# Courses
+# Kurser
 
-Courses are the core content unit in LearnHouse. A course is made of chapters, and each chapter holds activities that learners work through in order.
+Kurser är den viktigaste enheten för innehåll i Prakto Akademi. En kurs består av kapitel, och varje kapitel innehåller aktiviteter som eleverna går igenom i tur och ordning. Eleverna ser kapitlen som moduler (Modul 1, Modul 2 och så vidare).
 
-<YouTube video="guide-1" />
-<YouTube video="growth-1" />
+## Skapa en kurs
 
-## Creating a course
+Gå till **Kurser** i adminpanelen och klicka på **Ny kurs**. I fönstret **Skapa ny kurs** kan du välja mellan tre sätt:
 
-Go to **Courses** in the dashboard and click **New Course**. The **Create New Course** window gives you three choices:
+<img src="/docs/img/pages/getting-started/create-new-course.webp" alt="Fönstret Skapa ny kurs med valen Börja från grunden, Börja med AI och Från befintligt innehåll, ovanpå kurslistan i adminpanelen" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-<img src="/img/pages/getting-started/create-new-course.webp" alt="The Create New Course window with Start from Scratch, Start with AI and From Existing Content, over the dashboard course list" width={1600} height={900} style={{ borderRadius: 10 }} />
-
-| Option | What it does |
+| Val | Vad det gör |
 | --- | --- |
-| **Start from Scratch** | Fill in a short form and start with an empty course. |
-| **Start with AI** | Describe the course and let AI plan the chapters and write the activities. See [AI Course Creator](/platform/courses/ai-course-creator). |
-| **From Existing Content** | Upload your videos, PDFs, images and audio and organize them into a course. See [Import & Export](/platform/courses/import-export#from-existing-content). |
+| **Börja från grunden** | Fyll i ett kort formulär och börja med en tom kurs. |
+| **Börja med AI** | Beskriv kursen och låt AI planera kapitlen och skriva aktiviteterna. Se [AI-kursskaparen](/platform/courses/ai-course-creator). |
+| **Från befintligt innehåll** | Ladda upp dina videor, PDF-filer, bilder och ljudfiler och ordna dem till en kurs. Se [Import och export](/platform/courses/import-export#från-befintligt-innehåll). |
 
-The **Start from Scratch** form asks for:
+Formuläret för **Börja från grunden** frågar efter:
 
-| Field | Notes |
+| Fält | Att tänka på |
 | --- | --- |
-| **Course Name** | Required, up to 100 characters. |
-| **Description** | Required, up to 1000 characters. |
-| **Course Thumbnail** | **Upload Image** or **Paste from Clipboard**. |
-| **Course Learnings** | What learners will get out of the course. Press Enter to add each one. |
-| **Course Tags** | Keywords for the course. |
-| **Course Visibility** | **Public** (visible on the internet) or **Private** (signed-in users only). |
+| **Kursnamn** | Obligatoriskt, högst 100 tecken. |
+| **Beskrivning** | Obligatoriskt, högst 1000 tecken. |
+| **Kursminiatyrbild** | **Ladda upp bild** eller **Klistra in från urklipp**. |
+| **Kursens lärandemål** | Vad eleverna får ut av kursen. Tryck på Enter för att lägga till varje mål. |
+| **Kurstaggar** | Nyckelord för kursen. |
+| **Kursens synlighet** | **Offentlig** (synlig på internet) eller **Privat** (bara för inloggade användare). |
 
-A first chapter is created for you. To bring in a course from another platform, use **Import Course** instead. See [Import & Export](/platform/courses/import-export).
+Ett första kapitel skapas automatiskt. Vill du hämta in en kurs från en annan plattform använder du **Importera kurs** i stället. Se [Import och export](/platform/courses/import-export).
 
-<Callout>
-On the Free plan of LearnHouse Cloud an organization can have one course. Other plans and self-hosted instances have no course limit.
-</Callout>
+## Hantera kurser
 
-## Managing courses
+I kurslistan i adminpanelen kan du:
 
-The course list in the dashboard lets you:
+- Söka efter kurser och filtrera dem efter användargrupp.
+- Klicka på **Publicerad** / **Avpublicerad** på en kurs för att styra om eleverna kan se den.
+- **Klona kurs**: gör en fullständig kopia, som skapas som privat.
+- **Exportera kurs**: ladda ner kursen som ett `.zip`-paket.
+- **Radera kurs**.
 
-- Search courses and filter them by user group.
-- Click **Published** / **Unpublished** on a course to toggle whether learners can see it.
-- **Clone Course**: make a full copy, created as private.
-- **Export Course**: download the course as a `.zip` package.
-- **Delete Course**.
+Klicka på **Välj** för att hantera flera kurser på en gång: **Klona valda**, **Exportera valda** (upp till 20 kurser per export) eller **Radera valda**.
 
-Click **Select** to act on several courses at once: **Clone Selected**, **Export Selected** (up to 20 courses per export) or **Delete Selected**.
+## Kursinställningar
 
-## Course settings
+Öppna en kurs från adminpanelen för att redigera den. Inställningarna är uppdelade i flikar: **Allmänt**, **Innehåll**, **Schema**, **Åtkomst**, **Medarbetare**, **SEO**, **Certifiering** och **Statistik**. Se [Kursinställningar](/platform/courses/settings) och [Kapitel och aktiviteter](/platform/courses/chapters-and-activities).
 
-Open a course from the dashboard to edit it. The settings are split into tabs: **General**, **Content**, **Schedule**, **Access**, **Contributors**, **SEO**, **Certification** and **Analytics**. See [Course Settings](/platform/courses/settings) and [Chapters & Activities](/platform/courses/chapters-and-activities).
+## Läs mer
 
-## Learn More
-
-- [Chapters & Activities](/platform/courses/chapters-and-activities): course structure and activity types.
-- [Course Settings](/platform/courses/settings): general info, access, contributors and SEO.
-- [Drip Content](/platform/courses/drip-content): release chapters over time, per learner or for a cohort.
-- [Taking a Course](/platform/courses/taking-a-course): what learners see, keyboard shortcuts and progress.
-- [Library](/platform/courses/library): organize courses and other content into folders.
+- [Kapitel och aktiviteter](/platform/courses/chapters-and-activities): kursens uppbyggnad och olika typer av aktiviteter.
+- [Kursinställningar](/platform/courses/settings): allmän information, åtkomst, medarbetare och SEO.
+- [Stegvis innehåll](/platform/courses/drip-content): släpp kapitel över tid, för varje elev eller för en hel grupp.
+- [Att gå en kurs](/platform/courses/taking-a-course): vad eleverna ser, kortkommandon och framsteg.
+- [Bibliotek](/platform/courses/library): ordna kurser och annat innehåll i mappar.

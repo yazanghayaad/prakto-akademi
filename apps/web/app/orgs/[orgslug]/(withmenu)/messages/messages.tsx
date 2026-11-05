@@ -7,7 +7,7 @@ import { useMediaQuery } from 'usehooks-ts'
 import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
 import { motion } from 'motion/react'
-import { ArrowLeft, ChatsCircle, NotePencil, UsersThree } from '@phosphor-icons/react'
+import { ArrowLeft, ArrowRight, NotePencil, UsersThree } from '@phosphor-icons/react'
 import FeatureGate from '@components/Dashboard/Shared/FeatureGate/FeatureGate'
 import AuthenticatedClientElement from '@components/Security/AuthenticatedClientElement'
 import { messagingKeys, useMessaging, useMessagingEnabled } from '@components/Messaging/MessagingProvider'
@@ -41,32 +41,52 @@ function EmptyState({
   defaultAgent: Agent | undefined
 }) {
   const { t } = useTranslation()
+  // Each choice is a ruled row, like an entry in a table of contents.
   const option = (icon: React.ReactNode, title: string, desc: string, onClick: () => void) => (
-    <button
-      onClick={onClick}
-      className="flex flex-col items-center rounded-xl border border-gray-200 bg-white px-4 py-5 text-center transition-colors hover:border-gray-300 hover:bg-gray-50/60"
-    >
-      <span className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-gray-50 text-gray-600">{icon}</span>
-      <span className="text-sm font-semibold text-gray-900">{title}</span>
-      <span className="mt-1 text-xs text-gray-500">{desc}</span>
+    <button onClick={onClick} className="group flex w-full items-center gap-4 border-b border-gray-200 py-4 text-start">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-paper text-wine-900">
+        {icon}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-[15px] font-semibold text-gray-900 transition-colors group-hover:text-wine-900">{title}</span>
+        <span className="block text-sm text-gray-500">{desc}</span>
+      </span>
+      <ArrowRight size={16} className="shrink-0 text-gray-300 transition-all group-hover:translate-x-0.5 group-hover:text-wine-900" />
     </button>
   )
   return (
-    <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
-      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white nice-shadow text-gray-400">
-        <ChatsCircle size={26} weight="fill" />
-      </div>
-      <h2 className="text-lg font-bold text-gray-700">{t('messaging.empty_title', { defaultValue: 'Your messages' })}</h2>
-      <p className="mt-1 max-w-sm text-sm text-gray-400">
-        {t('messaging.empty_desc', {
-          defaultValue: 'Talk with classmates and teachers, follow course announcements, or ask an AI agent about anything you are learning.',
-        })}
-      </p>
-      <div className="mt-6 grid w-full max-w-xl gap-3 sm:grid-cols-3">
-        {option(<NotePencil size={20} weight="fill" />, t('messaging.new_message', { defaultValue: 'New message' }), 'Message someone or start a group', onNewMessage)}
-        {defaultAgent &&
-          option(<AgentAvatar agent={defaultAgent} size={22} />, `Ask ${defaultAgent.name}`, 'Answers with sources from your courses', () => onAgent(defaultAgent))}
-        {option(<UsersThree size={20} weight="fill" />, 'Build an agent', 'Your own tutor, with its own style', onNewAgent)}
+    <div className="flex-1 overflow-y-auto">
+      <div className="mx-auto flex min-h-full max-w-lg flex-col justify-center px-6 py-12">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-wine-800">
+          {t('messaging.empty_eyebrow', { defaultValue: 'Prakto Akademi' })}
+        </p>
+        <h2 className="mt-2 text-3xl text-gray-900">{t('messaging.empty_title', { defaultValue: 'Your messages' })}</h2>
+        <p className="mt-3 text-[15px] leading-relaxed text-gray-600">
+          {t('messaging.empty_desc', {
+            defaultValue: 'Talk with classmates and teachers, follow course announcements, or ask an AI agent about anything you are learning.',
+          })}
+        </p>
+        <div className="mt-8 border-t border-gray-200">
+          {option(
+            <NotePencil size={18} />,
+            t('messaging.new_message', { defaultValue: 'New message' }),
+            t('messaging.new_message_desc', { defaultValue: 'Message someone or start a group' }),
+            onNewMessage
+          )}
+          {defaultAgent &&
+            option(
+              <AgentAvatar agent={defaultAgent} size={24} />,
+              t('messaging.ask_named', { defaultValue: 'Ask {{name}}', name: defaultAgent.name }),
+              t('messaging.ask_named_desc', { defaultValue: 'Answers with sources from your courses' }),
+              () => onAgent(defaultAgent)
+            )}
+          {option(
+            <UsersThree size={18} />,
+            t('messaging.build_agent', { defaultValue: 'Build an agent' }),
+            t('messaging.build_agent_desc', { defaultValue: 'Your own tutor, with its own style' }),
+            onNewAgent
+          )}
+        </div>
       </div>
     </div>
   )
@@ -112,6 +132,7 @@ function PhoneScreen({ children }: { children: React.ReactNode }) {
 }
 
 function MessagesApp({ orgslug }: { orgslug: string }) {
+  const { t } = useTranslation()
   const router = useRouter()
   const pathname = usePathname()
   const params = useSearchParams()
@@ -231,18 +252,15 @@ function MessagesApp({ orgslug }: { orgslug: string }) {
       <div className="flex items-center gap-2.5">
         <button
           onClick={() => setQuery({ agents: null })}
-          className="md:hidden -ms-1.5 flex h-10 w-10 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100"
-          aria-label="Back"
+          className="md:hidden -ms-1.5 flex h-10 w-10 items-center justify-center rounded-md text-gray-500 hover:bg-gray-100"
+          aria-label={t('messaging.back', { defaultValue: 'Back' })}
         >
           <ArrowLeft size={18} />
         </button>
-        <div className="hidden md:flex h-8 w-8 items-center justify-center rounded-lg bg-white nice-shadow">
-          <UsersThree size={16} weight="fill" className="text-black" />
-        </div>
-        <h2 className="text-xl font-bold tracking-tight text-gray-900">Agents</h2>
+        <h2 className="text-2xl text-gray-900">{t('messaging.agents', { defaultValue: 'Agents' })}</h2>
       </div>
       <p className="mt-2 mb-6 text-sm text-gray-500">
-        Assistants that answer from your courses, each with its own style.
+        {t('messaging.agents_desc', { defaultValue: 'Assistants that answer from your courses, each with its own style.' })}
       </p>
       <AgentsGallery orgslug={orgslug} onOpenChat={openConversation} />
     </div>
@@ -259,7 +277,7 @@ function MessagesApp({ orgslug }: { orgslug: string }) {
     // Phones: the list fills the space between the 60px header and the tab bar.
     <div className="flex h-[calc(100dvh-60px-var(--lh-mobile-nav-h))] md:h-[calc(100dvh-72px)] w-full max-w-(--breakpoint-2xl) mx-auto px-0 sm:px-4 md:px-6 lg:px-8 gap-3 md:py-5">
       <aside
-        className={`${detail ? 'hidden md:flex' : 'flex'} max-md:pb-[var(--lh-safe-bottom)] w-full md:w-[340px] lg:w-[360px] flex-shrink-0 flex-col bg-white md:rounded-xl md:shadow-md md:shadow-gray-300/25 md:outline md:outline-1 md:outline-gray-200/40 overflow-hidden`}
+        className={`${detail ? 'hidden md:flex' : 'flex'} max-md:pb-[var(--lh-safe-bottom)] w-full md:w-[340px] lg:w-[360px] flex-shrink-0 flex-col bg-white md:rounded-lg md:border md:border-gray-200 overflow-hidden`}
       >
         <ConversationSidebar
           orgslug={orgslug}
@@ -279,7 +297,7 @@ function MessagesApp({ orgslug }: { orgslug: string }) {
       {isPhone && detail ? (
         <PhoneScreen>{thread}</PhoneScreen>
       ) : (
-        <section aria-label="Conversation" data-messages-thread className="hidden md:flex flex-1 min-w-0 flex-col bg-white md:rounded-xl md:shadow-md md:shadow-gray-300/25 md:outline md:outline-1 md:outline-gray-200/40 overflow-hidden">
+        <section aria-label="Conversation" data-messages-thread className="hidden md:flex flex-1 min-w-0 flex-col bg-white md:rounded-lg md:border md:border-gray-200 overflow-hidden">
           {thread}
         </section>
       )}

@@ -23,6 +23,9 @@ import { useLHAnalytics, AnalyticsEvent } from '@services/analytics'
 import CatalogPagination, { useCatalogPagination } from '@components/Objects/Catalog/CatalogPagination'
 import ListShortcuts from '@components/Objects/Shortcuts/ListShortcuts'
 import { asArray } from '@services/utils/ts/requests'
+import { usePaths } from '@/hooks/queries/usePaths'
+import { removePathPrefix, getPath } from '@services/paths/paths'
+import { useQuery } from '@tanstack/react-query'
 
 interface CourseProps {
   orgslug: string
@@ -116,6 +119,46 @@ function Courses(props: CourseProps) {
 
     return courses
   }, [allCourses, searchQuery, usergroupResourceUuids])
+
+  // Prakto: browsing (no search, no group filter) shows the catalogue by
+  // programme. Each learning path is a section with its courses in the
+  // programme's order; courses outside any path close the page.
+  const { data: pathsList } = usePaths(org?.id)
+  // The list endpoint leaves out each path's courses, so read the details.
+  const pathUuids = useMemo(() => (pathsList ?? []).map((p: any) => p.path_uuid), [pathsList])
+  const { data: pathsData } = useQuery({
+    queryKey: ['prakto-catalogue-paths', pathUuids.join(',')],
+    queryFn: () => Promise.all(pathUuids.map((u: string) => getPath(u, access_token))),
+    enabled: pathUuids.length > 0,
+    staleTime: 30_000,
+  })
+  const programmeSections = useMemo(() => {
+    if (searchQuery.trim() || usergroupResourceUuids) return null
+    const paths = (pathsData ?? [])
+      .filter((p: any) => p?.courses?.length)
+      .sort((a: any, b: any) => a.name.localeCompare(b.name))
+    if (paths.length === 0) return null
+    const byUuid = new Map<string, any>(allCourses.map((c: any) => [c.course_uuid, c]))
+    const placed = new Set<string>()
+    const sections = paths
+      .map((p: any) => {
+        const ordered = [...p.courses].sort((a: any, b: any) => a.position - b.position)
+        // Number by the course's place in the whole programme, even when some
+        // of its courses are not published yet.
+        const courses = ordered
+          .map((pc: any, i: number) => {
+            const c = byUuid.get(pc.course_uuid)
+            return c ? { ...c, _programmeIndex: i + 1, _programmeTotal: ordered.length } : null
+          })
+          .filter(Boolean)
+        courses.forEach((c: any) => placed.add(c.course_uuid))
+        return { key: p.path_uuid, title: p.name, href: getUriWithOrg(orgslug, `/path/${removePathPrefix(p.path_uuid)}`), courses }
+      })
+      .filter((sec: any) => sec.courses.length > 0)
+    const rest = allCourses.filter((c: any) => !placed.has(c.course_uuid))
+    if (rest.length) sections.push({ key: 'other', title: t('courses.other_courses'), href: '', courses: rest })
+    return sections
+  }, [pathsData, allCourses, searchQuery, usergroupResourceUuids, orgslug, t])
 
   // Track non-empty searches (debounced so we don't fire on every keystroke)
   useEffect(() => {
@@ -286,7 +329,38 @@ function Courses(props: CourseProps) {
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {programmeSections && (
+            <div className="space-y-12">
+              {programmeSections.map((sec: any, sIdx: number) => (
+                <section key={sec.key}>
+                  <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-gray-200 pb-2">
+                    {sec.href ? (
+                      <Link href={sec.href} className="text-[22px] font-semibold text-gray-900 hover:text-wine-900">
+                        <h2>{sec.title}</h2>
+                      </Link>
+                    ) : (
+                      <h2 className="text-[22px] font-semibold text-gray-900">{sec.title}</h2>
+                    )}
+                    <span className="shrink-0 text-sm text-gray-500">{t('courses.n_courses', { count: sec.courses.length })}</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {sec.courses.map((course: any, index: number) => (
+                      <div key={course.course_uuid}>
+                        <CourseThumbnail
+                          course={course}
+                          orgslug={orgslug}
+                          isPriority={sIdx === 0 && index < 4}
+                          coverEyebrow={sec.href ? t('courses.course_n_of', { n: course._programmeIndex, total: course._programmeTotal }) : undefined}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          )}
+
+          <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ${programmeSections ? 'hidden' : ''}`}>
             {paginatedCourses.map((course: any, index: number) => (
               <div key={course.course_uuid} className="">
                 <CourseThumbnail course={course} orgslug={orgslug} isPriority={currentPage === 1 && index < 3} />
@@ -361,7 +435,7 @@ function Courses(props: CourseProps) {
             )}
           </div>
 
-          <CatalogPagination
+          {!programmeSections && <CatalogPagination
             currentPage={currentPage}
             totalPages={totalPages}
             pageNumbers={pageNumbers}
@@ -369,10 +443,10 @@ function Courses(props: CourseProps) {
             previousLabel={t('pagination.previous')}
             nextLabel={t('pagination.next')}
             className="mt-8"
-          />
+          />}
 
           {/* Pagination info */}
-          {totalPages > 1 && (
+          {!programmeSections && totalPages > 1 && (
             <div className="mt-2 text-center text-sm text-gray-500">
               {t('pagination.showing_page', { current: currentPage, total: totalPages })}
             </div>

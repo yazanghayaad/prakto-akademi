@@ -1,64 +1,60 @@
 import { Callout } from 'nextra/components'
 
-# Playgrounds
+# Lekplatser
 
-A playground is an interactive web page (a simulation, a visualization, a small game or exercise) that AI writes from your description. You publish it on its own page, outside any course. It is not a code runner: for runnable code exercises use the [Code Playground block](/platform/code-execution).
-
-<YouTube video="guide-6" />
+En lekplats är en interaktiv webbsida (en simulering, en visualisering, ett litet spel eller en övning) som AI skriver utifrån din beskrivning. Du publicerar den på en egen sida, utanför kurserna. En lekplats kör inte kod. För kodövningar som går att köra använder du [blocket Kodlekplats](/platform/code-execution).
 
 <Callout>
-Playgrounds must be enabled in your [Organization Settings](/platform/organizations/settings), and AI must be set up on the instance (see [AI Setup](/self-hosting/configuration/ai-setup)). On LearnHouse Cloud, playgrounds are available on the Personal, Pro and Enterprise plans, but not on Free or Standard.
+Lekplatser måste vara påslaget i [organisationsinställningarna](/platform/organizations/settings), och AI måste vara påslaget för organisationen (se [AI](/platform/ai)).
 </Callout>
 
-## Creating a playground
+## Skapa en lekplats
 
-1. Go to **Playgrounds** in the dashboard and click **New Playground**. Give it a name and click **Create**. The playground editor opens.
-2. In the **AI Generator** panel, choose a **Source**:
-   - **AI Knowledge**: the AI works from general knowledge.
-   - **Course**: pick one of your courses, and its content is given to the AI as context.
-3. Describe what you want and click **Send**. The result appears in the preview.
-4. Ask for changes in the same chat. You can generate up to 10 times per editing session. The counter shows how many generations are left.
-5. Click **Save**, then **Publish** when it is ready for learners.
+1. Gå till **Lekplatser** i adminpanelen och klicka på **Ny lekplats**. Ge lekplatsen ett namn och klicka på **Skapa**. Redigeraren för lekplatsen öppnas.
+2. Välj en **Källa** i panelen **AI-generator**:
+   - **AI-kunskap**: AI:n utgår från allmän kunskap.
+   - **Kurs**: välj en av dina kurser. Kursens innehåll skickas med till AI:n som underlag.
+3. Beskriv vad du vill ha och klicka på **Skicka**. Resultatet visas i förhandsvisningen.
+4. Be om ändringar i samma chatt. Du kan generera upp till 10 gånger per redigeringstillfälle. Räknaren visar hur många genereringar du har kvar.
+5. Klicka på **Spara** och sedan på **Publicera** när lekplatsen är redo för eleverna.
 
-<img src="/img/pages/playgrounds/playground-editor.webp" alt="The playground editor with a generated payout date calculator in the preview and the AI Generator chat on the right" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/playgrounds/playground-editor.webp" alt="Redigeraren för en lekplats med en genererad kalkylator för utbetalningsdatum i förhandsvisningen och AI-generatorns chatt till höger" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-Each generation uses 3 [AI credits](/platform/ai#ai-credits).
+Varje generering använder 3 [AI-krediter](/platform/ai).
 
-## Options
+## Alternativ
 
-Open the playground's options to change:
+Öppna lekplatsens **Alternativ** för att ändra:
 
-| Tab | Settings |
+| Flik | Inställningar |
 | --- | --- |
-| **General** | Name and description. |
-| **Access** | **Public** (anyone on the internet), **Members only** (signed-in members of your organization, the default) or **Restricted** (only the user groups you pick). |
-| **Thumbnail** | Upload a PNG or JPG image (up to 8 MB), or generate one with AI. |
+| **Allmänt** | Namn och beskrivning. |
+| **Åtkomst** | **Offentlig** (alla på internet), **Endast medlemmar** (inloggade medlemmar i din organisation, standard) eller **Begränsad** (bara de användargrupper du väljer). |
+| **Miniatyrbild** | Ladda upp en bild i PNG eller JPG (högst 8 MB), eller generera en med AI. |
 
-<img src="/img/pages/playgrounds/playground-access.webp" alt="The Access tab of a playground's options, with Public, Members only and Restricted" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/playgrounds/playground-access.webp" alt="Fliken Åtkomst i alternativen för en lekplats, med Offentlig, Endast medlemmar och Begränsad" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-Unpublished playgrounds stay as **Draft** and only editors can see them.
+Lekplatser som inte är publicerade ligger kvar som **Utkast** och syns bara för redigerare.
 
-## The playground page
+## Lekplatsens sida
 
-Learners open a published playground from the **Playgrounds** page. They can use it inline or in **Fullscreen**, and react with emoji under **Reactions**. The page also shows the author, access level and creation date. **Download** saves the playground as a single `.html` file.
+Eleverna öppnar en publicerad lekplats från sidan **Lekplatser**. De kan använda den direkt på sidan eller i **Helskärm**, och reagera med emoji under **Reaktioner**. Sidan visar också vem som har skapat lekplatsen, åtkomstnivån och när den skapades. **Ladda ner** sparar lekplatsen som en enda `.html`-fil.
 
-<img src="/img/pages/playgrounds/playground-page.webp" alt="A published playground page, with its details and reactions on the left and the playground on the right" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/playgrounds/playground-page.webp" alt="En publicerad lekplats, med uppgifter och reaktioner till vänster och själva lekplatsen till höger" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-From the dashboard list you can also duplicate, delete or download several playgrounds at once.
+I listan i adminpanelen kan du också duplicera, radera eller ladda ner flera lekplatser på en gång.
 
-## Using a playground in a course
+## Använd en lekplats i en kurs
 
-To put a playground inside a lesson, add a **Library** block to a Dynamic Page, open its **Playgrounds** tab and choose your playground. It runs right inside the page. See [Blocks](/platform/editor/blocks).
+Om du vill ha en lekplats i en lektion lägger du till blocket **Bibliotek** på en **Dynamisk sida**, öppnar fliken **Lekplatser** och väljer din lekplats. Den körs direkt på sidan. Läs mer under [Block](/platform/editor/blocks).
 
-<img src="/img/pages/playgrounds/playground-in-lesson.webp" alt="A lesson with a playground embedded through a Library block" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/playgrounds/playground-in-lesson.webp" alt="En lektion med en lekplats inbäddad via ett Bibliotek-block" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-Playgrounds can also be sold as a [product](/platform/payments/offers). Until someone buys it, they see its page but cannot use it.
+## Lekplatser, magiska block och kodlekplatser
 
-## Playgrounds, Magic Blocks and Code Playground
-
-| Feature | Where it lives | What it is |
+| Funktion | Var den finns | Vad det är |
 | --- | --- | --- |
-| **Playgrounds** (this page) | Its own page, listed under Playgrounds, or in a lesson through a Library block | AI-generated interactive page |
-| **Magic Block** | Inside a course page, from the `/` menu | AI-generated interactive element embedded in a lesson. See [Blocks](/platform/editor/blocks). |
-| **AI Playground** on a board | On a [board](/platform/boards) | AI-generated interactive element on a canvas |
-| **Code Playground** | Inside a course page, from the `/` menu | A coding challenge that runs real code. See [Code Execution](/platform/code-execution). |
+| **Lekplatser** (den här sidan) | På en egen sida under Lekplatser, eller i en lektion via ett Bibliotek-block | En AI-genererad interaktiv sida |
+| **Magiskt block** | På en kurssida, från `/`-menyn | Ett AI-genererat interaktivt element inbäddat i en lektion. Läs mer under [Block](/platform/editor/blocks). |
+| **AI-lekplats** på en tavla | På en [tavla](/platform/boards) | Ett AI-genererat interaktivt element på en arbetsyta |
+| **Kodlekplats** | På en kurssida, från `/`-menyn | En kodutmaning som kör riktig kod. Läs mer under [Kodkörning](/platform/code-execution). |

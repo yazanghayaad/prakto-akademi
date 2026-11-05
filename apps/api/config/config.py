@@ -61,6 +61,10 @@ class AIConfig(BaseModel):
     embedding_provider: str | None = None
     embedding_model: str | None = None
     embedding_dimensions: int | None = None
+    # Optional separate endpoint/key for embeddings (OpenAI-compatible or Ollama), e.g.
+    # Cloudflare Workers AI while chat runs elsewhere. Fall back to base_url/api_key.
+    embedding_base_url: str | None = None
+    embedding_api_key: str | None = None
     # Google/Gemini key. Doubles as the embeddings fallback for providers (Anthropic, DeepSeek,
     # Moonshot, Mistral, OpenRouter, Bedrock) that have no embeddings API of their own.
     gemini_api_key: str | None = None
@@ -496,6 +500,8 @@ def get_learnhouse_config() -> LearnHouseConfig:
     ai_embedding_model = os.environ.get("LEARNHOUSE_AI_EMBEDDING_MODEL") or yaml_ai_config.get("embedding_model")
     _ai_embedding_dims = os.environ.get("LEARNHOUSE_AI_EMBEDDING_DIMENSIONS") or yaml_ai_config.get("embedding_dimensions")
     ai_embedding_dimensions = int(_ai_embedding_dims) if _ai_embedding_dims else None
+    ai_embedding_base_url = os.environ.get("LEARNHOUSE_AI_EMBEDDING_BASE_URL") or yaml_ai_config.get("embedding_base_url")
+    ai_embedding_api_key = os.environ.get("LEARNHOUSE_AI_EMBEDDING_API_KEY") or yaml_ai_config.get("embedding_api_key")
 
     # Parse is_ai_enabled from env or yaml
     if env_is_ai_enabled_str:
@@ -695,6 +701,8 @@ def get_learnhouse_config() -> LearnHouseConfig:
         embedding_provider=ai_embedding_provider,
         embedding_model=ai_embedding_model,
         embedding_dimensions=ai_embedding_dimensions,
+        embedding_base_url=ai_embedding_base_url,
+        embedding_api_key=ai_embedding_api_key,
         gemini_api_key=gemini_api_key,
         image_model=ai_image_model,
         tts_model=ai_tts_model,

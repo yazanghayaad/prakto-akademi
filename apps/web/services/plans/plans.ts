@@ -23,7 +23,8 @@ export type PlanLevel = 'free' | 'personal' | 'personal-family' | 'standard' | '
 export const PLAN_HIERARCHY: PlanLevel[] = ['free', 'personal', 'personal-family', 'standard', 'pro', 'enterprise']
 
 // Features blocked in OSS mode; they require EE or SaaS/enterprise plan
-const OSS_BLOCKED_FEATURES = new Set(['sso', 'audit_logs', 'payments', 'analytics_advanced', 'scorm', 'lti', 'live_sessions'])
+// Prakto: 'analytics_advanced' unlocked locally (mirrors EE_ONLY_FEATURES in the API)
+const OSS_BLOCKED_FEATURES = new Set(['sso', 'audit_logs', 'payments', 'scorm', 'lti', 'live_sessions'])
 
 /**
  * Check if the current plan meets or exceeds the required plan level.
@@ -55,6 +56,15 @@ export function isFeatureAvailable(featureKey: string, _currentPlan?: PlanLevel)
   // SaaS: resolved_features from the API is the source of truth.
   // Return true here; callers gate on resolved_features separately.
   return true
+}
+
+/**
+ * Advanced analytics: the enterprise tier in SaaS/EE; in OSS it follows
+ * OSS_BLOCKED_FEATURES (unlocked locally for Prakto).
+ */
+export function hasAdvancedAnalytics(plan: PlanLevel): boolean {
+  if (plan === 'oss') return isFeatureAvailable('analytics_advanced')
+  return planMeetsRequirement(plan, 'enterprise')
 }
 
 /**

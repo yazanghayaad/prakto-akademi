@@ -2,7 +2,7 @@ import React from 'react'
 import UserAvatar from '../../UserAvatar'
 import { getUserAvatarMediaDirectory } from '@services/media/media'
 import { useMediaQuery } from 'usehooks-ts'
-import { Rss, PencilLine, TentTree } from 'lucide-react'
+import { Rss, PencilLine } from 'lucide-react'
 import { useCourse } from '@components/Contexts/CourseContext'
 import { useLHSession } from '@components/Contexts/LHSessionContext'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -53,16 +53,18 @@ const MultipleAuthors = ({ authors, isMobile }: { authors: Author[], isMobile: b
   const displayedNames = authors.slice(0, 2)
   const remainingCount = Math.max(0, authors.length - 3)
   
-  // Consistent sizes for both avatars and badge
-  const avatarSize = isMobile ? 72 : 86
-  const borderSize = "border-4"
+  // Prakto: a compact byline (small avatars beside the names), not a
+  // profile-card sized portrait.
+  const avatarSize = isMobile ? 34 : 36
+  const borderSize = "border-2"
 
   return (
-    <div className="flex flex-col items-center space-y-4 px-2 py-2">
-      <div className="text-[12px] text-neutral-400 font-semibold self-start">{t('courses.authors_and_updates')} </div>
-      
+    <div className="flex flex-col gap-3 px-1 py-1">
+      <div className="text-[11px] uppercase tracking-[0.08em] text-gray-500 font-semibold">{t('courses.authors_and_updates')}</div>
+
+      <div className="flex items-center gap-3 min-w-0">
       {/* Avatars row */}
-      <div className="flex justify-center -space-x-6 relative">
+      <div className="flex -space-x-2 relative shrink-0">
         {displayedAvatars.map((author, index) => (
           <div
             key={author.user.user_uuid}
@@ -88,11 +90,11 @@ const MultipleAuthors = ({ authors, isMobile }: { authors: Author[], isMobile: b
             style={{ zIndex: 0 }}
           >
             <div 
-              className="flex items-center justify-center bg-neutral-100 text-neutral-600 font-medium rounded-full border-4 border-white shadow-sm"
-              style={{ 
-                width: `${avatarSize}px`, 
+              className="flex items-center justify-center bg-neutral-100 text-neutral-600 font-medium rounded-full border-2 border-white"
+              style={{
+                width: `${avatarSize}px`,
                 height: `${avatarSize}px`,
-                fontSize: isMobile ? '14px' : '16px'
+                fontSize: '12px'
               }}
             >
               +{remainingCount}
@@ -102,7 +104,7 @@ const MultipleAuthors = ({ authors, isMobile }: { authors: Author[], isMobile: b
       </div>
 
       {/* Names row - improved display logic */}
-      <div className="text-center mt-2">
+      <div className="min-w-0">
         <div className="text-sm font-medium text-neutral-800">
           {authors.length === 1 ? (
             <span>
@@ -143,6 +145,7 @@ const MultipleAuthors = ({ authors, isMobile }: { authors: Author[], isMobile: b
           )}
         </div>
       </div>
+      </div>
     </div>
   )
 }
@@ -169,8 +172,8 @@ const UpdatesSection = () => {
   })
 
   return (
-    <div className="mt-2 pt-2">
-      <div className="flex justify-between items-center mb-4">
+    <div className="mt-4 pt-4 border-t border-gray-100">
+      <div className="flex justify-between items-center mb-2">
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2">
             {/* Feed readers fetch anonymously, so only public courses have a feed. */}
@@ -333,11 +336,8 @@ const UpdatesListView = () => {
 
   if (!updates || updates.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-8 px-4 text-center bg-neutral-50/50 rounded-lg border border-dashed border-neutral-200">
-        <TentTree size={28} className="text-neutral-400 mb-2" />
-        <p className="text-sm text-neutral-600 font-medium">{t('courses.no_updates_yet')}</p>
-        <p className="text-xs text-neutral-400 mt-1">{t('courses.no_updates_desc')}</p>
-      </div>
+      // Prakto: one quiet line instead of an illustrated empty box.
+      <p className="text-sm text-neutral-500">{t('courses.no_updates_yet')}</p>
     )
   }
 

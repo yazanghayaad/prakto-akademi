@@ -1,6 +1,9 @@
 DESCRIPTION >
     Unified analytics events table for LearnHouse
 
+TOKEN "learnhouse_ingest" APPEND
+TOKEN "learnhouse_read" READ
+
 SCHEMA >
     `event_name` String `json:$.event_name`,
     `timestamp` DateTime `json:$.timestamp`,

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { BookOpen, Books, ChatCircleText, GlobeSimple, PencilSimple, Plus, SpinnerGap, UsersThree } from '@phosphor-icons/react'
 import { useOrg } from '@components/Contexts/OrgContext'
 import { useLHSession } from '@components/Contexts/LHSessionContext'
@@ -111,6 +112,7 @@ function AgentCard({
 }
 
 export default function AgentsGallery({ orgslug, onOpenChat, compact = false }: AgentsGalleryProps) {
+  const { t } = useTranslation()
   const session = useLHSession() as any
   const token: string | undefined = session?.data?.tokens?.access_token
   const { data: agents, isLoading } = useAgents()
@@ -152,14 +154,14 @@ export default function AgentsGallery({ orgslug, onOpenChat, compact = false }: 
   if (compact) {
     return (
       <div className="space-y-0.5">
-        {isLoading && <div className="px-3 py-2 text-xs text-gray-400">Loading agents…</div>}
+        {isLoading && <div className="px-3 py-2 text-xs text-gray-400">{t('messaging.loading_agents', { defaultValue: 'Loading agents…' })}</div>}
         {(agents || []).map((agent) => (
-          <div key={agent.agent_uuid} className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 hover:bg-gray-50">
+          <div key={agent.agent_uuid} className="group -mx-1.5 flex items-center gap-2.5 rounded-md px-1.5 py-1.5 hover:bg-gray-50">
             <button type="button" onClick={() => open(agent)} className="flex items-center gap-2.5 min-w-0 flex-1 text-start">
               <AgentAvatar agent={agent} size={30} />
               <span className="min-w-0">
                 <span className="block text-sm font-semibold text-gray-900 truncate">{agent.name}</span>
-                <span className="block text-xs text-gray-500 truncate">{agent.description || 'Agent'}</span>
+                <span className="block text-xs text-gray-500 truncate">{agent.description || t('messaging.agent', { defaultValue: 'Agent' })}</span>
               </span>
               {opening === agent.agent_uuid && <SpinnerGap size={13} className="animate-spin text-gray-400 shrink-0" />}
             </button>

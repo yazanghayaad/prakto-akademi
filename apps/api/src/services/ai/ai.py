@@ -12,7 +12,7 @@ from src.security.features_utils.usage import (
 from src.db.courses.courses import Course, CourseRead
 from src.core.events.database import get_db_session
 from src.db.users import PublicUser
-from src.db.courses.activities import Activity, ActivityRead
+from src.db.courses.activities import Activity, ActivityRead, ActivityTypeEnum
 from src.security.auth import get_current_user, resolve_acting_user_id
 from src.security.org_auth import enforce_org_mfa, is_org_member
 from src.services.ai.base import (
@@ -83,6 +83,86 @@ def _require_own_chat_session(aichat_uuid: str, current_user: PublicUser) -> Non
     """
     if not chat_session_belongs_to_user(aichat_uuid, resolve_acting_user_id(current_user)):
         raise HTTPException(status_code=404, detail="Chat session not found")
+
+
+# Hosted-video and PDF lessons keep their substance in a file, not in the page's
+# text blocks, so the block serializer sees nothing and the model used to get
+# only the lesson's title. Their text comes from the RAG extractors instead:
+# stored captions/transcripts and the PDF's page text. Extraction only reads;
+# it never starts a transcription or spends credits.
+_MEDIA_LESSON_LABELS = {
+    ActivityTypeEnum.TYPE_VIDEO: "the transcript of the lecture video, with timestamps",
+    ActivityTypeEnum.TYPE_DOCUMENT: "the text of the lecture document (PDF), with page numbers",
+}
+# About 15k tokens: a whole lecture fits, a book-length PDF is cut.
+_MEDIA_LESSON_MAX_CHARS = 60_000
+
+
+def _format_timestamp(seconds: float) -> str:
+    hours, rest = divmod(int(seconds), 3600)
+    minutes, secs = divmod(rest, 60)
+    return f"{hours}:{minutes:02d}:{secs:02d}" if hours else f"{minutes}:{secs:02d}"
+
+
+async def _media_lesson_text(activity: ActivityRead, db_session: AsyncSession) -> str:
+    """The transcript or PDF text of a media lesson, or "" when there is none."""
+    if activity.activity_type not in _MEDIA_LESSON_LABELS:
+        return ""
+    from src.services.ai.rag.sources import extract
+    from src.services.ai.rag.types import ContentRef, SourceType
+
+    try:
+        extraction = await extract(ContentRef.activity(activity.id), db_session)
+    except Exception:
+        logger.exception("AI chat: could not read the media text of activity %s", activity.id)
+        return ""
+    if extraction is None:
+        return ""
+
+    lines = []
+    for segment in extraction.segments:
+        locator = segment.locator or {}
+        if segment.source_type == SourceType.VIDEO and "start" in locator:
+            lines.append(f"[{_format_timestamp(locator['start'])}] {segment.text}")
+        elif segment.source_type == SourceType.DOCUMENT and "page" in locator:
+            lines.append(f"[page {locator['page']}] {segment.text}")
+    text = "\n".join(lines).strip()
+    if len(text) > _MEDIA_LESSON_MAX_CHARS:
+        text = text[:_MEDIA_LESSON_MAX_CHARS] + "\n[... the rest is cut for length]"
+    return text
+
+
+async def _activity_context_text(
+    request: Request,
+    activity: ActivityRead,
+    course: CourseRead,
+    current_user: PublicUser,
+    db_session: AsyncSession,
+) -> str:
+    """What the model is told about the lesson the learner has open."""
+    # Activity Content Blocks, as this reader sees them: the model must not
+    # quote a conditional block the learner can't see.
+    content = await render_for_reader(
+        request, activity.content, course=course, current_user=current_user,
+        db_session=db_session, activity_name=activity.name, activity_uuid=activity.activity_uuid,
+    )
+    structured = structure_activity_content_by_type(content)
+
+    media_text = await _media_lesson_text(activity, db_session)
+    if media_text:
+        return (
+            f'Use this as a context. This is a course about "{course.name}". '
+            f'This is a lecture about "{activity.name}". '
+            f"Below is {_MEDIA_LESSON_LABELS[activity.activity_type]}. "
+            "Base your answers on it, and point to the timestamp or page when that "
+            "helps the student find the passage. It may be in another language than "
+            "the student writes in; always answer in the student's language.\n"
+            f'"""\n{media_text}\n"""'
+        )
+
+    return serialize_activity_text_to_ai_comprehensible_text(
+        structured, course, activity, isActivityEmpty=structured == []
+    )
 
 
 async def ai_start_activity_chat_session(
@@ -175,20 +255,8 @@ async def ai_start_activity_chat_session(
     # Reserve credit atomically before the AI call; refund below on failure.
     await reserve_ai_credit(org.id, db_session)
 
-    # Get Activity Content Blocks, as this reader sees them: the model must
-    # not quote a conditional block the learner can't see.
-    content = await render_for_reader(
-        request, activity.content, course=course, current_user=current_user,
-        db_session=db_session, activity_name=activity.name, activity_uuid=activity.activity_uuid,
-    )
-
-    # Serialize Activity Content Blocks to a text comprehensible by the AI
-    structured = structure_activity_content_by_type(content)
-
-    isEmpty = structured == []
-
-    ai_friendly_text = serialize_activity_text_to_ai_comprehensible_text(
-        structured, course, activity, isActivityEmpty=isEmpty
+    ai_friendly_text = await _activity_context_text(
+        request, activity, course, current_user, db_session
     )
 
     # Get Activity Organization
@@ -333,17 +401,8 @@ async def ai_send_activity_chat_message(
     # Reserve credit atomically before the AI call; refund below on failure.
     await reserve_ai_credit(course.org_id, db_session)
 
-    # Get Activity Content Blocks, as this reader sees them: the model must
-    # not quote a conditional block the learner can't see.
-    content = await render_for_reader(
-        request, activity.content, course=course, current_user=current_user,
-        db_session=db_session, activity_name=activity.name, activity_uuid=activity.activity_uuid,
-    )
-
-    # Serialize Activity Content Blocks to a text comprehensible by the AI
-    structured = structure_activity_content_by_type(content)
-    ai_friendly_text = serialize_activity_text_to_ai_comprehensible_text(
-        structured, course, activity
+    ai_friendly_text = await _activity_context_text(
+        request, activity, course, current_user, db_session
     )
 
     # Get Activity Organization
@@ -484,18 +543,8 @@ async def _get_activity_and_course_info(
         request, course, activity, org.id, current_user, db_session
     )
 
-    # Get Activity Content Blocks, as this reader sees them: the model must
-    # not quote a conditional block the learner can't see.
-    content = await render_for_reader(
-        request, activity.content, course=course, current_user=current_user,
-        db_session=db_session, activity_name=activity.name, activity_uuid=activity.activity_uuid,
-    )
-
-    # Serialize Activity Content Blocks to a text comprehensible by the AI
-    structured = structure_activity_content_by_type(content)
-    isEmpty = structured == []
-    ai_friendly_text = serialize_activity_text_to_ai_comprehensible_text(
-        structured, course, activity, isActivityEmpty=isEmpty
+    ai_friendly_text = await _activity_context_text(
+        request, activity, course, current_user, db_session
     )
 
     # Get Organization Config

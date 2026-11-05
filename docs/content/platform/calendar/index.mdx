@@ -1,67 +1,60 @@
 import { Callout } from 'nextra/components'
 
-# Calendar
+# Kalender
 
-The calendar shows each signed-in member the dated things in your organization that concern them: assignment deadlines, chapters that open or close, course start dates, course updates, certificates, new podcast episodes and live sessions. Every item links to the page where you act on it.
+Kalendern visar varje inloggad medlem det i organisationen som har ett datum och som rör just dem: deadlines för uppgifter, kapitel som öppnar eller stänger, kursstarter, kursuppdateringar, certifikat och nya poddavsnitt. Varje post länkar till sidan där du gör det som behövs.
 
-The calendar is personal. Two learners in the same organization see different calendars, because each one only shows the courses they follow and the content they can open.
+Kalendern är personlig. Två elever i samma organisation ser olika kalendrar, eftersom var och en bara ser de kurser de följer och det innehåll de kan öppna.
 
 <Callout>
-The calendar page itself is available on every plan. Each kind of event follows its own feature: assignment deadlines need assignments, episodes need podcasts, and live sessions need [Live Sessions](/enterprise/live-sessions).
+Varje typ av post hänger ihop med sin funktion: deadlines för uppgifter kräver att uppgifter används, och nya avsnitt kräver att poddar används.
 </Callout>
 
-## Opening the calendar
+## Öppna kalendern
 
-Click the calendar icon in the top bar of your organization's site, or press `g` then `e`. You can also search for **Calendar**. The page lives at `/calendar`.
+Klicka på kalenderikonen i toppfältet på organisationens webbplats, eller tryck `g` och sedan `e`. Du kan också söka efter **Kalender**. Sidan finns på `/calendar`.
 
-You need to be signed in. Visitors who are not see **Sign in to see your calendar**.
+Du måste vara inloggad. Besökare som inte är inloggade ser **Logga in för att se din kalender**.
 
-## Month and Agenda
+## Månad och Agenda
 
-Switch between the two views with **Month** and **Agenda** in the top right. The calendar remembers the view you picked in this browser.
+Växla mellan de två vyerna med **Månad** och **Agenda** uppe till höger. Kalendern kommer ihåg vilken vy du valde i den här webbläsaren.
 
-- **Month**: a grid of the month. Each day shows up to three items, then **+N more**. Click a day to list all its items under the grid. Today is selected when the page opens.
-- **Agenda**: every day of the month that has something on it, in order, with a status for each item.
+- **Månad**: ett rutnät för hela månaden. Varje dag visar upp till tre poster och sedan **+N till**. Klicka på en dag för att se alla dess poster under rutnätet. Dagens datum är valt när sidan öppnas.
+- **Agenda**: alla dagar i månaden som har något inplanerat, i ordning, med en status för varje post.
 
-<img src="/img/pages/calendar/calendar-month.webp" alt="The Calendar page in Month view, with live sessions, assignment deadlines and chapter dates on the November grid" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/calendar/calendar-month.webp" alt="Kalendern i månadsvy, med deadlines för uppgifter och kapiteldatum i novembers rutnät" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-Use the arrows (or `[` and `]`) to move to the previous or next month, and **Today** to come back to the current month. The legend above the grid lists the kinds of items present in the month you are looking at.
+Använd pilarna (eller `[` och `]`) för att gå till föregående eller nästa månad, och **Idag** för att komma tillbaka till innevarande månad. Förklaringen ovanför rutnätet visar vilka typer av poster som finns i den månad du tittar på.
 
-<img src="/img/pages/calendar/calendar-agenda.webp" alt="The Calendar page in Agenda view, listing each day's items with statuses such as Ended, Live, Scheduled, To do and Closing soon" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/calendar/calendar-agenda.webp" alt="Kalendern i agendavy, med varje dags poster och statusar som Att göra och Stänger snart" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-Times are shown in your own time zone, and the page says which one at the bottom. All-day items, such as an assignment due on a date without a time, stay on their date wherever you are. The calendar refreshes itself every minute.
+Tiderna visas i din egen tidszon, och längst ner på sidan står vilken. Heldagsposter, till exempel en uppgift som ska lämnas in ett visst datum utan klockslag, ligger kvar på sitt datum var du än befinner dig. Kalendern uppdateras av sig själv varje minut.
 
-## What shows up
+## Det här visas
 
-Course items only come from courses you are enrolled in (you started them) or that you author. A public course you never started does not appear.
+Kursposter kommer bara från kurser som du är registrerad på (du har påbörjat dem) eller som du är med och skapar. En offentlig kurs som du aldrig har påbörjat syns inte.
 
-| Item | When it appears | Statuses |
+| Post | När den visas | Statusar |
 | --- | --- | --- |
-| **Assignment** | On its due date, for published assignments you can open. | **To do**, **Overdue**, **Submitted**, **Late**, **Graded** |
-| **Chapter opens** | When a scheduled chapter opens for you. With a schedule based on enrollment, the date is counted from your own enrollment. | **Upcoming**, **Open** |
-| **Chapter closes** | When a chapter that is only open for a limited time closes. | **Closing soon**, **Closed** |
-| **Course starts** | The start date of a course on a fixed-date (cohort) schedule. | **Upcoming**, **Started** |
-| **Course update** | The day an update was posted to the course. | |
-| **Certificate** | The day you earned a course certificate. Opens the certificate's verification page. | **Earned** |
-| **New episode** | The day an episode was published, for published podcasts you can open. These do not depend on course enrollment. | |
-| **Live session** | The session's time, for sessions you can join or manage. Cancelled sessions are left out. | **Scheduled**, **Live**, **Ended** |
+| **Uppgift** | På sista inlämningsdag, för publicerade uppgifter som du kan öppna. | **Att göra**, **Försenad**, **Inlämnad**, **Sen**, **Betygsatt** |
+| **Kapitlet öppnar** | När ett schemalagt kapitel öppnar för dig. Om schemat räknas från registreringen utgår datumet från när just du registrerade dig. | **Kommande**, **Öppen** |
+| **Kapitlet stänger** | När ett kapitel som bara är öppet en begränsad tid stänger. | **Stänger snart**, **Stängd** |
+| **Kursen startar** | Startdatumet för en kurs med fasta datum för hela gruppen. | **Kommande**, **Påbörjad** |
+| **Kursuppdatering** | Dagen då en uppdatering publicerades i kursen. | |
+| **Certifikat** | Dagen då du fick ett kurscertifikat. Öppnar certifikatets verifieringssida. | **Intjänad** |
+| **Nytt avsnitt** | Dagen då ett avsnitt publicerades, för publicerade poddar som du kan öppna. Avsnitten beror inte på vilka kurser du är registrerad på. | |
 
-Chapter dates only appear for courses that use scheduled chapters (see [Drip Content](/platform/courses/drip-content)). Members of a group with early access to a course see no chapter dates for it, since nothing is locked for them.
+Kapiteldatum visas bara för kurser som släpper kapitel enligt ett schema (se [Stegvis innehåll](/platform/courses/drip-content)). Medlemmar i en grupp med tidig åtkomst till en kurs ser inga kapiteldatum för den, eftersom inget är låst för dem.
 
-## What instructors see
+## Det här ser lärare
 
-If you author a course or can edit it, its assignments appear on your calendar even before anyone submits. Their status tells you where they stand:
+Om du har skapat en kurs eller kan redigera den visas dess uppgifter i din kalender, även innan någon har lämnat in. Statusen visar läget:
 
-- **Draft**: the assignment is not published yet.
-- **To do**: it is published and the deadline has not passed.
-- **Closed**: the deadline has passed.
+- **Utkast**: uppgiften är inte publicerad än.
+- **Att göra**: uppgiften är publicerad och sista inlämningsdag har inte passerat.
+- **Stängd**: sista inlämningsdag har passerat.
 
-Live sessions you host or manage appear too, including those not open to you as a learner.
+## Exportera till en annan kalender
 
-## Exporting to another calendar
-
-The calendar page has no export or feed. For live sessions, use **Add to calendar** on a session page, or **Subscribe** on the **Live** page to download an `.ics` file of upcoming sessions. See [Live Sessions](/enterprise/live-sessions#adding-sessions-to-a-calendar).
-
-## API
-
-`GET /api/v1/calendar/org/{org_id}/events?start=...&end=...` returns the signed-in user's events between `start` (inclusive) and `end` (exclusive), as ISO 8601 dates. The range can be up to 400 days, and a response holds up to 2,000 events. API tokens cannot read a calendar, since it belongs to a person.
+Det går inte att exportera kalendern eller prenumerera på den från en annan kalenderapp.

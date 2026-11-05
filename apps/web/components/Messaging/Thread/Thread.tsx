@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import {
   ArrowDown,
   ArrowLeft,
+  ArrowRight,
   ArrowsOutSimple,
   Archive,
   BellSimple,
@@ -66,6 +67,7 @@ import { dayLabel, isGrouped, presenceLine, sameDay } from '@components/Messagin
 const NEAR_BOTTOM_PX = 140
 
 function TypingBar({ uuid }: { uuid: string }) {
+  const { t } = useTranslation()
   const { typing } = useMessaging()
   const names = (typing[uuid] || []).map((x) => x.user.first_name || x.user.username)
   return (
@@ -89,10 +91,10 @@ function TypingBar({ uuid }: { uuid: string }) {
               ))}
             </span>
             {names.length === 1
-              ? `${names[0]} is typing…`
+              ? t('messaging.typing_one', { defaultValue: '{{name}} is typing…', name: names[0] })
               : names.length === 2
-                ? `${names[0]} and ${names[1]} are typing…`
-                : `${names.length} people are typing…`}
+                ? t('messaging.typing_two', { defaultValue: '{{a}} and {{b}} are typing…', a: names[0], b: names[1] })
+                : t('messaging.typing_many', { defaultValue: '{{count}} people are typing…', count: names.length })}
           </motion.div>
         )}
       </AnimatePresence>
@@ -101,34 +103,36 @@ function TypingBar({ uuid }: { uuid: string }) {
 }
 
 function AgentIntro({ agent, onPick, compact = false }: { agent: Agent | null; onPick: (text: string) => void; compact?: boolean }) {
+  const { t } = useTranslation()
   if (!agent) return null
+  // One quiet line of facts instead of a row of grey chips.
+  const facts = [
+    agent.tone ? t(`messaging.tones.${agent.tone}`, { defaultValue: agent.tone }) : null,
+    agent.knowledge_mode === 'general'
+      ? t('messaging.knowledge_general', { defaultValue: 'Courses + general knowledge' })
+      : t('messaging.knowledge_courses', { defaultValue: 'Answers from courses' }),
+    agent.is_default
+      ? t('messaging.all_courses', { defaultValue: 'All courses' })
+      : agent.course_uuids.length > 0
+        ? t('messaging.course_count', { defaultValue: '{{count}} courses', count: agent.course_uuids.length })
+        : null,
+  ].filter(Boolean)
   return (
-    <div className={`flex flex-col items-center text-center ${compact ? 'pt-6 pb-4 px-2' : 'pt-10 pb-6 px-6'}`}>
-      <AgentAvatar agent={agent} size={compact ? 44 : 56} />
-      <h2 className="mt-3 text-lg font-bold text-gray-900">{agent.name}</h2>
-      {agent.description && <p className="mt-1 max-w-md text-sm text-gray-500">{agent.description}</p>}
-      <div className="mt-2 flex flex-wrap justify-center gap-1.5 text-xs text-gray-500">
-        <span className="rounded-md bg-gray-100 px-2 py-0.5 capitalize">{agent.tone}</span>
-        <span className="rounded-md bg-gray-100 px-2 py-0.5">
-          {agent.knowledge_mode === 'general' ? 'Courses + general knowledge' : 'Answers from courses'}
-        </span>
-        {agent.is_default ? (
-          <span className="rounded-md bg-gray-100 px-2 py-0.5">All courses</span>
-        ) : (
-          agent.course_uuids.length > 0 && (
-            <span className="rounded-md bg-gray-100 px-2 py-0.5">{agent.course_uuids.length} course{agent.course_uuids.length > 1 ? 's' : ''}</span>
-          )
-        )}
-      </div>
+    <div className={`mx-auto flex max-w-xl flex-col items-center text-center ${compact ? 'pt-6 pb-4 px-2' : 'pt-12 pb-8 px-6'}`}>
+      <AgentAvatar agent={agent} size={compact ? 40 : 52} />
+      <h2 className={`mt-4 text-gray-900 ${compact ? 'text-xl' : 'text-2xl'}`}>{agent.name}</h2>
+      {agent.description && <p className="mt-1.5 max-w-md text-[15px] leading-relaxed text-gray-600">{agent.description}</p>}
+      <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-wine-800">{facts.join(' · ')}</p>
       {agent.starters.length > 0 && (
-        <div className={`mt-6 grid gap-2 w-full max-w-xl ${compact ? '' : 'sm:grid-cols-2'}`}>
+        <div className={`w-full max-w-md border-t border-gray-200 ${compact ? 'mt-5' : 'mt-8'}`}>
           {agent.starters.map((s) => (
             <button
               key={s}
               onClick={() => onPick(s)}
-              className="rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-start text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              className="group flex w-full items-center gap-3 border-b border-gray-200 px-1 py-3 text-start text-[15px] text-gray-700 transition-colors hover:text-wine-900"
             >
-              {s}
+              <span className="min-w-0 flex-1">{s}</span>
+              <ArrowRight size={14} className="shrink-0 text-gray-300 transition-all group-hover:translate-x-0.5 group-hover:text-wine-900" />
             </button>
           ))}
         </div>
@@ -481,8 +485,11 @@ export default function Thread({
 
   const members = useMemo(() => conversation?.members || [], [conversation])
   const nameOf = useCallback(
-    (id: number) => (id === userId ? 'You' : displayName(members.find((m) => m.id === id) as any) || 'Someone'),
-    [members, userId]
+    (id: number) =>
+      id === userId
+        ? t('messaging.you', { defaultValue: 'You' })
+        : displayName(members.find((m) => m.id === id) as any) || t('messaging.someone', { defaultValue: 'Someone' }),
+    [members, userId, t]
   )
 
   // Read receipts sit under your latest message.
@@ -521,17 +528,18 @@ export default function Thread({
       : null
 
   let subtitle: React.ReactNode = null
-  if (conversation.kind === 'dm' && other) subtitle = presenceLine(presence[other.id]) || 'Offline'
-  else if (conversation.kind === 'group') subtitle = `${conversation.member_count} members`
+  const peopleCount = t('messaging.people_count', { defaultValue: '{{count}} people', count: conversation.member_count })
+  if (conversation.kind === 'dm' && other) subtitle = presenceLine(presence[other.id]) || t('messaging.presence_offline', { defaultValue: 'Offline' })
+  else if (conversation.kind === 'group') subtitle = t('messaging.members', { defaultValue: '{{count}} members', count: conversation.member_count })
   else if (conversation.kind === 'broadcast')
     subtitle = conversation.course ? (
       <Link href={getUriWithOrg(orgslug, `/course/${conversation.course.course_uuid.replace('course_', '')}`)} className="inline-flex items-center gap-1 hover:underline">
-        <BookOpen size={12} /> {conversation.course.name} · {conversation.member_count} people
+        <BookOpen size={12} /> {conversation.course.name} · {peopleCount}
       </Link>
     ) : (
-      `Organization announcements · ${conversation.member_count} people`
+      `${t('messaging.org_announcements', { defaultValue: 'Organization announcements' })} · ${peopleCount}`
     )
-  else if (conversation.kind === 'agent') subtitle = conversation.agent?.description || 'AI agent'
+  else if (conversation.kind === 'agent') subtitle = conversation.agent?.description || t('messaging.ai_agent', { defaultValue: 'AI agent' })
 
   const placeholder =
     conversation.kind === 'agent'
@@ -547,12 +555,12 @@ export default function Thread({
       <div
         className={
           dock
-            ? 'flex items-center gap-2 h-12 ps-2 pe-1 border-b border-gray-100 flex-shrink-0'
-            : 'flex items-center gap-3 h-[60px] px-3 md:px-5 border-b border-gray-100 flex-shrink-0'
+            ? 'flex items-center gap-2 h-12 ps-2 pe-1 border-b border-gray-200 flex-shrink-0'
+            : 'flex items-center gap-3 h-16 px-3 md:px-5 border-b border-gray-200 flex-shrink-0'
         }
       >
         {!dock && (
-          <button onClick={onBack} className="md:hidden flex h-10 w-10 items-center justify-center -ms-2 rounded-lg text-gray-600 hover:bg-gray-100" aria-label="Back">
+          <button onClick={onBack} className="md:hidden flex h-10 w-10 items-center justify-center -ms-2 rounded-md text-gray-600 hover:bg-gray-100" aria-label={t('messaging.back', { defaultValue: 'Back' })}>
             <ArrowLeft size={20} />
           </button>
         )}
@@ -568,8 +576,8 @@ export default function Thread({
           <>
             <ConversationAvatar conversation={conversation} viewerId={userId} size={36} />
             <div className="min-w-0 flex-1">
-              <p className="font-bold text-base text-gray-900 truncate leading-tight">{title}</p>
-              <p className="text-xs text-gray-500 truncate">{subtitle}</p>
+              <p className="font-serif text-lg font-semibold text-gray-900 truncate leading-tight">{title}</p>
+              <p className="mt-0.5 text-xs text-gray-500 truncate">{subtitle}</p>
             </div>
           </>
         )}
@@ -582,23 +590,25 @@ export default function Thread({
               </button>
             </PopoverTrigger>
             <PopoverContent align="end" className="w-72 p-1.5 rounded-lg">
-              <p className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400">{conversation.member_count} members</p>
+              <p className="px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-wine-800">
+                {t('messaging.members', { defaultValue: '{{count}} members', count: conversation.member_count })}
+              </p>
               <div className="max-h-72 overflow-y-auto">
                 {members.map((m) => (
                   <div key={m.id} className="flex items-center gap-2.5 rounded-lg px-2 py-1.5">
                     <PersonAvatar user={m} size={30} />
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium truncate">
-                        {displayName(m)} {m.id === userId && <span className="text-gray-400 font-normal">(you)</span>}
+                        {displayName(m)} {m.id === userId && <span className="text-gray-400 font-normal">{t('messaging.you_marker', { defaultValue: '(you)' })}</span>}
                       </p>
-                      <p className="text-[11px] text-gray-500 truncate">{presenceLine(presence[m.id]) || 'Offline'}</p>
+                      <p className="text-[11px] text-gray-500 truncate">{presenceLine(presence[m.id]) || t('messaging.presence_offline', { defaultValue: 'Offline' })}</p>
                     </div>
-                    {m.role === 'owner' && <span className="text-[10px] text-gray-400">Owner</span>}
+                    {m.role === 'owner' && <span className="text-[10px] text-gray-400">{t('messaging.owner', { defaultValue: 'Owner' })}</span>}
                   </div>
                 ))}
               </div>
               <button onClick={() => setAddOpen(true)} className="mt-1 w-full flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-600 hover:bg-gray-50">
-                <UserPlus size={15} /> Add people
+                <UserPlus size={15} /> {t('messaging.add_people', { defaultValue: 'Add people' })}
               </button>
             </PopoverContent>
           </Popover>
@@ -607,50 +617,50 @@ export default function Thread({
         {!dock && conversation.kind === 'agent' && agentUuid && (
           <button
             onClick={() => onNewAgentChat(agentUuid)}
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-md border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-700 hover:border-gray-300 hover:text-wine-900"
           >
-            <NotePencil size={14} /> New chat
+            <NotePencil size={14} /> {t('messaging.new_chat', { defaultValue: 'New chat' })}
           </button>
         )}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className={`${dock ? 'p-1.5' : 'p-2'} rounded-lg text-gray-500 hover:bg-gray-100`} aria-label="Conversation options">
+            <button className={`${dock ? 'p-1.5' : 'p-2'} rounded-lg text-gray-500 hover:bg-gray-100`} aria-label={t('messaging.options', { defaultValue: 'Conversation options' })}>
               <DotsThreeVertical size={dock ? 16 : 18} weight="bold" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-52">
             <DropdownMenuItem onClick={() => patchMine({ pinned: !conversation.pinned })}>
-              <PushPin size={14} className="me-2" /> {conversation.pinned ? 'Unpin' : 'Pin'}
+              <PushPin size={14} className="me-2" /> {conversation.pinned ? t('messaging.unpin', { defaultValue: 'Unpin' }) : t('messaging.pin', { defaultValue: 'Pin' })}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => patchMine({ muted: !conversation.muted })}>
               {conversation.muted ? <BellSimple size={14} className="me-2" /> : <BellSlash size={14} className="me-2" />}
-              {conversation.muted ? 'Unmute' : 'Mute'}
+              {conversation.muted ? t('messaging.unmute', { defaultValue: 'Unmute' }) : t('messaging.mute', { defaultValue: 'Mute' })}
             </DropdownMenuItem>
             {conversation.kind === 'group' && (
               <DropdownMenuItem onClick={() => setAddOpen(true)}>
-                <UserPlus size={14} className="me-2" /> Add people
+                <UserPlus size={14} className="me-2" /> {t('messaging.add_people', { defaultValue: 'Add people' })}
               </DropdownMenuItem>
             )}
             {conversation.kind === 'agent' && agent?.can_edit && (
               <DropdownMenuItem onClick={() => onEditAgent(agent)}>
-                <PencilSimple size={14} className="me-2" /> Edit agent
+                <PencilSimple size={14} className="me-2" /> {t('messaging.edit_agent', { defaultValue: 'Edit agent' })}
               </DropdownMenuItem>
             )}
             {conversation.kind === 'agent' && agentUuid && (
               <DropdownMenuItem onClick={() => onNewAgentChat(agentUuid)}>
-                <NotePencil size={14} className="me-2" /> New chat
+                <NotePencil size={14} className="me-2" /> {t('messaging.new_chat', { defaultValue: 'New chat' })}
               </DropdownMenuItem>
             )}
             <DropdownMenuSeparator />
             {conversation.kind === 'dm' || conversation.kind === 'agent' ? (
               <DropdownMenuItem onClick={leave}>
-                <Archive size={14} className="me-2" /> Archive
+                <Archive size={14} className="me-2" /> {t('messaging.archive', { defaultValue: 'Archive' })}
               </DropdownMenuItem>
             ) : (
               conversation.kind === 'group' && (
                 <DropdownMenuItem onClick={leave} className="text-red-600">
-                  <SignOut size={14} className="me-2" /> Leave group
+                  <SignOut size={14} className="me-2" /> {t('messaging.leave_group', { defaultValue: 'Leave group' })}
                 </DropdownMenuItem>
               )
             )}
@@ -680,7 +690,7 @@ export default function Thread({
                 <SpinnerGap className="animate-spin text-gray-300" />
               ) : (
                 <button onClick={loadOlder} className="text-xs text-gray-400 hover:text-gray-700">
-                  Load earlier messages
+                  {t('messaging.load_earlier', { defaultValue: 'Load earlier messages' })}
                 </button>
               )}
             </div>
@@ -705,17 +715,17 @@ export default function Thread({
             return (
               <React.Fragment key={m.id}>
                 {newDay && (
-                  <div className="flex items-center gap-3 py-3">
-                    <span className="h-px flex-1 bg-gray-100" />
-                    <span className="text-[11px] font-medium text-gray-400">{dayLabel(m.creation_date)}</span>
-                    <span className="h-px flex-1 bg-gray-100" />
+                  <div className="flex items-center gap-3 py-4">
+                    <span className="h-px flex-1 bg-gray-200" />
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-400">{dayLabel(m.creation_date)}</span>
+                    <span className="h-px flex-1 bg-gray-200" />
                   </div>
                 )}
                 {showUnread && (
                   <div data-unread-divider className="flex items-center gap-3 py-2">
-                    <span className="h-px flex-1 bg-red-200" />
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-red-500">New</span>
-                    <span className="h-px flex-1 bg-red-200" />
+                    <span className="h-px flex-1 bg-wine-200" />
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-wine-800">{t('messaging.new_divider', { defaultValue: 'New' })}</span>
+                    <span className="h-px flex-1 bg-wine-200" />
                   </div>
                 )}
                 <MessageItem
@@ -754,9 +764,9 @@ export default function Thread({
                 scroller.current?.scrollTo({ top: scroller.current.scrollHeight, behavior: 'smooth' })
                 setNewBelow(0)
               }}
-              className="absolute bottom-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-full bg-gray-900 px-3 py-1.5 text-xs font-medium text-white shadow-lg"
+              className="absolute bottom-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-md bg-wine-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm"
             >
-              <ArrowDown size={12} weight="bold" /> {newBelow} new message{newBelow > 1 ? 's' : ''}
+              <ArrowDown size={12} weight="bold" /> {t('messaging.new_below', { defaultValue: '{{count}} new messages', count: newBelow })}
             </motion.button>
           )}
         </AnimatePresence>
@@ -794,7 +804,7 @@ export default function Thread({
       <NewConversationDialog
         open={addOpen}
         onOpenChange={setAddOpen}
-        title="Add people"
+        title={t('messaging.add_people', { defaultValue: 'Add people' })}
         excludeUserIds={members.map((m) => m.id)}
         onPickPeople={async (people) => {
           if (!token) return

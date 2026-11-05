@@ -11,6 +11,7 @@ import { getCourseThumbnailMediaDirectory } from '@services/media/media'
 import { getOrgCourses } from '@services/courses/courses'
 import { SafeImage } from '@components/Objects/SafeImage'
 import { BookOpen, PlusCircle, Clock } from '@phosphor-icons/react'
+import CourseCover from '@components/Objects/Thumbnails/CourseCover'
 
 export default function RecentCourses() {
   const { t, i18n } = useTranslation()
@@ -126,11 +127,7 @@ export default function RecentCourses() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <BookOpen
-                      size={16}
-                      weight="duotone"
-                      className="text-gray-300"
-                    />
+                    <CourseCover title={course.name} />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">

@@ -79,7 +79,7 @@ export function CommunityActions({
   }
 
   return (
-    <div className="bg-white shadow-md shadow-gray-300/25 outline outline-1 outline-neutral-200/40 rounded-lg overflow-hidden p-4">
+    <div className="bg-white nice-shadow rounded-lg overflow-hidden p-4">
       <div className="space-y-4">
         {/* Stats Section */}
         {renderStatsSection()}

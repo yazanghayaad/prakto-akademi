@@ -1,62 +1,40 @@
 import { Callout } from 'nextra/components'
 
-# Formative Assessment
+# Formativ bedömning
 
-A formative assignment is handed in and never marked. There is no score, no
-pass/fail line, and no grading queue behind it. The learner deposits their
-work, and in return they get the **model answer** (the *corrigé*) to compare it
-against.
+En formativ uppgift lämnas in men bedöms aldrig. Det finns inga poäng, ingen gräns för godkänt och ingen kö av inlämningar att bedöma. Eleven lämnar in sitt arbete och får i gengäld ett **facit** att jämföra med.
 
-It is the right shape for practice work: the point is the self-assessment, not
-the mark.
+Det passar bra för övningsuppgifter, där poängen är att eleven bedömer sitt eget arbete, inte att få ett betyg.
 
-## Turning it on
+## Slå på formativ bedömning
 
-In the assignment's **Edit** dialog:
+I uppgiftens dialogruta **Redigera**:
 
-1. Switch on **Formative (no grading)**. The grading scale, auto-grading,
-   answer-key reveal and passing threshold disappear, because none of them
-   apply any more.
-2. Write the **model answer**, and optionally attach a document (a PDF worked
-   solution, a marking rubric, an exemplar).
-3. Choose when it unlocks:
-   - **Never**: kept for you only.
-   - **On hand-in**: the learner gets it the moment they submit. This is the
-     formative loop.
-   - **After grading**: only once the work has been marked. Offered on graded
-     assignments only.
+1. Slå på **Formativ (ingen bedömning)**. Betygsskalan, automatisk bedömning, visning av rätta svar och gränsen för godkänt försvinner, eftersom de inte längre gäller.
+2. Skriv ditt facit i fältet **Facit**, och bifoga gärna ett dokument (en genomarbetad lösning som PDF, en bedömningsmatris, ett exempelsvar).
+3. Välj när facit ska låsas upp:
+   - **Aldrig**: facit är bara för dig.
+   - **Vid inlämning**: eleven får facit i samma stund som inlämningen görs. Det här är det formativa arbetssättet.
+   - **Efter bedömning**: först när arbetet har bedömts. Finns bara för uppgifter som bedöms.
 
 <Callout>
-The model answer is withheld **server-side**, not only hidden in the interface.
-Until a learner's own submission satisfies the unlock rule, the assignment
-payload they receive contains no model answer at all. It does say that
-one exists, so they know what handing in earns them.
+Facit är inte bara dolt i gränssnittet. Tills elevens egen inlämning uppfyller villkoret för upplåsning får eleven inte facit alls. Eleven ser däremot att det finns ett facit och vet därför vad inlämningen ger.
 </Callout>
 
-## What the learner sees
+## Det här ser eleven
 
-Before handing in, a **Model answer locked** panel explains what unlocks it.
-After handing in, the panel is replaced by the model answer itself (plus a
-download link when a document is attached) and the status reads **Handed in**,
-never "Grading in progress".
+Innan eleven lämnar in förklarar rutan **Facit är låst** vad som låser upp det. Efter inlämningen ersätts rutan av själva facit (med en nedladdningslänk om ett dokument är bifogat), och statusen visar **Inlämnad**, aldrig att bedömning pågår.
 
-Nothing anywhere shows a score.
+Inga poäng visas någonstans.
 
-## What the teacher sees
+## Det här ser läraren
 
-The submission still appears in the **Submissions** list, and opening it shows
-what was handed in, but with no grade banner, no per-task scores, and no
-grading actions. The API refuses to grade a formative assignment outright, so
-there is no way to accidentally put a mark on one.
+Inlämningen syns fortfarande i listan på fliken **Inlämningar**, och när du öppnar den ser du vad som lämnades in. Men det finns inget betyg, inga poäng per deluppgift och inga knappar för bedömning. Det går inte att bedöma en formativ uppgift, så du kan inte råka sätta betyg på en.
 
-## Retries
+## Nya försök
 
-Retries work as usual, and the deadline still applies. On a formative
-assignment the model answer stays readable while attempts remain, since there is no
-score to game by reading it. A retry re-locks it until the next hand-in.
+Nya försök fungerar som vanligt, och deadline gäller fortfarande. På en formativ uppgift går facit att läsa så länge eleven har försök kvar, eftersom det inte finns några poäng att fuska till sig. Ett nytt försök låser facit igen fram till nästa inlämning.
 
-## Certificates
+## Certifikat
 
-A formative assignment is satisfied by being handed in. It counts as complete
-for [course certification](/platform/certifications) rather than
-blocking it forever waiting for a grade that will never come.
+En formativ uppgift räknas som klar när den har lämnats in. Den räknas alltså som slutförd för [kurscertifikatet](/platform/certifications) i stället för att blockera certifikatet i väntan på ett betyg som aldrig kommer.

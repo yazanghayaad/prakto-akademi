@@ -57,8 +57,9 @@ def build_embedding_model() -> EmbeddingModel:
     cfg = get_learnhouse_config().ai_config
     prov = _resolve_embedding_provider(cfg)
     main_provider = (getattr(cfg, "provider", None) or "").strip().lower() or DEFAULT_PROVIDER
-    api_key = getattr(cfg, "api_key", None)
-    base_url = getattr(cfg, "base_url", None) or None
+    # A dedicated embeddings endpoint/key (e.g. Cloudflare Workers AI) wins over the chat one.
+    api_key = getattr(cfg, "embedding_api_key", None) or getattr(cfg, "api_key", None)
+    base_url = getattr(cfg, "embedding_base_url", None) or getattr(cfg, "base_url", None) or None
     model_name = getattr(cfg, "embedding_model", None)
     settings = EmbeddingSettings(dimensions=embedding_dimensions())
 

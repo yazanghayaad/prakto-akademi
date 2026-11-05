@@ -50,6 +50,8 @@ const turbopackRoot =
 
 /** @type {import('common.next').NextConfig} */
 const nextConfig = {
+  // Prakto: no floating Next.js dev badge in the corner of every page.
+  devIndicators: false,
   // Required by PostHog's reverse-proxy rewrites below so the trailing-slash
   // handling on /ingest/* doesn't 308-redirect ingestion requests.
   skipTrailingSlashRedirect: true,

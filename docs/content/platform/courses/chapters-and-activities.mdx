@@ -1,70 +1,70 @@
 import { Callout } from 'nextra/components'
 
-# Chapters and Activities
+# Kapitel och aktiviteter
 
-Courses follow a simple hierarchy: **Course → Chapters → Activities**. You build it in the **Content** tab of a course in the dashboard.
+Kurser har en enkel uppbyggnad: **kurs → kapitel → aktiviteter**. Du bygger den på fliken **Innehåll** i kursen i adminpanelen. Eleverna ser kapitlen som moduler (Modul 1, Modul 2 och så vidare).
 
-<img src="/img/pages/courses/course-content-tab.webp" alt="The Content tab of a course with chapters, their published Dynamic Page activities and Add Activity buttons" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/courses/course-content-tab.webp" alt="Fliken Innehåll i en kurs med kapitel, deras publicerade dynamiska sidor och knapparna Lägg till aktivitet" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-## Chapters
+## Kapitel
 
-Chapters group activities into modules, units or topics. Click **Add Chapter**, give it a name and a description, and drag chapters to reorder them. Use **Rename** to change a chapter's name.
+Kapitel delar in aktiviteterna i moduler, avsnitt eller teman. Klicka på **Lägg till kapitel**, ge kapitlet ett namn och en beskrivning och dra kapitlen för att ändra ordningen. Använd **Byt namn** för att ändra ett kapitels namn.
 
-## Activities
+## Aktiviteter
 
-Click **Add Activity** inside a chapter and pick a type in the **Create Activity** window:
+Klicka på **Lägg till aktivitet** i ett kapitel och välj en typ i fönstret **Skapa aktivitet**:
 
-<img src="/img/pages/getting-started/create-activity-types.webp" alt="The Create Activity window with Dynamic Page, Video, Document, Assignments, Markdown, Embed, Resource and Scorm" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/getting-started/create-activity-types.webp" alt="Fönstret Skapa aktivitet med Dynamisk sida, Video, Dokument, Uppgifter, Markdown, Inbäddning, Resurs och SCORM" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-| Type | What it is |
+| Typ | Vad det är |
 | --- | --- |
-| **Dynamic Page** | A page built with the block [editor](/platform/editor): text, media, quizzes, code challenges, embeds and more. Open it with **Edit Page**. |
-| **Video** | An uploaded video file (MP4 or WebM) or a YouTube URL. See [Video settings](#video-settings). |
-| **Document** | A PDF shown in a built-in viewer. |
-| **Assignments** | A graded (or formative) set of tasks. See [Assignments](/platform/assignments). Open it with **Edit Assignment**. |
-| **Markdown** | A page rendered from a Markdown file at a URL, for example a GitHub README. |
-| **Embed** | A page that embeds another site by URL, for example a Google Doc. |
-| **Resource** | A file or resource picked from your [Library](/platform/courses/library). |
-| **Scorm** | A SCORM 1.2 or SCORM 2004 package. Only shown when SCORM is enabled for your organization (Enterprise). |
+| **Dynamisk sida** | En sida som byggs av block i [redigeraren](/platform/editor): text, media, quiz, kodutmaningar, inbäddningar och mycket mer. Öppna den med **Redigera sida**. |
+| **Video** | En uppladdad videofil (MP4 eller WebM) eller en YouTube-länk. Se [Videoinställningar](#videoinställningar). |
+| **Dokument** | En PDF-fil som visas i en inbyggd läsare. |
+| **Uppgifter** | En samling deluppgifter som bedöms (eller används för formativ bedömning). Se [Uppgifter](/platform/assignments). Öppna den med **Redigera uppgift**. |
+| **Markdown** | En sida som visar en Markdown-fil från en webbadress, till exempel en README-fil på GitHub. |
+| **Inbäddning** | En sida som bäddar in en annan webbplats via dess adress, till exempel ett Google-dokument. |
+| **Resurs** | En fil eller resurs som du väljer från ditt [bibliotek](/platform/courses/library). |
+| **SCORM** | Ett SCORM 1.2- eller SCORM 2004-paket. Visas bara om SCORM är aktiverat för din organisation. |
 
-You can mix types freely within a chapter. Drag activities to reorder them.
+Du kan blanda typerna fritt i ett kapitel. Dra aktiviteterna för att ändra ordningen.
 
 <Callout>
-Quizzes come in two forms: the **Quiz** block inside a Dynamic Page (ungraded self-checks) and the **Quiz** task inside an assignment (graded, with stored submissions).
+Quiz finns i två former: blocket **Quiz** på en dynamisk sida (självtest utan betyg) och deluppgiften **Quiz** i en uppgift (bedöms, och svaren sparas).
 </Callout>
 
-### Video settings
+### Videoinställningar
 
-When you add a Video activity, choose the **Source**: **Upload** a file or paste a **YouTube** link. Under **Video Settings** you can also set:
+När du lägger till en videoaktivitet väljer du **Källa**: **Ladda upp** en fil eller klistra in en **YouTube**-länk. Under **Videoinställningar** kan du också ställa in:
 
-- A **Start Time** and an **End Time (optional)**, so the video plays only part of the file.
-- **Autoplay** and **Start muted**.
-- **AI Closed Captions** for uploaded videos. See [AI Video Captions](/platform/courses/video-captions).
+- **Starttid** och **Sluttid (valfritt)**, så att bara en del av videon spelas upp.
+- **Spela upp automatiskt** och **Starta ljudlöst**.
+- **AI-undertexter** för uppladdade videor. Se [AI-undertexter för video](/platform/courses/video-captions).
 
-<img src="/img/pages/courses/video-activity-form.webp" alt="The Create Activity window for a video, with the Upload and YouTube sources, start and end times, Autoplay, Start muted and AI Closed Captions" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/courses/video-activity-form.webp" alt="Fönstret Skapa aktivitet för en video, med källorna Ladda upp och YouTube, start- och sluttid, Spela upp automatiskt, Starta ljudlöst och AI-undertexter" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-Uploaded videos play in the LearnHouse video player, with chapters on the timeline and captions. See [Videos](/platform/courses/taking-a-course#videos) for what learners see.
+Uppladdade videor spelas i Prakto Akademis videospelare, med kapitel på tidslinjen och undertexter. Se [Videor](/platform/courses/taking-a-course#videor) för vad eleverna ser.
 
-## Publishing
+## Publicering
 
-New activities start as **Draft**. Learners only see **Published** activities.
+Nya aktiviteter är **Utkast** från början. Eleverna ser bara aktiviteter som är **Publicerad**.
 
-- Click **Publish** or **Unpublish** on a single activity.
-- Use **Publish All** or **Unpublish All** on a chapter.
-- Select several activities to publish, unpublish or delete them together.
+- Klicka på **Publicera** eller **Avpublicera** på en enskild aktivitet.
+- Använd **Publicera alla** eller **Avpublicera alla** på ett kapitel.
+- Markera flera aktiviteter för att publicera, avpublicera eller radera dem på en gång.
 
-Use **Preview Activity** to see an activity as a learner would. The course itself also has a published state, set from the course list.
+Använd **Förhandsgranska aktivitet** för att se en aktivitet som en elev ser den. Kursen har också ett eget publiceringsläge, som du ställer in i kurslistan.
 
-## Locking chapters and activities
+## Lås kapitel och aktiviteter
 
-Each chapter and activity has an access lock. Click it to choose who can open it:
+Varje kapitel och varje aktivitet har ett lås. Klicka på det för att välja vem som kan öppna det:
 
-| Option | Who can open it |
+| Val | Vem kan öppna det |
 | --- | --- |
-| **Public** | Anyone, even without signing in. |
-| **Signed-in only** | Only signed-in users. |
-| **User groups only** | Only members of the user groups you add. With no group added, only admins can open it. |
+| **Offentlig** | Alla, även utan att logga in. |
+| **Endast inloggade** | Bara inloggade användare. |
+| **Endast användargrupper** | Bara medlemmar i de användargrupper du lägger till. Om ingen grupp är tillagd kan bara admins öppna det. |
 
-Learners who can't open a locked item see **This activity is locked**, with a hint to sign in or ask to join the right user group. This works on top of the course-wide setting in the [Access](/platform/courses/settings#access) tab.
+Elever som inte kan öppna något som är låst ser **Den här aktiviteten är låst**, med en uppmaning att logga in eller be om att få gå med i rätt användargrupp. Låset gäller utöver inställningen för hela kursen på fliken [Åtkomst](/platform/courses/settings#åtkomst).
 
-To open chapters over time instead, for example one per week, use [Drip Content](/platform/courses/drip-content). Scheduled chapters show their release day (for example **Day 7**) next to their name in the **Content** tab.
+Vill du i stället öppna kapitel över tid, till exempel ett i veckan, använder du [stegvis innehåll](/platform/courses/drip-content). Schemalagda kapitel visar vilken dag de släpps (till exempel **Dag 7**) bredvid namnet på fliken **Innehåll**.

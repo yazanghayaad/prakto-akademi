@@ -11,7 +11,8 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@components/Contexts/AuthContext'
 import { removeQueryParamsFromAddressBar } from '@services/utils/ts/scrubUrl'
-import { getLEARNHOUSE_TOP_DOMAIN_VAL, getDeploymentMode, isOnCustomDomain } from '@services/config/config'
+import { getConfig, getLEARNHOUSE_TOP_DOMAIN_VAL, getDeploymentMode, isOnCustomDomain } from '@services/config/config'
+import { isSelfSignupDisabled } from '@services/config/signup'
 import { useLHSession } from '@components/Contexts/LHSessionContext'
 import { useTranslation } from 'react-i18next'
 import { resendVerificationEmail } from '@services/auth/auth'
@@ -49,8 +50,11 @@ const LoginClient = (props: LoginClientProps) => {
   const magicLoginAllowed = allowedMethods.has('magic_login')
   const googleAllowed = allowedMethods.has('google')
   const ssoAllowed = allowedMethods.has('sso')
+  // "Fortsätt med Prakto-konto": on when this deployment points at Prakto. It is
+  // an SSO sign-in (amr=sso), so the org's SSO toggle governs it too.
+  const praktoAllowed = ssoAllowed && !!getConfig('NEXT_PUBLIC_PRAKTO_URL')
   // SSO counts only once it is actually configured for the org (ssoEnabled).
-  const hasAlternativeMethods = googleAllowed || magicLoginAllowed || (ssoAllowed && ssoEnabled)
+  const hasAlternativeMethods = praktoAllowed || googleAllowed || magicLoginAllowed || (ssoAllowed && ssoEnabled)
 
 
   // Error state with type information
@@ -120,7 +124,7 @@ const LoginClient = (props: LoginClientProps) => {
     const token = params.get('mfa_token')
     if (token) {
       arrivedWithMfaRef.current = true
-      setMfaToken(token)
+      queueMicrotask(() => setMfaToken(token))
       removeQueryParamsFromAddressBar(['mfa_token'])
     }
   }, [])
@@ -234,6 +238,26 @@ const LoginClient = (props: LoginClientProps) => {
     // Use absolute URL with current origin for custom domain support
     signIn('google', { callbackUrl: buildCallbackUrl() });
   };
+
+  const handlePraktoSignIn = async () => {
+    const result = await signIn('prakto', { callbackUrl: buildCallbackUrl() })
+    if (result && !result.ok) {
+      setErrorType(null)
+      setError(result.error || t('auth.errors.prakto_not_configured'))
+      setShowErrorModal(true)
+    }
+  }
+
+  // Prakto's Akademi menu item links here with ?via=prakto: carry straight on to
+  // Prakto, where the person is already signed in. (Someone already signed in
+  // here never sees /login; the proxy sends them on.)
+  const praktoAutoStartedRef = React.useRef(false)
+  useEffect(() => {
+    if (praktoAutoStartedRef.current || !praktoAllowed || session?.status !== 'unauthenticated') return
+    if (new URLSearchParams(window.location.search).get('via') !== 'prakto') return
+    praktoAutoStartedRef.current = true
+    handlePraktoSignIn()
+  }, [praktoAllowed, session?.status]) // eslint-disable-line
 
   // Check if SSO is enabled for this organization (requires enterprise plan)
   useEffect(() => {
@@ -834,6 +858,18 @@ const LoginClient = (props: LoginClientProps) => {
 
               {/* Social & SSO Buttons */}
               <div className="space-y-2.5">
+                {praktoAllowed && (
+                <button
+                  type="button"
+                  onClick={handlePraktoSignIn}
+                  disabled={isSubmitting}
+                  className="flex justify-center items-center w-full bg-white hover:bg-neutral-50 text-black space-x-3 font-medium p-3 rounded-lg border border-neutral-200 transition-all text-sm disabled:opacity-50"
+                >
+                  <img src="/prakto-mark.png" alt="" className="w-4 h-4" />
+                  <span>{t('auth.sign_in_with_prakto')}</span>
+                </button>
+                )}
+
                 {googleAllowed && (
                 <button
                   onClick={handleGoogleSignIn}
@@ -883,13 +919,15 @@ const LoginClient = (props: LoginClientProps) => {
                 </div>
               )}
 
-              {/* Sign Up Link */}
+              {/* Sign Up Link (none on Prakto Akademi: accounts come from Prakto) */}
+              {!isSelfSignupDisabled() && (
               <p className="text-center text-sm text-black/35 mt-6">
                 {t('auth.no_account')}{' '}
                 <Link href="/signup" className="text-black font-semibold hover:underline">
                   {t('auth.sign_up')}
                 </Link>
               </p>
+              )}
             </div>
               </>
             )}

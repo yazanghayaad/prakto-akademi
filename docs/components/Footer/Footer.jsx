@@ -3,10 +3,10 @@
 import Link from 'next/link'
 
 const links = [
-  { label: 'Documentation', href: '/' },
-  { label: 'GitHub', href: 'https://github.com/learnhouse/learnhouse' },
-  { label: 'Discord', href: 'https://discord.gg/CMyZjjYZ6x' },
-  { label: 'Twitter', href: 'https://twitter.com/learnhouseapp' },
+  { label: 'Dokumentation', href: '/' },
+  { label: 'Prakto webbplats', href: 'https://prakto.se/' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/showcase/prakto-1' },
+  { label: 'Rapportera problem', href: 'https://status.prakto.se/bugs/new' },
 ]
 
 export default function Footer() {
@@ -14,7 +14,7 @@ export default function Footer() {
     <footer className="lh-footer">
       <div className="lh-footer-container">
         <p className="lh-footer-copyright">
-          &copy; {new Date().getFullYear()} LearnHouse
+          &copy; {new Date().getFullYear()} Prakto Akademi
         </p>
         <nav className="lh-footer-nav">
           {links.map((link) => {

@@ -1,67 +1,67 @@
 import { Callout } from 'nextra/components'
 
-# Managing Communities
+# Hantera communities
 
-Open a community from **Communities** in the dashboard to change its settings.
+Öppna en community från **Communities** i adminpanelen för att ändra dess inställningar.
 
-## General
+## Allmänt
 
-**Community Name** (3 to 100 characters), **Description** (up to 500 characters) and **Public Community**.
+**Community-namn** (3 till 100 tecken), **Beskrivning** (högst 500 tecken) och **Offentlig community**.
 
-## Thumbnail
+## Miniatyrbild
 
-Upload a cover image: JPG, JPEG or PNG, up to 8 MB. A 16:9 image works best.
+Ladda upp en omslagsbild: JPG, JPEG eller PNG, högst 8 MB. En bild i formatet 16:9 fungerar bäst.
 
-## Access
+## Åtkomst
 
-| Mode | Who can see and post |
+| Läge | Vem kan se och skriva |
 | --- | --- |
-| **Public** | Anyone can view and participate in discussions. |
-| **Restricted** | Only members of the user groups you link under **User Groups**. |
+| **Offentlig** | Vem som helst kan se och delta i diskussionerna. |
+| **Begränsad** | Bara medlemmar i de användargrupper som du länkar under **Användargrupper**. |
 
-## Linked Course
+## Länkad kurs
 
-Connect the community to a course so its threads show on the course page. See [Linking a community to a course](/platform/discussions#linking-a-community-to-a-course).
+Koppla communityn till en kurs så att trådarna visas på kurssidan. Läs mer under [Länka en community till en kurs](/platform/discussions#länka-en-community-till-en-kurs).
 
-## Moderation
+## Moderering
 
-The **Moderation** tab sets rules that discussions and replies are checked against. Posts that break a rule are rejected with an error and never published. Click **Save Changes** when you are done.
+På fliken **Moderering** ställer du in regler som diskussioner och svar kontrolleras mot. Inlägg som bryter mot en regel avvisas med ett felmeddelande och publiceras aldrig. Klicka på **Spara ändringar** när du är klar.
 
-<img src="/img/pages/communities/moderation.webp" alt="The Moderation tab of a community, with content restrictions and length limits" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/communities/moderation.webp" alt="Fliken Moderering i en community, med innehållsbegränsningar och längdgränser" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-### Content restrictions
+### Innehållsbegränsningar
 
-| Setting | What it does |
+| Inställning | Vad den gör |
 | --- | --- |
-| **Block external links** | Reject discussions or replies that contain URLs. |
-| **Disable reactions** | Turn off emoji reactions in this community. |
-| **Allow rich content** | Let members embed YouTube videos in their discussions. Only YouTube is supported. Off by default. |
+| **Blockera externa länkar** | Avvisar diskussioner och svar som innehåller webbadresser. |
+| **Inaktivera reaktioner** | Stänger av emojireaktioner i den här communityn. |
+| **Tillåt rikt innehåll** | Låter medlemmarna bädda in YouTube-videor i sina diskussioner. Bara YouTube stöds. Avstängt från början. |
 
-### Length limits
+### Längdgränser
 
-**Minimum post length**, **Maximum post length** and **Maximum reply length**, in characters. Leave at 0 to disable.
+**Minsta inläggslängd**, **Största inläggslängd** och **Största svarslängd**, i antal tecken. Låt värdet vara 0 för att stänga av gränsen.
 
-### Rate limits
+### Hastighetsgränser
 
-| Setting | What it does |
+| Inställning | Vad den gör |
 | --- | --- |
-| **Slow mode (seconds)** | Minimum wait between posts from the same user. |
-| **Max posts per user per day** | Daily cap per user. |
-| **Auto-lock stale threads (days)** | Lock discussions after this many days without activity. |
+| **Långsamt läge (sekunder)** | Minsta väntetid mellan inlägg från samma användare. |
+| **Max antal inlägg per användare per dag** | Högsta antal inlägg per användare och dag. |
+| **Lås inaktiva trådar automatiskt (dagar)** | Låser diskussioner efter så här många dagar utan aktivitet. |
 
-Set any of them to 0 to disable it.
+Sätt en inställning till 0 för att stänga av den.
 
-### Account requirements
+### Kontokrav
 
-| Setting | What it does |
+| Inställning | Vad den gör |
 | --- | --- |
-| **Minimum account age (days)** | Users whose accounts are newer cannot post. |
-| **Require verified email** | Only users with a verified email address can post. |
+| **Minsta kontoålder (dagar)** | Användare med nyare konton kan inte skriva inlägg. |
+| **Kräv verifierad e-post** | Bara användare med en verifierad e-postadress kan skriva inlägg. |
 
-### Blocked words
+### Blockerade ord
 
-Add words or phrases one at a time with **Add blocked word**, or several at once with **Batch add words** (comma separated). Discussions and replies that contain a blocked word are rejected.
+Lägg till ord eller fraser ett i taget med **Lägg till blockerat ord**, eller flera samtidigt med **Lägg till flera ord samtidigt** (separerade med kommatecken). Diskussioner och svar som innehåller ett blockerat ord avvisas.
 
 <Callout>
-Rules are checked when a discussion or reply is posted or edited. Changing the rules does not re-check posts that already exist.
+Reglerna kontrolleras när en diskussion eller ett svar publiceras eller redigeras. Om du ändrar reglerna kontrolleras inte inlägg som redan finns.
 </Callout>

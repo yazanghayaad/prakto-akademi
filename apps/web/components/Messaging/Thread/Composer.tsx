@@ -264,16 +264,20 @@ export default function Composer({
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-medium truncate">{o.kind === 'agent' ? o.agent.name : displayName(o.user)}</span>
                 <span className="block text-[11px] text-gray-500 truncate">
-                  {o.kind === 'agent' ? o.agent.description || 'Agent · replies in this chat' : `@${o.user.username}`}
+                  {o.kind === 'agent'
+                    ? o.agent.description || t('messaging.agent_replies_here', { defaultValue: 'Agent · replies in this chat' })
+                    : `@${o.user.username}`}
                 </span>
               </span>
-              {o.kind === 'agent' && <span className="rounded-md bg-gray-100 px-1.5 py-px text-[11px] font-medium text-gray-500">Agent</span>}
+              {o.kind === 'agent' && (
+                <span className="rounded-md bg-gray-100 px-1.5 py-px text-[11px] font-medium text-gray-500">{t('messaging.agent', { defaultValue: 'Agent' })}</span>
+              )}
             </button>
           ))}
         </div>
       )}
 
-      <div className="rounded-xl bg-white nice-shadow focus-within:ring-2 focus-within:ring-gray-200 transition-shadow">
+      <div className="rounded-lg border border-gray-200 bg-white transition-colors focus-within:border-gray-400">
         {(replyTo || editing) && (
           <div className="flex items-center gap-2 border-b border-gray-100 px-3.5 py-2 text-xs text-gray-500">
             {editing ? <PencilSimple size={13} /> : <ArrowBendUpLeft size={13} />}
@@ -336,14 +340,14 @@ export default function Composer({
 
         <div className="flex items-center gap-0.5 px-2 pb-2">
           <EmojiPickerPopover onPick={insertEmoji} open={emojiOpen} onOpenChange={setEmojiOpen} align="start">
-            <button className="p-2 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors" title="Emoji">
+            <button className="p-2 rounded-md text-gray-400 hover:text-wine-900 hover:bg-gray-100 transition-colors" title={t('messaging.emoji', { defaultValue: 'Emoji' })}>
               <Smiley size={18} />
             </button>
           </EmojiPickerPopover>
           {!editing && (
             <Popover open={courseOpen} onOpenChange={setCourseOpen}>
               <PopoverTrigger asChild>
-                <button className="p-2 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors" title="Share a course">
+                <button className="p-2 rounded-md text-gray-400 hover:text-wine-900 hover:bg-gray-100 transition-colors" title={t('messaging.share_course', { defaultValue: 'Share a course' })}>
                   <BookOpen size={18} />
                 </button>
               </PopoverTrigger>
@@ -359,7 +363,7 @@ export default function Composer({
                   />
                 </div>
                 <div className="max-h-64 overflow-y-auto">
-                  {filteredCourses.length === 0 && <p className="text-xs text-gray-400 text-center py-6">No courses</p>}
+                  {filteredCourses.length === 0 && <p className="text-xs text-gray-400 text-center py-6">{t('messaging.no_courses', { defaultValue: 'No courses' })}</p>}
                   {filteredCourses.map((c: OrgCourse) => (
                     <button
                       key={c.course_uuid}
@@ -387,19 +391,21 @@ export default function Composer({
             <span className="ms-1 flex items-center gap-1 text-[11px] text-gray-500">
               {mentioned.map((a) => (
                 <span key={a.agent_uuid} className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-1.5 py-0.5">
-                  <AgentAvatar agent={a} size={14} /> {a.name} will reply
+                  <AgentAvatar agent={a} size={14} /> {t('messaging.will_reply', { defaultValue: '{{name}} will reply', name: a.name })}
                 </span>
               ))}
             </span>
           )}
           <span className="ms-auto hidden sm:block text-[11px] text-gray-400 me-2">
-            {editing ? 'Enter to save · Esc to cancel' : 'Enter to send · Shift+Enter new line'}
+            {editing
+              ? t('messaging.hint_save', { defaultValue: 'Enter to save · Esc to cancel' })
+              : t('messaging.hint_send', { defaultValue: 'Enter to send · Shift+Enter new line' })}
           </span>
           <button
             onClick={submit}
             disabled={!text.trim() && !course}
-            className="ms-auto sm:ms-0 h-9 w-9 sm:h-8 sm:w-8 rounded-lg bg-black text-white flex items-center justify-center disabled:bg-gray-100 disabled:text-gray-300 hover:bg-gray-800 transition-colors"
-            aria-label="Send"
+            className="ms-auto sm:ms-0 h-9 w-9 sm:h-8 sm:w-8 rounded-md bg-wine-900 text-white flex items-center justify-center disabled:bg-gray-100 disabled:text-gray-300 hover:bg-wine-800 transition-colors"
+            aria-label={t('messaging.send', { defaultValue: 'Send' })}
           >
             <PaperPlaneRight size={15} weight="fill" />
           </button>

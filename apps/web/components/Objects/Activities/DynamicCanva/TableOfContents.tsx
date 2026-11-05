@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Editor } from '@tiptap/react'
-import { Check } from 'lucide-react'
 
 interface TableOfContentsProps {
   editor: Editor | null
@@ -57,19 +56,27 @@ const TableOfContents = ({ editor }: TableOfContentsProps) => {
 
   if (headings.length === 0) return null
 
+  // Indent relative to the page's own top heading level, so a page that starts
+  // at h2 or h3 is not pushed in for no reason. Two steps of nesting at most.
+  const minLevel = Math.min(...headings.map((h) => h.level))
+
   return (
-    <div className="w-full bg-none border-none shadow-none p-0 m-0 font-[inherit] flex flex-col items-stretch h-fit">
-      <ul className="!list-none !p-0 m-0">
-        {headings.map((heading, index) => (
-          <li
-            key={index}
-            className="toc-item my-2 !list-none flex items-start gap-2"
-            style={{ paddingLeft: `${(heading.level - 1) * 1.2}rem` }}
-          >
-            <span className="toc-check"><Check size={15} strokeWidth={1.7} /></span>
-            <a className={`toc-link toc-link-h${heading.level}`} href={`#${heading.id}`}>{heading.text}</a>
-          </li>
-        ))}
+    <div className="toc w-full h-fit">
+      <ul className="toc-list">
+        {headings.map((heading, index) => {
+          const depth = Math.min(heading.level - minLevel, 2)
+          return (
+            <li key={index} className="toc-item">
+              <a
+                className={`toc-link toc-link-depth-${depth}`}
+                href={`#${heading.id}`}
+                style={{ paddingInlineStart: `${0.875 + depth * 0.75}rem` }}
+              >
+                {heading.text}
+              </a>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )

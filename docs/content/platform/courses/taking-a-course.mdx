@@ -1,69 +1,67 @@
-# Taking a Course
+# Att gå en kurs
 
-This page describes what learners see when they follow a course.
+Här beskriver vi vad du ser som elev när du går en kurs.
 
-<YouTube video="guide-4" />
+## Kurssidan
 
-## The course page
+Kurssidan visar kursbeskrivningen, vad du lär dig, vem som har gjort kursen, eventuella [kursuppdateringar](/platform/courses/settings#kursuppdateringar) och listan över kursens kapitel och aktiviteter. Kapitlen visas som moduler (Modul 1, Modul 2 och så vidare). Om en [community](/platform/discussions) är kopplad till kursen visas de senaste trådarna under **Communitydiskussioner**.
 
-The course page shows the description, what learners will get out of it, the authors, any [course updates](/platform/courses/settings#course-updates), and the list of chapters and activities. If a [community](/platform/discussions) is linked to the course, its latest threads appear under **Community Discussions**.
+Klicka på **Starta kurs** för att öppna den första aktiviteten. När du väl har börjat tar knappen dig vidare där du slutade.
 
-Click **Start Course** to open the first activity. Once a learner has started, the button continues where they left off.
+<img src="/docs/img/pages/courses/course-page.webp" alt="En kurssida med omslagsbild, beskrivning, knappen Starta kurs, kursens skapare och kursuppdateringar" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-<img src="/img/pages/courses/course-page.webp" alt="A public course page with the cover, description, the Start Course button, the author and Course Updates" width={1600} height={900} style={{ borderRadius: 10 }} />
+Om kursen använder [stegvis innehåll](/platform/courses/drip-content) visar en banner vilket kapitel som kommer härnäst och när det öppnas. Kommande kapitel visar sitt öppningsdatum, och med **Lägg till i kalender** laddar du ner alla släppdatum som en `.ics`-fil.
 
-If the course uses [drip content](/platform/courses/drip-content), a banner names the next chapter and when it opens, upcoming chapters show their opening date, and **Add to calendar** downloads every release as an `.ics` file.
+## I en aktivitet
 
-## Inside an activity
+<img src="/docs/img/pages/courses/activity-page.webp" alt="En lektion som en elev ser den, med kursens förloppsindikator, Fråga AI, Kapitel, knapparna Föregående och Nästa och statusen för slutförd" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-<img src="/img/pages/courses/activity-page.webp" alt="A lesson seen by a learner, with the course progress bar, Ask AI, Chapters, the Previous and Next buttons and the Complete status" width={1600} height={900} style={{ borderRadius: 10 }} />
-
-| Feature | What it does |
+| Funktion | Vad den gör |
 | --- | --- |
-| **Previous activity** / **Next activity** | Move through the course in order. |
-| **Mark as complete** | Records the activity as done in the learner's [Trail](/platform/courses/trails). Clicking it again offers **Unmark Activity**. |
-| **Focus Mode** | Hides the course navigation so only the content is on screen. |
-| **Ask AI** | Opens an AI chat about the current activity. See [AI for Students](/platform/ai/for-students). |
-| **Share** | **Copy Link** to the activity, or **Embed** to copy an `<iframe>` code that shows the activity on another site. |
+| **Föregående aktivitet** / **Nästa aktivitet** | Gå igenom kursen i ordning. |
+| **Markera som slutförd** | Registrerar aktiviteten som klar i dina [framsteg](/platform/courses/trails). Klickar du igen kan du välja **Avmarkera aktivitet**. |
+| **Fokusläge** | Döljer kursnavigeringen så att bara innehållet syns. |
+| **Fråga AI** | Öppnar en AI-chatt om aktiviteten du är i. Se [AI för elever](/platform/ai/for-students). |
+| **Dela** | **Kopiera länk** till aktiviteten, eller **Bädda in** för att kopiera en `<iframe>`-kod som visar aktiviteten på en annan webbplats. |
 
-Locked chapters and activities show **This activity is locked** with a hint to sign in or join the right user group. See [Locking chapters and activities](/platform/courses/chapters-and-activities#locking-chapters-and-activities).
+Låsta kapitel och aktiviteter visar **Den här aktiviteten är låst** med en uppmaning att logga in eller gå med i rätt användargrupp. Se [Lås kapitel och aktiviteter](/platform/courses/chapters-and-activities#lås-kapitel-och-aktiviteter).
 
-### Videos
+### Videor
 
-Video activities open on a dark band across the page, so the video stands out. Uploaded videos play in the LearnHouse player (built on Video.js), which has:
+Videoaktiviteter visas på ett mörkt band över sidan, så att videon syns tydligt. Uppladdade videor spelas i Prakto Akademis videospelare, som har:
 
-- Adaptive streaming with a quality menu, and preview thumbnails when you hover the timeline, for videos that are streamed in several qualities.
-- Playback speed, picture-in-picture, AirPlay and fullscreen.
-- Subtitles in several languages. See [AI Video Captions](/platform/courses/video-captions).
-- Chapters, drawn as segments on the timeline and listed under the player under **Chapters**, so learners can jump to a section.
+- Anpassad strömning med en meny för kvalitet, och förhandsbilder när du för muspekaren över tidslinjen, för videor som strömmas i flera kvaliteter.
+- Uppspelningshastighet, bild-i-bild, AirPlay och helskärm.
+- Undertexter på flera språk. Se [AI-undertexter för video](/platform/courses/video-captions).
+- Kapitel, som visas som avsnitt på tidslinjen och som en lista under **Kapitel** nedanför spelaren, så att du kan hoppa till ett visst avsnitt.
 
-When the video is paused, the previous and next activities appear on either side of the player, so learners can move on without leaving it.
+När videon är pausad visas föregående och nästa aktivitet på var sin sida om spelaren, så att du kan gå vidare utan att lämna den.
 
-<img src="/img/pages/courses/video-player-paused.webp" alt="A paused video activity on the dark band, with the video title and the previous and next activities shown on either side" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/courses/video-player-paused.webp" alt="En pausad videoaktivitet på det mörka bandet, med videons titel och föregående och nästa aktivitet på var sin sida" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-YouTube videos play in the YouTube player.
+YouTube-videor spelas i YouTubes egen spelare.
 
-### End of the course
+### När kursen är slut
 
-After the last activity, learners reach the end screen. If the course has a certification and they earned it, they can download it as a PDF and open its verification page. See [Certifications](/platform/certifications).
+Efter den sista aktiviteten kommer du till kursens slutsida. Om kursen har ett certifikat och du har klarat kraven kan du ladda ner det som PDF och öppna dess verifieringssida. Se [Certifikat](/platform/certifications).
 
-## Keyboard shortcuts
+## Kortkommandon
 
-Press `?` anywhere to see the shortcuts available on the current page. On a course page, `s` starts the course (or continues where you left off) and `e` expands or collapses all chapters. The full list, including the command palette and the `g` navigation shortcuts, is in [Command Palette and Keyboard Shortcuts](/platform/search/keyboard-shortcuts).
+Tryck på `?` var som helst för att se vilka kortkommandon som finns på sidan du är på. På en kurssida startar `s` kursen (eller fortsätter där du slutade) och `e` expanderar eller minimerar alla kapitel. Hela listan, med kommandopaletten och genvägarna som börjar med `g`, finns i [Kommandopaletten och kortkommandon](/platform/search/keyboard-shortcuts).
 
-### In an activity
+### Kortkommandon i en aktivitet
 
-| Keys | Action |
+| Tangenter | Vad som händer |
 | --- | --- |
-| `j` or `→` | Next lesson |
-| `k` or `←` | Previous lesson |
-| `]` / `[` | Next / previous chapter |
-| `m` | Mark lesson complete |
-| `f` | Toggle focus mode |
-| `Esc` | Exit focus mode |
-| `Space` | Play or pause the video |
-| `c` | Back to the course page |
+| `j` eller `→` | Nästa lektion |
+| `k` eller `←` | Föregående lektion |
+| `]` / `[` | Nästa / föregående kapitel |
+| `m` | Markera lektionen som slutförd |
+| `f` | Växla fokusläge |
+| `Esc` | Avsluta fokusläge |
+| `Mellanslag` | Spela upp eller pausa videon |
+| `c` | Tillbaka till kurssidan |
 
-In right-to-left languages the arrow keys are swapped. Shortcuts are ignored while you are typing in a text field.
+I språk som skrivs från höger till vänster är piltangenterna omvända. Kortkommandona fungerar inte medan du skriver i ett textfält.
 
-Search (`/` or `Cmd+K`) finds lessons as well as courses. See [Search](/platform/search).
+Sökningen (`/` eller `Cmd+K`) hittar lektioner såväl som kurser. Se [Sök](/platform/search).

@@ -1,86 +1,78 @@
 import { Callout } from 'nextra/components'
 
-# Members & Invites
+# Medlemmar och inbjudningar
 
-This page covers the **Users**, **Signups & Invite Codes** and **Invite Members** tabs under **Users** in the dashboard.
+Den här sidan handlar om flikarna **Användare**, **Registreringar och inbjudningskoder** och **Bjud in medlemmar** under **Användare** i adminpanelen.
 
-<YouTube video="guide-5" />
+## Användarlistan
 
-## The Users list
+Fliken **Användare** visar alla i organisationen, 10 per sida. Använd **Sök användare...** för att hitta någon och **Filter** för att visa bara en viss roll, en viss status (**Verifierad** eller **Overifierad**) eller en viss användargrupp. Varje rad visar medlemmens grupper, roll och hur hen registrerade sig (e-post, Google och så vidare).
 
-The **Users** tab lists everyone in the organization, 10 per page. Use **Search users...** to find someone, and **Filters** to narrow by role, by verification status (**Verified** or **Unverified**) or by user group. Each row shows the member's groups, role and how they signed up (Email, Google, and so on).
+<img src="/docs/img/pages/users/users-list.webp" alt="Fliken Användare med filter för roll, status och grupp, och varje medlems grupper, datum för när hen gick med, status och roll" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-<img src="/img/pages/users/users-list.webp" alt="The Users tab with filters for role, status and group, and each member's groups, join date, status and role" width={1600} height={900} style={{ borderRadius: 10 }} />
+För varje medlem kan du:
 
-For each member you can:
+- Byta roll i rollmenyn. Du kan inte byta din egen roll.
+- Öppna **Statistik** för en snabb överblick över elevens resultat, eller **Öppna hela statistiksidan**. Läs mer i [Elevstatistik](/platform/users/learner-analytics).
+- Välja **Ta bort från organisationen**. Personen tas bort från organisationen, men kontot finns kvar.
 
-- **Change their role** with the role dropdown. You cannot change your own role.
-- **Analytics**: open a quick view of the learner's record, or **Open full analytics page**. See [Learner Analytics](/platform/users/learner-analytics).
-- **Remove from organization**: takes them out of this organization. Their account and their other organizations are kept.
+Markera flera rader för att hantera dem samtidigt: **Jämför statistik** visar en tabell sida vid sida, **Exportera statistik** laddar ner deras uppgifter och **Ta bort valda** tar bort alla markerade.
 
-Select several rows to act on them together: **Compare analytics** shows a side-by-side table, **Export analytics** downloads their records, and **Remove selected** removes them all.
-
-The download icon next to the search box exports the member list as CSV.
+Med nedladdningsikonen bredvid sökrutan exporterar du medlemslistan som en CSV-fil.
 
 <Callout type="info">
-Only roles that can manage the organization (Admin and Maintainer by default) can change roles or remove members.
+Bara roller som får hantera organisationen (som standard Admin och Redaktör) kan byta roller eller ta bort medlemmar.
 </Callout>
 
-## Signup mode
+## Registreringsläge
 
-On **Signups & Invite Codes**, **Join method** decides how new people can join:
+Under **Registreringar och inbjudningskoder** bestämmer **Anslutningsmetod** hur nya personer kan gå med:
 
-| Option | Behavior |
+| Alternativ | Vad som händer |
 | --- | --- |
-| **Open** | Users can join freely from the signup page. This is the default. |
-| **Closed** | Users can join only by invitation: an email invite or an invite code. Google sign-up is refused without a valid invite. |
+| **Öppen** | Vem som helst kan gå med från registreringssidan. Det här är standardläget. |
+| **Stängd** | Man kan bara gå med via en inbjudan: en inbjudan via e-post eller en inbjudningskod. Registrering med Google nekas utan giltig inbjudan. |
 
-## Invite codes
+## Inbjudningskoder
 
-Invite codes are shareable links for a **Closed** organization. The section is greyed out while the join method is **Open**.
+Inbjudningskoder är länkar som du kan dela när organisationen är **Stängd**. Avsnittet är gråmarkerat så länge anslutningsmetoden är **Öppen**.
 
-1. Click **Generate invite code**.
-2. Choose **Normal Invite Code**, or **Invite Code linked to a UserGroup** to add everyone who signs up with it to that group.
-3. Copy the code or its signup link (`/signup?inviteCode=...`) and share it.
+1. Klicka på **Generera inbjudningskod**.
+2. Välj **Normal inbjudningskod**, eller **Inbjudningskod kopplad till en användargrupp** om alla som registrerar sig med koden ska hamna i den gruppen.
+3. Kopiera koden eller dess registreringslänk (`/signup?inviteCode=...`) och dela den.
 
-| Limit | Value |
+| Gräns | Värde |
 | --- | --- |
-| Codes per organization | 6 at a time |
-| Code format | 8 letters and digits |
-| Lifetime | 1 year, then the code stops working |
+| Koder per organisation | 6 åt gången |
+| Kodens format | 8 bokstäver och siffror |
+| Giltighetstid | 1 år, sedan slutar koden fungera |
 
-Delete a code from the table to revoke it.
+Radera en kod i tabellen för att dra tillbaka den.
 
-<img src="/img/pages/users/users-invite-codes.webp" alt="Signups & Invite Codes with the Closed join method active and two invite codes with their signup links and expiration dates" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/users/users-invite-codes.webp" alt="Registreringar och inbjudningskoder med anslutningsmetoden Stängd vald och två inbjudningskoder med registreringslänkar och utgångsdatum" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-## Custom signup fields
+## Anpassade registreringsfält
 
-**Custom signup fields** add extra questions to the signup form. Answers are saved on each member's profile.
+Med **Anpassade registreringsfält** lägger du till fler frågor i registreringsformuläret. Svaren sparas i varje medlems profil.
 
-- Field types: **Text**, **Long text**, **Dropdown**, **Checkbox**, **Number**, **Date**.
-- Options per field: **Required**, **Help text**, **Max length** (text), **Min** and **Max** (number), and **Options (one per line)** (dropdown).
-- Up to 40 fields. Text answers are capped at 2,000 characters.
+- Fälttyper: **Text**, **Lång text**, **Rullgardinslista**, **Kryssruta**, **Nummer** och **Datum**.
+- Inställningar per fält: **Obligatoriskt**, **Hjälptext**, **Maxlängd** (text), **Min** och **Max** (nummer) samt **Alternativ (ett per rad)** (rullgardinslista).
+- Upp till 40 fält. Textsvar får vara högst 2 000 tecken.
 
-Field labels are public: anyone who opens the signup page can read them.
+Fältens etiketter är offentliga: alla som öppnar registreringssidan kan läsa dem.
 
-## Inviting people by email
+## Bjud in via e-post
 
-On **Invite Members**, enter email addresses separated by commas and click **Send invites via email**. You can attach an **Invite Code** so that invitees land in the code's user group.
+Under **Bjud in medlemmar** skriver du e-postadresser åtskilda med kommatecken och klickar på **Skicka inbjudningar via e-post**. Du kan välja en **Inbjudningskod** så att de inbjudna hamnar i kodens användargrupp.
 
-<img src="/img/pages/users/users-invite-members.webp" alt="The Invite Members tab with the email box, the Invite Code picker and the Invited Users list" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/users/users-invite-members.webp" alt="Fliken Bjud in medlemmar med rutan för e-postadresser, valet av inbjudningskod och listan Inbjudna användare" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-| Limit | Value |
+| Gräns | Värde |
 | --- | --- |
-| Emails per batch | 25 |
-| Invites per day | 100 per organization and 100 per inviting user |
-| Invitation lifetime | 60 days |
+| E-postadresser per utskick | 25 |
+| Inbjudningar per dag | 100 per organisation och 100 per person som bjuder in |
+| Inbjudans giltighetstid | 60 dagar |
 
-Duplicates and malformed addresses are skipped. The result tells you how many invites were sent, failed or were already pending.
+Dubbletter och felaktiga adresser hoppas över. Resultatet visar hur många inbjudningar som skickades, hur många som misslyckades och hur många som redan väntade.
 
-The **Invited Users** table shows each invite's **Signup Status** (**Pending** or **Signed up**) and whether the email was sent. Use **Remove** to cancel a pending invite.
-
-Each invitation fires the `user_invited_to_org` event for [webhooks and Zapier](/platform/automations/events).
-
-<Callout type="warning">
-On the LearnHouse Cloud free plan, both the organization and your own account must be at least 7 days old before you can send invites or create invite codes. Paid plans are not affected.
-</Callout>
+Tabellen **Inbjudna användare** visar varje inbjudans **Registreringsstatus** (**Väntande** eller **Registrerad**) och om e-postmeddelandet har skickats. Klicka på **Ta bort** för att avbryta en inbjudan som väntar.

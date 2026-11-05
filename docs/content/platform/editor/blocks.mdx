@@ -1,123 +1,123 @@
 import { Callout } from 'nextra/components'
 
-# Blocks
+# Block
 
-Type `/` anywhere in a page to open the block menu. Start typing to filter it (for example `/quiz` or `/table`), then press Enter. The menu groups blocks into **Text**, **Media**, **Interactive**, **Callouts**, **Dynamic content**, **UI Elements** and **Tables**, in that order. Most blocks are also in the [editor toolbar](/platform/editor#the-toolbar).
+Skriv `/` var som helst på en sida för att öppna blockmenyn. Börja skriva för att filtrera listan (till exempel `/quiz` eller `/tabell`) och tryck sedan på Enter. Menyn delar in blocken i grupperna **Text**, **Media**, **Interaktivt**, **Callouts**, **Dynamiskt innehåll**, **UI-element** och **Tabeller**, i den ordningen. De flesta block finns också i [redigerarens verktygsfält](/platform/editor#verktygsfältet).
 
 ## Text
 
-| Block | What it does |
+| Block | Vad det gör |
 | --- | --- |
-| **Paragraph** | Plain body text. |
-| **Heading 1** to **Heading 6** | Section headings. |
-| **Bullet List** | Unordered list. |
-| **Ordered List** | Numbered list. |
-| **Code Block** | Code snippet with syntax highlighting. |
+| **Stycke** | Vanlig brödtext. |
+| **Rubrik 1** till **Rubrik 6** | Rubriker för olika avsnitt. |
+| **Punktlista** | Lista med punkter. |
+| **Numrerad lista** | Lista med nummer. |
+| **Kodblock** | Kodexempel med syntaxmarkering. |
 
-Inline formatting (bold, italic, underline, strikethrough, inline code, links) is available from the toolbar and the usual keyboard shortcuts.
+Formatering i löptexten (fet, kursiv, understruken, genomstruken, kod och länkar) finns i verktygsfältet och via de vanliga kortkommandona.
 
 ## Media
 
-| Block | What it does | Options |
+| Block | Vad det gör | Inställningar |
 | --- | --- | --- |
-| **Image** | Upload an image (JPG, PNG, WebP or GIF), or generate one with AI. | Drag the edge to resize. Expand and download buttons for learners. |
-| **Video** | Upload a video file (MP4 or WebM). | Size: **Small**, **Medium**, **Large**. Expand and download buttons. |
-| **YouTube** | Embed a YouTube video. This opens the **Embed** block with YouTube preselected. | Same as **Embed**. |
-| **PDF** | Upload a PDF and show it in an inline viewer. | Drag to resize. Expand and download buttons. |
-| **Audio** | Upload audio, generate narration with AI, or embed a podcast. | Size: **Small**, **Medium**, **Large**, **Full Width**. See below. |
-| **Library** | Insert a file or resource from your [Library](/platform/courses/library). | **Choose from Library** or **Upload**, then **Show as card** or **Show inline**. |
+| **Bild** | Ladda upp en bild (JPG, PNG, WebP eller GIF) eller skapa en med AI. | Dra i kanten för att ändra storlek. Eleverna får knappar för att förstora och ladda ner. |
+| **Video** | Ladda upp en videofil (MP4 eller WebM). | Storlek: **Liten**, **Mellan**, **Stor**. Knappar för att förstora och ladda ner. |
+| **YouTube** | Bädda in en YouTube-video. Öppnar blocket **Inbäddning** med YouTube förvalt. | Samma som **Inbäddning**. |
+| **PDF** | Ladda upp en PDF och visa den i en inbyggd visare. | Dra för att ändra storlek. Knappar för att förstora och ladda ner. |
+| **Ljud** | Ladda upp ljud, skapa inläst ljud med AI eller bädda in en podd. | Storlek: **Liten**, **Mellan**, **Stor**, **Full bredd**. Se nedan. |
+| **Bibliotek** | Infoga en fil eller resurs från ditt [bibliotek](/platform/courses/library). | **Välj från biblioteket** eller **Ladda upp**, sedan **Visa som kort** eller **Visa i texten**. |
 
-You can also paste or drop a file straight into the page. Images (JPEG, PNG, WebP, GIF), videos (MP4, WebM) and PDFs are uploaded and turned into the matching block.
+Du kan också klistra in eller släppa en fil direkt på sidan. Bilder (JPEG, PNG, WebP, GIF), videor (MP4, WebM) och PDF-filer laddas upp och blir motsvarande block.
 
-### The Audio block
+### Ljudblocket
 
-The Audio block has four tabs:
+Ljudblocket har fyra flikar:
 
-| Tab | What it does |
+| Flik | Vad den gör |
 | --- | --- |
-| **Upload** | Upload an MP3, WAV, OGG or M4A file. |
-| **Generate** | Create narrated audio with AI: **Text to speech**, **Podcast (2 voices)** or **Speak**. See [AI for Teachers](/platform/ai/for-teachers#audio-generation). |
-| **Episode** | Embed one episode from one of your organization's [podcasts](/platform/podcasts). |
-| **Playlist** | Embed a whole podcast as a playlist. |
+| **Ladda upp** | Ladda upp en MP3-, WAV-, OGG- eller M4A-fil. |
+| **Generera** | Skapa inläst ljud med AI: **Text till tal**, **Podd (2 röster)** eller **Tala**. Se [AI för lärare](/platform/ai/for-teachers). |
+| **Avsnitt** | Bädda in ett avsnitt från någon av organisationens [poddar](/platform/podcasts). |
+| **Spellista** | Bädda in en hel podd som spellista. |
 
-## Interactive
+## Interaktivt
 
-| Block | What it does |
+| Block | Vad det gör |
 | --- | --- |
-| **Magic Block** | Describe an interactive element (a simulation, a chart, a small game) and AI generates it as HTML. You can refine it up to 6 times per block. |
-| **Quiz** | Multiple choice questions that learners answer on the page. See [Quiz block](#quiz-block). |
-| **H5P** | Embed H5P content hosted elsewhere. See [H5P](/platform/editor/h5p). |
-| **Math Equation** | A LaTeX equation, with **Templates** and **Symbols** pickers and a quick reference. |
-| **Web Preview** | A card that previews a web page. See [Web Preview](#web-preview). |
-| **Flipcard** | A flashcard: the question on the front, the answer on the back. |
-| **Flashcard Grid** | Several flipcards side by side, in **2 Columns**, **3 Columns** or **4 Columns**. |
-| **Code Playground** | A coding challenge that runs real code against test cases. See [Code Execution](/platform/code-execution). |
-| **Scenarios** | A branching scenario: each step shows text (and optionally an image) and a set of choices that lead to other steps. **Generate with AI** drafts one for you. |
+| **Magiskt block** | Beskriv ett interaktivt element (en simulering, ett diagram, ett litet spel) så skapar AI det som HTML. Du kan förfina det upp till 6 gånger per block. |
+| **Quiz** | Flervalsfrågor som eleverna svarar på direkt på sidan. Se [Quizblocket](#quizblocket). |
+| **H5P** | Bädda in H5P-innehåll som ligger någon annanstans. Se [H5P](/platform/editor/h5p). |
+| **Matematisk ekvation** | En LaTeX-ekvation, med väljarna **Mallar** och **Symboler** och en snabbreferens. |
+| **Webbförhandsvisning** | Ett kort som förhandsvisar en webbsida. Se [Webbförhandsvisning](#webbförhandsvisning). |
+| **Vändkort** | Ett kort med frågan på framsidan och svaret på baksidan. |
+| **Vändkortsrutnät** | Flera vändkort bredvid varandra, i **2 kolumner**, **3 kolumner** eller **4 kolumner**. |
+| **Kodlekplats** | En kodutmaning som kör riktig kod mot testfall. Se [Kodkörning](/platform/code-execution). |
+| **Scenarier** | Ett förgrenat scenario: varje steg visar text (och eventuellt en bild) och några val som leder vidare till andra steg. **Generera med AI** skapar ett utkast åt dig. |
 
-Blocks with an AI option use your organization's [AI credits](/platform/ai#ai-credits).
+Block med AI-funktioner använder organisationens [AI-krediter](/platform/ai).
 
-<img src="/img/pages/editor/blocks-flipcards-math-code.webp" alt="A lesson in the editor with a row of flipcards, a Math Equation block with its Templates, Symbols and Help menus, and a code block" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/editor/blocks-flipcards-math-code.webp" alt="En lektion i redigeraren med en rad vändkort, ett block för matematisk ekvation med menyerna Mallar, Symboler och Hjälp, och ett kodblock" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-<img src="/img/pages/editor/magic-block.webp" alt="The Magic Block window: a generated refund calculator on the left and the Magic Chat with the prompt on the right, at 1 of 6 iterations" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/editor/magic-block.webp" alt="Fönstret för Magiskt block: en genererad kalkylator för återbetalning till vänster och Magisk chatt med instruktionen till höger, på iteration 1 av 6" width={1600} height={900} style={{ borderRadius: 10 }} />
 
 <Callout>
-**Magic Block** is available whenever AI is turned on for your organization. Each generation or change uses 3 AI credits.
+**Magiskt block** går att använda så fort AI är aktiverat för din organisation. Varje generering eller ändring använder 3 AI-krediter.
 </Callout>
 
-### Quiz block
+### Quizblocket
 
-Each question has a list of answers, and you mark one or more of them as correct. A question with one correct answer is shown as **Select one answer**. A question with several correct answers is shown as **Select all that apply**. A question with no correct answer is skipped.
+Varje fråga har en lista med svar, och du markerar ett eller flera av dem som rätt. En fråga med ett rätt svar visas som **Välj ett svar**. En fråga med flera rätta svar visas som **Välj alla som stämmer**. En fråga utan något rätt svar hoppas över.
 
-Click **Generate with AI** to have questions written from the page content. You choose between single answer and select-all-that-apply questions, preview the result and regenerate before inserting.
+Klicka på **Generera med AI** för att låta AI skriva frågor utifrån sidans innehåll. Du väljer mellan frågor med ett svar och frågor med flera rätta svar, förhandsgranskar resultatet och kan generera om innan du infogar frågorna.
 
-Learners pick their answers and click **Submit** to see whether they got everything right, then **Reset answers** to try again. Quiz block answers are not graded and not stored. For a graded quiz, use an [assignment](/platform/assignments) with a Quiz task.
+Eleverna väljer sina svar och klickar på **Skicka** för att se om allt blev rätt, och sedan på **Återställ svar** för att försöka igen. Svar i quizblock bedöms inte och sparas inte. Vill du ha ett quiz som bedöms använder du en [uppgift](/platform/assignments) med en deluppgift av typen Quiz.
 
-### Flipcard and Flashcard Grid
+### Vändkort och vändkortsrutnät
 
-A flipcard has a question, an answer, a color (10 to pick from), an alignment (left, center or right) and a size (small, medium or large). Learners click a card to flip it.
+Ett vändkort har en fråga, ett svar, en färg (10 att välja bland), en justering (vänster, mitten eller höger) och en storlek (liten, mellan eller stor). Eleverna klickar på kortet för att vända det.
 
-To lay cards out in a row, insert a **Flashcard Grid**, or select an existing flipcard and use **Group into Grid**. Inside a grid, use **Add Card** to add more cards and **Ungroup Cards** to turn them back into single cards.
+Vill du lägga korten på rad infogar du ett **Vändkortsrutnät**, eller markerar ett befintligt vändkort och väljer **Gruppera i rutnät**. I ett rutnät lägger du till fler kort med **Lägg till kort** och gör om dem till enskilda kort igen med **Avgruppera kort**.
 
-### Web Preview
+### Webbförhandsvisning
 
-Enter a **Website URL** and the block shows the page's title, description and image. You can turn on **Show button**, set its **Button label**, and choose **Open in-app popup (might not work on all websites)** to open the link in a popup instead of a new tab. You can also set the card's alignment.
+Ange en **Webbplats-URL** så visar blocket sidans titel, beskrivning och bild. Du kan slå på **Visa knapp**, ange en **Knapptext** och välja **Öppna popup i appen (fungerar kanske inte på alla webbplatser)** för att öppna länken i en popup i stället för i en ny flik. Du kan också ställa in kortets justering.
 
 ## Callouts
 
-| Block | What it does |
+| Block | Vad det gör |
 | --- | --- |
-| **Callout** | A highlighted box. Pick its type: **Info**, **Warning**, **Tip**, **Success** or **Error**. |
+| **Callout** | En markerad ruta. Välj typ: **Info**, **Varning**, **Tips**, **Lyckades** eller **Fel**. |
 
-## Dynamic content
+## Dynamiskt innehåll
 
-| Block | What it does |
+| Block | Vad det gör |
 | --- | --- |
-| **Variable** | A value each learner reads as their own, such as their first name or progress. |
-| **Conditional content**, **Show to a group**, **Unlock later**, **A/B test** | Blocks only some learners see. |
-| **Insert template**, **Save as template** | Reuse saved blocks and pages. |
+| **Variabel** | Ett värde som varje elev ser som sitt eget, till exempel sitt förnamn eller sina framsteg. |
+| **Villkorligt innehåll**, **Visa för en grupp**, **Lås upp senare**, **A/B-test** | Block som bara vissa elever ser. |
+| **Infoga mall**, **Spara som mall** | Återanvänd sparade block och sidor. |
 
-See [Dynamic Content & Templates](/platform/editor/dynamic-content).
+Se [Dynamiskt innehåll och mallar](/platform/editor/dynamic-content).
 
-## UI Elements
+## UI-element
 
-| Block | What it does |
+| Block | Vad det gör |
 | --- | --- |
-| **Divider** | A horizontal line between sections. Typing `---` also inserts one. |
-| **Badge** | A colored label with an optional emoji. |
-| **Button** | A clickable button that opens a link. You set the link, color and alignment. |
-| **User** | A card for a user from your organization. Enter their username and click **Load User**. |
-| **Embed** | Embed external content. See [Embed](#embed). |
+| **Avgränsare** | En vågrät linje mellan avsnitt. Du kan också skriva `---` för att infoga en. |
+| **Märke** | En färgad etikett med valfri emoji. |
+| **Knapp** | En klickbar knapp som öppnar en länk. Du anger länk, färg och justering. |
+| **Användare** | Ett kort som visar en användare i din organisation. Ange användarnamnet och klicka på **Ladda användare**. |
+| **Inbäddning** | Bädda in externt innehåll. Se [Inbäddning](#inbäddning). |
 
-### Embed
+### Inbäddning
 
-The Embed block takes either a URL or a full embed code (an `<iframe>` or embed script). It has shortcuts, each with a link to that service's embed instructions, for YouTube, GitHub, Replit, Spotify, Loom, Google Maps, CodePen, Canva, Notion, Google Docs, X, Figma and Giphy. You can also paste any embed URL directly.
+Blocket **Inbäddning** tar antingen en URL eller en hel inbäddningskod (en `<iframe>` eller ett inbäddningsskript). Det har genvägar för YouTube, GitHub, Replit, Spotify, Loom, Google Maps, CodePen, Canva, Notion, Google Docs, X, Figma och Giphy, var och en med en länk till tjänstens egen instruktion för inbäddning. Du kan också klistra in valfri inbäddnings-URL direkt.
 
-## Tables
+## Tabeller
 
-| Block | What it does |
+| Block | Vad det gör |
 | --- | --- |
-| **Table** | Inserts a 3 by 3 table with a header row. Use the toolbar to add a row below, add a column to the right, or delete the current row or column. Columns can be resized. |
+| **Tabell** | Infogar en tabell med 3 × 3 celler och en rubrikrad. Använd verktygsfältet för att lägga till en rad nedanför, lägga till en kolumn till höger eller radera aktuell rad eller kolumn. Du kan ändra kolumnernas bredd. |
 
-## Moving blocks
+## Flytta block
 
-Hover over a block and grab the handle on its left to drag it somewhere else on the page.
+Håll muspekaren över ett block och ta tag i handtaget till vänster om det för att dra blocket till en annan plats på sidan.

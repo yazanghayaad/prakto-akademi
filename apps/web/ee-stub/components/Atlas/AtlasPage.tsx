@@ -1,6 +1,13 @@
-// OSS stub: the Atlas page requires Enterprise Edition.
-import { notFound } from 'next/navigation'
+'use client'
 
-export default function AtlasPage(): never {
-  notFound()
+// Open-source Atlas (components/Atlas) in place of the Enterprise stub.
+import { Suspense } from 'react'
+import Atlas from '@components/Atlas/AtlasPage'
+
+export default function AtlasPage() {
+  return (
+    <Suspense fallback={null}>
+      <Atlas />
+    </Suspense>
+  )
 }

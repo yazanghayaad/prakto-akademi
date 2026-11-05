@@ -9,82 +9,54 @@ import PostHogProvider from '../components/Analytics/PostHogProvider'
 
 export const metadata = {
   title: {
-    default: 'LearnHouse Docs',
-    template: '%s – LearnHouse Docs',
+    default: 'Prakto Akademi – Dokumentation',
+    template: '%s – Prakto Akademi',
   },
   description:
-    'Official documentation for LearnHouse, the open-source learning management system (LMS). Guides for self-hosting, course creation, AI features, API reference, and more.',
-  keywords: [
-    'LearnHouse',
-    'open source LMS',
-    'learning management system',
-    'self-hosted LMS',
-    'course creation',
-    'LearnHouse documentation',
-    'LearnHouse docs',
-  ],
-  metadataBase: new URL('https://docs.learnhouse.app'),
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+    'Hjälp och guider för Prakto Akademi: kom igång, ta kurser, skapa kurser och lärvägar, uppgifter, AI-stöd och administration.',
+  keywords: ['Prakto', 'Prakto Akademi', 'praktik', 'utbildning', 'dokumentation', 'hjälp'],
+  metadataBase: new URL('https://prakto.se/docs/'),
+  robots: { index: true, follow: true },
   openGraph: {
     type: 'website',
-    locale: 'en_US',
-    url: 'https://docs.learnhouse.app',
-    siteName: 'LearnHouse Docs',
+    locale: 'sv_SE',
+    url: 'https://prakto.se/docs',
+    siteName: 'Prakto Akademi – Dokumentation',
     description:
-      'Official documentation for LearnHouse, the open-source learning management system (LMS). Guides for self-hosting, course creation, AI features, API reference, and more.',
+      'Hjälp och guider för Prakto Akademi: kom igång, ta kurser, skapa kurser och lärvägar, uppgifter, AI-stöd och administration.',
     images: [
       {
-        url: 'https://docs.learnhouse.app/img/pages/learnhouse-github.png',
-        alt: 'LearnHouse Docs',
-        width: 2051,
-        height: 1016,
+        url: 'https://prakto.se/docs/img/pages/prakto-academy.png',
+        alt: 'Prakto Akademi',
+        width: 1920,
+        height: 1080,
       },
     ],
   },
-  twitter: {
-    creator: '@getlearnhouse',
-    site: '@getlearnhouse',
-    card: 'summary_large_image',
-  },
   icons: {
-    icon: [
-      { url: '/favicons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-    ],
-    apple: '/favicons/apple-touch-icon.png',
+    icon: [{ url: '/docs/favicons/favicon.png', type: 'image/png' }],
+    apple: '/docs/favicons/apple-touch-icon.png',
   },
-  manifest: '/favicons/site.webmanifest',
+  manifest: '/docs/favicons/site.webmanifest',
 }
 
 export default async function RootLayout({ children }) {
   return (
-    <html lang="en" dir="ltr" suppressHydrationWarning>
+    <html lang="sv" dir="ltr" suppressHydrationWarning>
       <Head faviconGlyph="">
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@600;700;800;900&display=swap" rel="stylesheet" />
+        {/* Same faces as the academy itself: Source Sans 3 for text, Source Serif 4 for headings. */}
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400..700;1,400..700&family=Source+Serif+4:opsz,wght@8..60,500..700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
       <body>
         <PostHogProvider>
           <CustomNavbar />
           <Layout
             pageMap={await getPageMap()}
-            docsRepositoryBase="https://github.com/learnhouse/learnhouse/tree/dev/docs"
             sidebar={{ defaultMenuCollapseLevel: 2 }}
-            editLink="Edit this page on GitHub"
+            editLink={null}
             footer={<></>}
             navbar={<></>}
             nextThemes={{ forcedTheme: 'light', defaultTheme: 'light' }}

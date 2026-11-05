@@ -1,45 +1,24 @@
-import { Callout } from 'nextra/components'
+# E-post
 
-# Emails
+Prakto Akademi skickar e-post när något händer med ett konto eller ett medlemskap. Det finns inget aviseringscenter i appen, så allt nedan kommer som e-post.
 
-LearnHouse sends email for account and membership events. There is no in-app inbox or notification center: everything below arrives by email.
+## E-post om konto och medlemskap
 
-## Account and membership emails
-
-| Email | Sent when |
+| E-post | Skickas när |
 | --- | --- |
-| Account created | Someone signs up |
-| Email verification | A new account must confirm its address (LearnHouse Cloud), or the user asks for a new link |
-| Magic login link | A member asks to sign in with a [magic link](/platform/users/authentication) |
-| Password reset | A member uses **Forgot password?** |
-| Invitation | An admin [invites someone by email](/platform/users/members-and-invites#inviting-people-by-email) |
-| Joined organization | An existing account becomes a member of another organization. New signups get the account created email instead. |
-| Role changed | An admin changes a member's role |
-| Email changed | The address on an account is changed. The notice goes to the previous address. |
-| Organization created or deleted | You create an organization, or an organization you administer is deleted |
-| Account deleted | An account is deleted |
+| Kontot har skapats | Någon registrerar sig |
+| Bekräfta e-postadressen | Ett nytt konto ska bekräfta sin adress, eller användaren ber om en ny länk |
+| Magisk inloggningslänk | En medlem vill logga in med en [magisk länk](/platform/users/authentication) |
+| Återställ lösenordet | En medlem klickar på **Glömt lösenordet?** |
+| Inbjudan | En admin [bjuder in någon via e-post](/platform/users/members-and-invites#bjud-in-via-e-post) |
+| Ny medlem i organisationen | Ett befintligt konto blir medlem i organisationen. Nya konton får i stället meddelandet om att kontot har skapats. |
+| Rollen har ändrats | En admin byter roll för en medlem |
+| E-postadressen har ändrats | Adressen på ett konto ändras. Meddelandet skickas till den tidigare adressen. |
+| Organisationen har raderats | En organisation som du är admin för raderas |
+| Kontot har raderats | Ett konto raderas |
 
-These emails can't be turned off. They carry your organization's branding:
+De här meddelandena går inte att stänga av. De har din organisations utseende:
 
-- **Sender name**: the **Email Sender Name** from [organization settings](/platform/organizations/settings#general). The sending address stays the platform's own, so SPF and DKIM keep working. If you leave it empty, emails come from "LearnHouse".
-- **Language**: your organization's **Default Language**.
-- **Logo and color**: your square logo (or your wide logo if there is no square one) and your primary color from **Branding**.
-- **"Powered by LearnHouse"** line: follows your watermark setting on LearnHouse Cloud and the Enterprise Edition. Open source instances always show it.
-
-## Tips for organization admins (LearnHouse Cloud)
-
-On LearnHouse Cloud, organization admins also receive occasional tips about their organization: for example a nudge to publish a course still in draft, a note that a published course has no learners yet, a heads-up when the organization nears a plan limit, or a message to celebrate the first enrollment or completion. Learners never receive these.
-
-- They are sent once a day, at most 2 per week per admin, and at least 48 hours apart.
-- Most are skipped when the organization has been active in the last 3 days.
-- Self-hosted instances don't send them.
-
-### Unsubscribing
-
-Every tip email has an unsubscribe link. It opens a page that asks you to confirm (**Confirm unsubscribe**), so a mail scanner opening the link can't unsubscribe you by accident. Mail clients that support one-click unsubscribe can also use it directly. Unsubscribing stops these tips only: account emails such as password resets and invitations still arrive.
-
-Addresses that hard-bounce or report a tip as spam stop receiving tips automatically.
-
-<Callout type="info">
-Self-hosted instances need an email provider to send any of the emails above. See [Email configuration](/self-hosting/configuration/email).
-</Callout>
+- **Avsändarnamn**: det **Avsändarnamn för e-post** som du anger i [organisationsinställningarna](/platform/organizations/settings#allmänt). Själva avsändaradressen är alltid plattformens egen. Lämnar du fältet tomt används standardnamnet.
+- **Språk**: organisationens **Standardspråk**.
+- **Logotyp och färg**: din kvadratiska logotyp (eller den breda om du inte har någon kvadratisk) och din primärfärg från **Varumärke**.

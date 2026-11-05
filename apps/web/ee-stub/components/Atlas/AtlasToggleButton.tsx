@@ -1,4 +1,2 @@
-// OSS stub: Atlas requires Enterprise Edition.
-export default function AtlasToggleButton() {
-  return null
-}
+// Open-source Atlas (components/Atlas) in place of the Enterprise stub.
+export { default } from '@components/Atlas/AtlasToggleButton'

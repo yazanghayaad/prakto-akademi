@@ -10,10 +10,17 @@ import { toEmbedUrl } from '@/lib/media/embedUrl'
 import { urlEmbedSandboxFor } from '@/lib/media/embedSanitize'
 import { safeExternalUrl } from '@components/Dashboard/Library/resourceLink'
 import InlineAudioPlayer from '@components/Objects/Media/InlineAudioPlayer'
+import { canPreview } from '@components/Objects/Media/FilePreview/formats'
 
 // The player is client-only (media elements, blob URLs); keep it out of the server bundle.
 const LearnHousePlayer = dynamic(
   () => import('@components/Objects/Activities/Video/LearnHousePlayer'),
+  { ssr: false }
+)
+
+// Office, CSV, text, notebook and zip previews parse the file in the browser.
+const FilePreview = dynamic(
+  () => import('@components/Objects/Media/FilePreview/FilePreview'),
   { ssr: false }
 )
 
@@ -171,6 +178,11 @@ export default function MediaViewer({
         className={`w-full ${maxHeightClass} h-[70vh] rounded-xl border border-gray-200 bg-white`}
       />
     )
+  }
+
+  const format = (resource?.file_format || '').toLowerCase().replace(/^\./, '')
+  if (canPreview(format)) {
+    return <FilePreview url={fileUrl} format={format} name={name} maxHeightClass={maxHeightClass} />
   }
 
   return (

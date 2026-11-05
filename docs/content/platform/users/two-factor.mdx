@@ -1,64 +1,64 @@
 import { Callout, Steps } from 'nextra/components'
 
-# Two-Factor Authentication
+# Tvåfaktorsautentisering
 
-Two-factor authentication (2FA) asks for a one-time code from an authenticator app every time you sign in. LearnHouse uses standard TOTP codes, so any authenticator app works (Google Authenticator, 1Password, Authy, and so on). There are no SMS or email codes.
+Med tvåfaktorsautentisering (2FA) behöver du ange en engångskod från en autentiseringsapp varje gång du loggar in. Prakto Akademi använder vanliga TOTP-koder, så alla autentiseringsappar fungerar (Google Authenticator, 1Password, Authy och så vidare). Det finns inga koder via sms eller e-post.
 
-2FA applies to password, magic link and Google sign-ins. After the first step, you have 5 minutes to enter the code.
+2FA gäller för inloggning med lösenord, magisk länk och Google. Efter det första steget har du 5 minuter på dig att ange koden.
 
-## Turning on 2FA for your account
+## Slå på 2FA för ditt konto
 
 <Steps>
 
-### Open your security settings
+### Öppna säkerhetsinställningarna
 
-Go to your account settings and open **Security**. Under **Two-factor authentication**, click **Enable**.
+Öppna **Kontoinställningar** och gå till **Säkerhet**. Under **Tvåfaktorsautentisering** klickar du på **Aktivera**.
 
-### Confirm your password
+### Bekräfta ditt lösenord
 
-If your account has a password, enter it and click **Continue**.
+Om ditt konto har ett lösenord skriver du in det och klickar på **Fortsätt**.
 
-### Scan the QR code
+### Skanna QR-koden
 
-Scan the code with your authenticator app. If you cannot scan it, use **Or enter this setup key manually** and **Copy setup key**.
+Skanna koden med din autentiseringsapp. Om du inte kan skanna den använder du **Eller ange den här konfigurationsnyckeln manuellt** och **Kopiera konfigurationsnyckel**.
 
-### Enter a code
+### Ange en kod
 
-Type the 6-digit code your app shows into **Authentication code** and click **Verify and enable**.
+Skriv den sexsiffriga koden som appen visar i **Autentiseringskod** och klicka på **Verifiera och aktivera**.
 
-### Save your backup codes
+### Spara dina reservkoder
 
-LearnHouse shows 10 backup codes. This is the only time these codes will be shown, so use **Copy all** or **Download .txt**, tick **I have saved these codes somewhere safe.** and click **Done**.
+Du får 10 reservkoder. Det här är enda gången koderna visas, så använd **Kopiera alla** eller **Ladda ner .txt**, kryssa i **Jag har sparat dessa koder på ett säkert ställe.** och klicka på **Klar**.
 
 </Steps>
 
-Each backup code works once, in place of an app code. The Security page shows how many you have left and warns you when 3 or fewer remain. **Regenerate backup codes** replaces the whole set (it asks for a code from your app).
+Varje reservkod fungerar en gång i stället för en kod från appen. På sidan **Säkerhet** ser du hur många du har kvar, och du får en varning när det bara finns 3 eller färre. **Skapa nya reservkoder** ersätter hela uppsättningen (du behöver ange en kod från appen).
 
-To turn 2FA off, click **Disable** and confirm with your password and an app code or a backup code. This also deletes your backup codes.
+För att stänga av 2FA klickar du på **Inaktivera** och bekräftar med ditt lösenord och en kod från appen eller en reservkod. Då raderas också dina reservkoder.
 
 <Callout type="warning">
-If you lose your phone and your backup codes, an organization admin can reset your 2FA from the **Two-factor** tab (see below).
+Om du tappar bort både telefonen och reservkoderna kan en admin i organisationen återställa din 2FA från fliken **Tvåfaktor** (se nedan).
 </Callout>
 
-## Requiring 2FA in your organization
+## Kräva 2FA i organisationen
 
-Go to **Users** → **Two-factor** and turn on **Require two-factor authentication**.
+Gå till **Användare** → **Tvåfaktor** och slå på **Kräv tvåfaktorsautentisering**.
 
-| Setting | Options |
+| Inställning | Alternativ |
 | --- | --- |
-| **Grace period** | **Immediately**, **7 days**, **14 days** or **30 days**. New members get the same window, counted from the day they join. |
-| **Exempt users who sign in via Google or SSO** | On by default. Their identity provider already handles multi-factor. |
+| **Respitperiod** | **Omedelbart**, **7 dagar**, **14 dagar** eller **30 dagar**. Nya medlemmar får lika lång tid, räknat från dagen de går med. |
+| **Undanta användare som loggar in via Google eller SSO** | På som standard. Deras inloggning sköts redan av en extern tjänst som har egna säkerhetssteg. |
 
-<img src="/img/pages/users/two-factor-policy.webp" alt="The Two-factor tab with Require two-factor authentication on, a 14 days grace period and the Google or SSO exemption ticked" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/users/two-factor-policy.webp" alt="Fliken Tvåfaktor med Kräv tvåfaktorsautentisering påslaget, en respitperiod på 14 dagar och undantaget för extern inloggning ikryssat" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-When the grace period ends, members without 2FA are blocked from your organization until they enroll. They keep their account and access to any other organization they belong to, and get access back as soon as they set up 2FA. Turning the requirement off restores access immediately.
+När respitperioden är slut stängs medlemmar utan 2FA ute från organisationen tills de har slagit på det. De behåller sitt konto och får tillbaka åtkomsten så snart de har ställt in 2FA. Stänger du av kravet får alla tillbaka åtkomsten direkt.
 
-Saving an active policy again does not restart anyone's countdown. Turning it off and on again does.
+Om du sparar en aktiv policy igen börjar ingens nedräkning om. Stänger du av kravet och slår på det igen börjar nedräkningen om.
 
-### Two-factor coverage
+### Tvåfaktors täckning
 
-The **Two-factor coverage** panel shows how many members have 2FA, with counts for **Enrolled**, **Exempt (external sign-in)** and **Would be blocked**, and a list of members with members who are not enrolled at the top. Use **Reset 2FA** on a member to clear their second factor, for example after they lose their device.
+Panelen **Tvåfaktors täckning** visar hur många medlemmar som har 2FA, med antal för **Registrerade**, **Undantagna (extern inloggning)** och **Skulle blockeras**. Under det finns en lista över medlemmarna, där de som inte har slagit på 2FA står först. Klicka på **Återställ 2FA** hos en medlem för att rensa medlemmens andra faktor, till exempel om hen har tappat bort sin enhet.
 
 <Callout type="info">
-Only the **Admin** role can change the policy, and you must have 2FA enabled on your own account before you can require it for others.
+Bara rollen **Admin** kan ändra policyn, och du måste ha slagit på 2FA för ditt eget konto innan du kan kräva det av andra.
 </Callout>

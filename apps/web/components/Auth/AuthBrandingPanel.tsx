@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import learnhouseIcon from 'public/learnhouse_bigicon_1.png'
 import { getOrgAuthBackgroundMediaDirectory } from '@services/media/media'
-import OrgSquareLogo from '@components/Objects/Org/OrgSquareLogo'
+import OrgSquareLogo, { getOrgWideLogoUrl, useTrimmedLogo } from '@components/Objects/Org/OrgSquareLogo'
 import { getUriWithOrg } from '@services/config/config'
 import { cn } from '@/lib/utils'
 import { usePlan } from '@components/Hooks/usePlan'
@@ -77,6 +77,7 @@ export default function AuthBrandingPanel({ org, welcomeText, title, subtitle }:
   }
 
   const displayMessage = welcome_message || welcomeText || ''
+  const wideLogo = useTrimmedLogo(getOrgWideLogoUrl(org))
   // No-org platform copy (defaults mirror the platform login illustration).
   const noOrgTitle = title || t('auth.image_title_login')
   const noOrgSubtitle =
@@ -156,7 +157,8 @@ export default function AuthBrandingPanel({ org, welcomeText, title, subtitle }:
                   height={30}
                   className={cn(
                     "transition-opacity hover:opacity-100",
-                    text_color === 'light' ? "opacity-60 invert" : "opacity-40"
+                    // brightness-0 first: a coloured mark would invert to its complement (wine → teal).
+                    text_color === 'light' ? "opacity-60 brightness-0 invert" : "opacity-40"
                   )}
                 />
               </Link>
@@ -182,8 +184,15 @@ export default function AuthBrandingPanel({ org, welcomeText, title, subtitle }:
                   "flex flex-col items-center text-center gap-6",
                   text_color === 'light' ? "text-white" : "text-gray-900"
                 )}>
-                  {/* Organization logo */}
+                  {/* Organization logo: a wordmark gets a wide plate so it reads
+                      in full; otherwise the square tile. */}
                   <Link prefetch href={getUriWithOrg(org?.slug, '/')}>
+                    {wideLogo ? (
+                      // The plate hugs the (trimmed) image, so the padding alone sets the margins.
+                      <div className="rounded-lg bg-white px-7 py-5 shadow-sm ring-1 ring-inset ring-black/5">
+                        <img src={wideLogo} alt={org?.name || ''} className="block h-auto w-auto max-h-14 max-w-[240px]" />
+                      </div>
+                    ) : (
                     <div className="w-24 h-24 rounded-2xl ring-1 ring-inset ring-white/10 bg-white flex items-center justify-center overflow-hidden">
                       <OrgSquareLogo
                         org={org}
@@ -206,6 +215,7 @@ export default function AuthBrandingPanel({ org, welcomeText, title, subtitle }:
                         }
                       />
                     </div>
+                    )}
                   </Link>
 
                   {/* Text content */}

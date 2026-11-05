@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { CaretLeft, CaretRight, ListBullets, CheckCircle, Circle, Flag } from '@phosphor-icons/react'
 import { Dialog, DialogContent, DialogTitle } from '@components/ui/dialog'
 import { getUriWithOrg } from '@services/config/config'
+import { useCompleteActivity, completesOnNext } from '@components/Pages/Activity/useCompleteActivity'
 
 interface MobileActivityBarProps {
   course: any
@@ -30,6 +31,7 @@ const clean = (uuid?: string) => uuid?.replace('activity_', '') ?? ''
 export default function MobileActivityBar(props: MobileActivityBarProps) {
   const { t } = useTranslation()
   const router = useRouter()
+  const completeActivity = useCompleteActivity()
   const [outlineOpen, setOutlineOpen] = useState(false)
   const cleanCourseUuid = props.course?.course_uuid?.replace('course_', '')
   const currentId = clean(props.currentActivityId)
@@ -113,7 +115,12 @@ export default function MobileActivityBar(props: MobileActivityBarProps) {
           <div className="flex min-w-0 flex-1 justify-center">{props.children}</div>
           <button
             type="button"
-            onClick={() => router.push(next ? hrefFor(next) : endHref)}
+            onClick={() => {
+              // Prakto: moving on completes a reading item (videos complete by watching).
+              const current = index >= 0 ? flat[index] : null
+              if (completesOnNext(current)) completeActivity(props.course, current)
+              router.push(next ? hrefFor(next) : endHref)
+            }}
             disabled={!next && !isLast}
             className={`lh-press flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors ${
               dark ? 'bg-white text-neutral-900' : 'bg-neutral-900 text-white'

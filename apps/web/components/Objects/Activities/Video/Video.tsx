@@ -7,6 +7,7 @@ import { getUriWithOrg } from '@services/config/config'
 import { getCourseThumbnailMediaDirectory } from '@services/media/media'
 import LearnHousePlayer, { type PlayerNavItem } from './LearnHousePlayer'
 import VideoChapters from './VideoChapters'
+import { useCompleteActivity, VIDEO_COMPLETE_SECONDS_BEFORE_END } from '@components/Pages/Activity/useCompleteActivity'
 import { positiveIntParam } from '@/lib/copilot/sources'
 import {
   isActivityHlsReady,
@@ -76,6 +77,35 @@ function VideoActivity({ activity, course, orgUuid }: VideoActivityProps) {
   const router = useRouter()
   const { t } = useTranslation()
   const [videoEl, setVideoEl] = React.useState<HTMLVideoElement | null>(null)
+
+  // Prakto: a video counts as done once it has played to within
+  // VIDEO_COMPLETE_SECONDS_BEFORE_END of its end (or of its configured end
+  // time). Moving on without watching does not complete it.
+  const completeActivity = useCompleteActivity()
+  const completedRef = React.useRef(false)
+  React.useEffect(() => {
+    completedRef.current = false
+  }, [activity?.activity_uuid])
+  const reachedEnd = React.useCallback(
+    (current: number, duration: number) => {
+      const end = activity?.details?.endTime || duration
+      if (!end || !isFinite(end) || completedRef.current) return
+      if (current >= Math.max(0, end - VIDEO_COMPLETE_SECONDS_BEFORE_END)) {
+        completedRef.current = true
+        completeActivity(course, activity)
+      }
+    },
+    [activity, course, completeActivity]
+  )
+  React.useEffect(() => {
+    if (!videoEl) return
+    const onTime = () => reachedEnd(videoEl.currentTime, videoEl.duration)
+    videoEl.addEventListener('timeupdate', onTime)
+    return () => videoEl.removeEventListener('timeupdate', onTime)
+  }, [videoEl, reachedEnd])
+  // YouTube has no timeupdate event: poll once a second while it plays.
+  const ytTimer = React.useRef<ReturnType<typeof setInterval> | null>(null)
+  React.useEffect(() => () => { if (ytTimer.current) clearInterval(ytTimer.current) }, [])
   const chapters = React.useMemo(() => resolveActivityChapters(activity), [activity])
   const resolvedOrgUuid = orgUuid || org?.org_uuid
   const [videoId, setVideoId] = React.useState('')
@@ -184,7 +214,6 @@ function VideoActivity({ activity, course, orgUuid }: VideoActivityProps) {
                       key={src}
                       src={src}
                       title={activity.name}
-                      ambient
                       prevItem={prevItem}
                       nextItem={nextItem}
                       isHls={isHls}
@@ -218,7 +247,7 @@ function VideoActivity({ activity, course, orgUuid }: VideoActivityProps) {
           )}
           {activity.activity_sub_type === 'SUBTYPE_VIDEO_YOUTUBE' && (
             <div className="w-full">
-              <div className="relative w-full aspect-video overflow-hidden rounded-[20px] ring-1 ring-white/10 max-sm:rounded-none max-sm:ring-0">
+              <div className="relative w-full aspect-video overflow-hidden rounded-lg ring-1 ring-black/5 max-sm:rounded-none max-sm:ring-0">
                 <YouTube
                   className="w-full h-full"
                   opts={{
@@ -239,6 +268,13 @@ function VideoActivity({ activity, course, orgUuid }: VideoActivityProps) {
                     if (activity.details?.startTime) {
                       event.target.seekTo(activity.details.startTime, true)
                     }
+                  }}
+                  onStateChange={(event) => {
+                    if (ytTimer.current) clearInterval(ytTimer.current)
+                    if (event.data !== 1) return // 1 = playing
+                    ytTimer.current = setInterval(() => {
+                      reachedEnd(event.target.getCurrentTime(), event.target.getDuration())
+                    }, 1000)
                   }}
                 />
               </div>

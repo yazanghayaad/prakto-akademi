@@ -4,7 +4,7 @@ import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Search } from 'nextra/components'
-import { GithubLogo, DiscordLogo, Code, ArrowUpRight, List, X, Plug, Globe, GraduationCap, BracketsCurly } from '@phosphor-icons/react/dist/ssr'
+import { ArrowUpRight, List, X, Globe, RocketLaunch, AppWindow, LinkedinLogo, ChatCircleDots } from '@phosphor-icons/react/dist/ssr'
 
 function Navbar() {
   const { resolvedTheme } = useTheme()
@@ -29,7 +29,20 @@ function Navbar() {
     return () => { document.body.style.overflow = '' }
   }, [mobileMenuOpen])
 
-  const logoSrc = '/img/logos/learnhouse-dark.svg'
+  const logoSrc = '/docs/img/logos/prakto.png'
+
+  // Prakto: the academy's own destinations instead of LearnHouse's.
+  const internal = [
+    { href: '/getting-started', label: 'Kom igång', Icon: RocketLaunch },
+    { href: '/platform', label: 'Plattformen', Icon: AppWindow },
+  ]
+  const external = [
+    { href: 'https://prakto.se/', label: 'Prakto webbplats', Icon: Globe },
+  ]
+  const right = [
+    { href: 'https://www.linkedin.com/showcase/prakto-1', label: 'LinkedIn', Icon: LinkedinLogo },
+    { href: 'https://status.prakto.se/bugs/new', label: 'Rapportera problem', Icon: ChatCircleDots },
+  ]
 
   return (
     <>
@@ -39,89 +52,46 @@ function Navbar() {
           <div className="lh-navbar-left">
             <Link href="/" className="lh-navbar-logo">
               {mounted ? (
-                <img src={logoSrc} alt="LearnHouse" />
+                <img src={logoSrc} alt="Prakto Akademi" />
               ) : (
-                <div style={{ width: 100, height: 20 }} />
+                <div style={{ width: 82, height: 20 }} />
               )}
             </Link>
 
             <span className="lh-navbar-badge">docs</span>
 
             <nav className="lh-navbar-nav lh-hide-mobile">
-              <Link
-                href="/developers"
-                className="lh-navbar-nav-item"
-              >
-                <Code size={15} weight="fill" />
-                Developers
-              </Link>
-              <Link
-                href="/reference"
-                className="lh-navbar-nav-item"
-              >
-                <BracketsCurly size={15} weight="fill" />
-                API Reference
-              </Link>
-              <a
-                href="https://university.learnhouse.io"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="lh-navbar-nav-item"
-              >
-                <GraduationCap size={15} weight="fill" />
-                Learn
-                <ArrowUpRight size={11} weight="bold" />
-              </a>
-              <a
-                href="https://learnhouse.app/integrations"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="lh-navbar-nav-item"
-              >
-                <Plug size={15} weight="fill" />
-                Integrations
-                <ArrowUpRight size={11} weight="bold" />
-              </a>
-              <a
-                href="https://learnhouse.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="lh-navbar-nav-item"
-              >
-                <Globe size={15} weight="fill" />
-                Website
-                <ArrowUpRight size={11} weight="bold" />
-              </a>
+              {internal.map(({ href, label, Icon }) => (
+                <Link key={href} href={href} className="lh-navbar-nav-item">
+                  <Icon size={15} weight="fill" />
+                  {label}
+                </Link>
+              ))}
+              {external.map(({ href, label, Icon }) => (
+                <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="lh-navbar-nav-item">
+                  <Icon size={15} weight="fill" />
+                  {label}
+                  <ArrowUpRight size={11} weight="bold" />
+                </a>
+              ))}
             </nav>
           </div>
 
           {/* Right: search + links + hamburger */}
           <div className="lh-navbar-right">
-            <Search className="lh-navbar-search" placeholder="Search docs..." />
-            <a
-              href="https://github.com/learnhouse/learnhouse"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="lh-navbar-nav-item lh-hide-mobile"
-            >
-              <GithubLogo size={16} weight="fill" />
-              GitHub
-            </a>
-            <a
-              href="https://discord.gg/CMyZjjYZ6x"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="lh-navbar-nav-item lh-hide-mobile"
-            >
-              <DiscordLogo size={16} weight="fill" />
-              Discord
-            </a>
+            <Search className="lh-navbar-search" placeholder="Sök i dokumentationen…" />
+            {right.map(({ href, label, Icon }) => (
+              <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="lh-navbar-nav-item lh-hide-mobile">
+                <Icon size={16} weight="fill" />
+                {label}
+              </a>
+            ))}
 
             {/* Mobile hamburger */}
             <button
               className="lh-mobile-menu-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-label={mobileMenuOpen ? 'Stäng menyn' : 'Öppna menyn'}
             >
               {mobileMenuOpen ? <X size={20} weight="bold" /> : <List size={20} weight="bold" />}
             </button>
@@ -137,37 +107,19 @@ function Navbar() {
       {/* Mobile sidebar drawer */}
       <div className={`lh-mobile-drawer ${mobileMenuOpen ? 'lh-mobile-drawer-open' : ''}`}>
         <div className="lh-mobile-drawer-links">
-          <Link href="/developers" className="lh-mobile-drawer-link" onClick={() => setMobileMenuOpen(false)}>
-            <Code size={16} weight="fill" />
-            Developers
-          </Link>
-          <Link href="/reference" className="lh-mobile-drawer-link" onClick={() => setMobileMenuOpen(false)}>
-            <BracketsCurly size={16} weight="fill" />
-            API Reference
-          </Link>
-          <a href="https://university.learnhouse.io" target="_blank" rel="noopener noreferrer" className="lh-mobile-drawer-link">
-            <GraduationCap size={16} weight="fill" />
-            Learn
-            <ArrowUpRight size={12} weight="bold" />
-          </a>
-          <a href="https://learnhouse.app/integrations" target="_blank" rel="noopener noreferrer" className="lh-mobile-drawer-link">
-            <Plug size={16} weight="fill" />
-            Integrations
-            <ArrowUpRight size={12} weight="bold" />
-          </a>
-          <a href="https://learnhouse.app" target="_blank" rel="noopener noreferrer" className="lh-mobile-drawer-link">
-            <Globe size={16} weight="fill" />
-            Website
-            <ArrowUpRight size={12} weight="bold" />
-          </a>
-          <a href="https://github.com/learnhouse/learnhouse" target="_blank" rel="noopener noreferrer" className="lh-mobile-drawer-link">
-            <GithubLogo size={16} weight="fill" />
-            GitHub
-          </a>
-          <a href="https://discord.gg/CMyZjjYZ6x" target="_blank" rel="noopener noreferrer" className="lh-mobile-drawer-link">
-            <DiscordLogo size={16} weight="fill" />
-            Discord
-          </a>
+          {internal.map(({ href, label, Icon }) => (
+            <Link key={href} href={href} className="lh-mobile-drawer-link" onClick={() => setMobileMenuOpen(false)}>
+              <Icon size={16} weight="fill" />
+              {label}
+            </Link>
+          ))}
+          {[...external, ...right].map(({ href, label, Icon }) => (
+            <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="lh-mobile-drawer-link">
+              <Icon size={16} weight="fill" />
+              {label}
+              <ArrowUpRight size={12} weight="bold" />
+            </a>
+          ))}
         </div>
         <div className="lh-mobile-drawer-sidebar" id="mobile-sidebar-mount" />
       </div>

@@ -1,51 +1,25 @@
-import { Callout } from 'nextra/components'
+# Användare och åtkomst
 
-# Users and Access
+Alla som använder Prakto Akademi har ett eget konto. I organisationen har varje medlem en roll, och rollen bestämmer vad medlemmen kan se och göra.
 
-Every person in LearnHouse has one account and can belong to several organizations. Inside each organization they hold one role, which decides what they can see and do there.
+Du hanterar personer under **Användare** i adminpanelens sidomeny. Sidan har de här flikarna:
 
-<YouTube video="growth-4" />
+| Flik | Vad du gör där |
+| --- | --- |
+| **Användare** | Söker, filtrerar och exporterar medlemmar, byter roller, tar bort personer och öppnar elevstatistik |
+| **Användargrupper** | Samlar medlemmar i grupper och ger gruppen åtkomst till kurser och annat innehåll |
+| **Roller** | Skapar egna roller med egna behörigheter |
+| **Registreringar och inbjudningskoder** | Väljer om vem som helst får registrera sig eller bara inbjudna, skapar inbjudningskoder och lägger till egna registreringsfält |
+| **Bjud in medlemmar** | Bjuder in personer via e-post |
+| **Inloggning** | Väljer vilka inloggningsmetoder medlemmarna får använda |
+| **Tvåfaktor** | Kräver tvåfaktorsautentisering för medlemmarna |
 
-You manage people from **Users** in the dashboard sidebar. The page has these tabs:
+## I det här avsnittet
 
-| Tab | What you do there | Cloud plan |
-| --- | --- | --- |
-| **Users** | Search, filter and export members, change roles, remove people, open learner analytics | All plans |
-| **UserGroups** | Group members and give the group access to courses and other content | Standard and above |
-| **Roles** | Create custom roles with their own permissions | Pro and above |
-| **Signups & Invite Codes** | Choose open or invite-only signup, create invite codes, add custom signup fields | All plans |
-| **Invite Members** | Invite people by email | All plans |
-| **Sign-in** | Choose which sign-in methods members may use | All plans |
-| **Two-factor** | Require two-factor authentication for members | All plans |
-| **Audit Logs** | See who did what in the organization | Enterprise |
-
-Self-hosted instances have no plan limits. Audit logs need the [Enterprise Edition](/enterprise).
-
-## Member limits on LearnHouse Cloud
-
-Each plan includes a number of members and admin seats. An admin seat is a member whose role can open the dashboard (Admin, Maintainer and Instructor by default, or a custom role with dashboard access).
-
-| Plan | Members | Admin seats |
-| --- | --- | --- |
-| Free | 10 | 1 |
-| Personal | 1 | 1 |
-| Personal Family | 4 | 4 |
-| Standard | 200 | 2 |
-| Pro | 500 | 10 |
-| Enterprise | Unlimited | 100 |
-
-Pending invitations count toward the member limit. When an organization has more members than its plan includes, the **Users** tab shows a badge such as "3 beyond your plan". Only members active in the current month are counted.
-
-## In this section
-
-- [Members & Invites](/platform/users/members-and-invites): the Users list, inviting people, invite codes and signup settings.
-- [User Groups](/platform/users/user-groups): grant access to content by group.
-- [Roles & Permissions](/platform/users/roles-and-permissions): the default roles and custom roles.
-- [Authentication](/platform/users/authentication): sign-in methods, magic links, sessions and security limits.
-- [Two-Factor Authentication](/platform/users/two-factor): set up 2FA on your account and require it for your organization.
-- [Learner Analytics](/platform/users/learner-analytics): one learner's full record.
-- [Emails](/platform/users/emails): the emails LearnHouse sends and how unsubscribing works.
-
-<Callout type="info">
-Enterprise customers can also sign members in through their identity provider. See [Single Sign-On](/enterprise/sso).
-</Callout>
+- [Medlemmar och inbjudningar](/platform/users/members-and-invites): användarlistan, inbjudningar, inbjudningskoder och inställningar för registrering.
+- [Användargrupper](/platform/users/user-groups): ge åtkomst till innehåll per grupp.
+- [Roller och behörigheter](/platform/users/roles-and-permissions): de förinställda rollerna och egna roller.
+- [Inloggning](/platform/users/authentication): inloggningsmetoder, magiska länkar, sessioner och säkerhetsgränser.
+- [Tvåfaktorsautentisering](/platform/users/two-factor): slå på tvåfaktorsautentisering för ditt konto och kräv det i organisationen.
+- [Elevstatistik](/platform/users/learner-analytics): allt om en enskild elev på ett ställe.
+- [E-post](/platform/users/emails): e-postmeddelandena som Prakto Akademi skickar.

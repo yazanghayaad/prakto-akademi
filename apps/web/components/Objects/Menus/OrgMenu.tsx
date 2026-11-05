@@ -1,10 +1,10 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
 import { useMessaging, useMessagingEnabled } from '@components/Messaging/MessagingProvider'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getUriWithOrg } from '@services/config/config'
+import { isSelfSignupDisabled } from '@services/config/signup'
 import { HeaderProfileBox } from '@components/Security/HeaderProfileBox'
 import MenuLinks from './OrgMenuLinks'
 import { MobileTabBar, OPEN_MOBILE_MORE_EVENT } from './MobileNav'
@@ -27,8 +27,9 @@ import {
   Signpost,
   ChatsCircle,
   CalendarDots,
+  LinkedinLogo,
 } from '@phosphor-icons/react'
-import { DiscordIcon } from '@components/Objects/Icons/DiscordIcon'
+import { HELP_LINKS } from '@/lib/helpLinks'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,13 +53,6 @@ import { useLHAnalytics, AnalyticsEvent } from '@services/analytics'
 import { Keys } from '@components/Objects/Shortcuts/Kbd'
 import { useShowLearnHouseBranding } from '@components/Hooks/useLearnHouseBranding'
 
-// Only shows on demand (feedback button), so keep it out of every page's
-// initial bundle.
-const FeedbackModal = dynamic(
-  () => import('@components/Objects/Modals/FeedbackModal').then((m) => m.FeedbackModal),
-  { ssr: false }
-)
-
 export const OrgMenu = (props: any) => {
   const orgslug = props.orgslug
   const session = useLHSession() as any;
@@ -69,9 +63,6 @@ export const OrgMenu = (props: any) => {
   const pathname = usePathname()
   const { t } = useTranslation()
   const { rights } = useAdminStatus()
-  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false)
-  // Mounted on first open and kept, so the close animation and draft survive.
-  const [feedbackModalMounted, setFeedbackModalMounted] = useState(false)
   const { isVisible: isJoinBannerVisible } = useJoinBannerVisible()
   const { track } = useLHAnalytics()
 
@@ -84,7 +75,11 @@ export const OrgMenu = (props: any) => {
   // Get primary color from org config (v2: customization.general.color, v1: general.color)
   const config = org?.config?.config
   const primaryColor = config?.customization?.general?.color || config?.general?.color || ''
-  const colors = getMenuColorClasses(primaryColor)
+  // Prakto: the header is always a light paper bar with a hairline below. The
+  // org colour is used as an accent (a thin rule along the top edge) instead of
+  // flooding the whole bar, which read heavy on every page.
+  const headerColor = ''
+  const colors = getMenuColorClasses(headerColor)
   const showBranding = useShowLearnHouseBranding()
 
   // Filter dashboard menu items by resolved_features from API
@@ -139,10 +134,10 @@ export const OrgMenu = (props: any) => {
       <div className="backdrop-blur-lg h-[60px] blur-3xl" style={{ zIndex: 'var(--z-behind)', marginTop: topOffset }}></div>
       <nav
         aria-label={t('dashboard.nav.top_navigation')}
-        className={`backdrop-blur-lg fixed start-0 end-0 h-[60px] ${!primaryColor ? 'bg-white/90 nice-shadow' : ''}`}
+        className="backdrop-blur-lg fixed start-0 end-0 h-[60px] bg-paper/95 border-b border-gray-200"
         style={{
           zIndex: 'var(--z-nav)',
-          backgroundColor: primaryColor || undefined,
+          borderTop: `3px solid ${primaryColor || 'var(--color-wine-900)'}`,
           top: topOffset
         }}
       >
@@ -166,7 +161,7 @@ export const OrgMenu = (props: any) => {
               </Link>
             </div>
             <div className="hidden lg:flex">
-              <MenuLinks orgslug={orgslug} primaryColor={primaryColor} />
+              <MenuLinks orgslug={orgslug} primaryColor={headerColor} />
             </div>
           </div>
 
@@ -175,7 +170,7 @@ export const OrgMenu = (props: any) => {
               the profile name inside 1536px: below 1780px the search gives
               way (icon-only from 1280 to 1535) so nothing is pushed off-screen. */}
           <div className="lh-header-search hidden lg:flex flex-1 min-w-0 min-[1780px]:min-w-auto justify-center max-w-lg px-4">
-            <SearchTrigger className="w-full" primaryColor={primaryColor} />
+            <SearchTrigger className="w-full" primaryColor={headerColor} />
           </div>
 
           <div className="flex items-center space-x-2">
@@ -190,7 +185,7 @@ export const OrgMenu = (props: any) => {
                         className={`p-2 rounded-lg transition-colors ${colors.iconBtn}`}
                         aria-label={t('courses.progress')}
                       >
-                        <Signpost size={20} weight="fill" />
+                        <Signpost size={19} weight="regular" />
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent side="bottom" className="flex items-center gap-2 text-xs">
@@ -212,7 +207,7 @@ export const OrgMenu = (props: any) => {
                         className={`p-2 rounded-lg transition-colors ${colors.iconBtn}`}
                         aria-label={t('calendar.title')}
                       >
-                        <CalendarDots size={20} weight="fill" />
+                        <CalendarDots size={19} weight="regular" />
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent side="bottom" className="flex items-center gap-2 text-xs">
@@ -235,7 +230,7 @@ export const OrgMenu = (props: any) => {
                           className={`p-2 rounded-lg transition-colors ${colors.iconBtn}`}
                           aria-label={t('common.boards')}
                         >
-                          <ChalkboardSimple size={20} weight="fill" />
+                          <ChalkboardSimple size={19} weight="regular" />
                         </Link>
                       </TooltipTrigger>
                       <TooltipContent side="bottom" className="flex items-center gap-2 text-xs">
@@ -259,7 +254,7 @@ export const OrgMenu = (props: any) => {
                           className={`relative p-2 rounded-lg transition-colors ${colors.iconBtn}`}
                           aria-label={unreadTotal ? `Messages, ${unreadTotal} unread` : 'Messages'}
                         >
-                          <ChatsCircle size={20} weight="fill" />
+                          <ChatsCircle size={19} weight="regular" />
                           {unreadTotal > 0 && (
                             <span className="absolute top-0.5 end-0.5 min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-white text-[10px] font-bold leading-4 text-center ring-2 ring-white tabular-nums">
                               {unreadTotal > 99 ? '99+' : unreadTotal}
@@ -287,7 +282,7 @@ export const OrgMenu = (props: any) => {
                             className={`p-2 rounded-lg transition-colors ${colors.iconBtn}`}
                             aria-label={t('common.dashboard')}
                           >
-                            <SquaresFour size={20} weight="fill" />
+                            <SquaresFour size={19} weight="regular" />
                           </button>
                         </DropdownMenuTrigger>
                       </TooltipTrigger>
@@ -334,7 +329,7 @@ export const OrgMenu = (props: any) => {
                             className={`p-2 rounded-lg transition-colors ${colors.iconBtn}`}
                             aria-label={t('common.help')}
                           >
-                            <Question size={20} weight="fill" />
+                            <Question size={19} weight="regular" />
                           </button>
                         </DropdownMenuTrigger>
                       </TooltipTrigger>
@@ -351,7 +346,7 @@ export const OrgMenu = (props: any) => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <a
-                        href="https://docs.learnhouse.app"
+                        href={HELP_LINKS.docs}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2"
@@ -362,7 +357,7 @@ export const OrgMenu = (props: any) => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <a
-                        href="https://learnhouse.app"
+                        href={HELP_LINKS.website}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2"
@@ -373,25 +368,26 @@ export const OrgMenu = (props: any) => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <a
-                        href="http://learnhouse.to/discord"
+                        href={HELP_LINKS.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2"
                       >
-                        <DiscordIcon size={16} />
-                        <span>{t('common.help_menu.discord')}</span>
+                        <LinkedinLogo size={16} weight="fill" />
+                        <span>{t('common.help_menu.linkedin')}</span>
                       </a>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={() => {
-                        setFeedbackModalMounted(true)
-                        setFeedbackModalOpen(true)
-                      }}
-                      className="flex items-center gap-2"
-                    >
-                      <ChatCircleDots size={16} weight="fill" />
-                      <span>{t('common.help_menu.report_feedback')}</span>
+                    <DropdownMenuItem asChild>
+                      <a
+                        href={HELP_LINKS.report}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2"
+                      >
+                        <ChatCircleDots size={16} weight="fill" />
+                        <span>{t('common.help_menu.report_feedback')}</span>
+                      </a>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -399,7 +395,7 @@ export const OrgMenu = (props: any) => {
             )}
 
             <div className="hidden lg:flex">
-              <HeaderProfileBox primaryColor={primaryColor} />
+              <HeaderProfileBox primaryColor={headerColor} />
             </div>
             {/* Phone and tablet actions. Navigation lives in the bottom tab bar
                 (MobileTabBar); the header keeps only what a native app puts
@@ -431,11 +427,12 @@ export const OrgMenu = (props: any) => {
                   </button>
                 </>
               ) : session?.status === 'unauthenticated' ? (
+                // No sign-up on Prakto Akademi: the pill becomes "Logga in".
                 <Link
-                  href={getUriWithOrg(orgslug, '/signup')}
+                  href={getUriWithOrg(orgslug, isSelfSignupDisabled() ? '/login' : '/signup')}
                   className={`lh-press rounded-full px-4 py-2 text-sm font-semibold ${colors.signUpBtn}`}
                 >
-                  {t('auth.sign_up')}
+                  {isSelfSignupDisabled() ? t('auth.login') : t('auth.sign_up')}
                 </Link>
               ) : null}
             </div>
@@ -444,16 +441,6 @@ export const OrgMenu = (props: any) => {
       </nav>
       <MobileTabBar orgslug={orgslug} primaryColor={primaryColor} />
 
-      {/* Feedback Modal */}
-      {feedbackModalMounted && (
-        <FeedbackModal
-          open={feedbackModalOpen}
-          onOpenChange={setFeedbackModalOpen}
-          theme="light"
-          userName={session?.data?.user?.username}
-          userEmail={session?.data?.user?.email}
-        />
-      )}
 
     </>
   )

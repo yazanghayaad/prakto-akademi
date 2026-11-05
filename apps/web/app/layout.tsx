@@ -2,12 +2,22 @@ import '../styles/globals.css'
 import React from 'react'
 import type { Metadata, Viewport } from 'next'
 import Providers from '@components/Providers'
-import { Wix_Madefor_Text, Tajawal } from 'next/font/google'
+import { Source_Sans_3, Source_Serif_4, Tajawal } from 'next/font/google'
 
-const wixMadeforText = Wix_Madefor_Text({
-  subsets: ['latin'],
+// Prakto Akademi type pairing: Source Sans 3 for interface and running text,
+// Source Serif 4 (with optical sizing) for headings. Same superfamily, so the
+// two share proportions and sit together without fighting.
+const sourceSans = Source_Sans_3({
+  subsets: ['latin', 'latin-ext'],
   display: 'swap',
   variable: '--font-default',
+})
+
+const sourceSerif = Source_Serif_4({
+  subsets: ['latin', 'latin-ext'],
+  axes: ['opsz'],
+  display: 'swap',
+  variable: '--font-serif-face',
 })
 
 // Wix Madefor Text has no Arabic subset, so Arabic would otherwise fall back to
@@ -38,7 +48,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: '#ffffff',
+  themeColor: '#fbfaf8',
 }
 
 // Saved to the home screen, the app opens without browser chrome.
@@ -54,12 +64,12 @@ export default function RootLayout({
 }) {
   // `dir` is deliberately absent from the <html> below. React only reconciles
   // attributes present in its virtual tree, so leaving it out means React never
-  // clobbers what dir-init.js wrote before paint. `lang="en"` stays as the
+  // clobbers what dir-init.js wrote before paint. `lang="sv"` stays as the
   // no-JS baseline for crawlers; the script overwrites it for everyone else.
   return (
     <html
-      className={`${wixMadeforText.variable} ${tajawal.variable}`}
-      lang="en"
+      className={`${sourceSans.variable} ${sourceSerif.variable} ${tajawal.variable}`}
+      lang="sv"
       suppressHydrationWarning
     >
       <head>

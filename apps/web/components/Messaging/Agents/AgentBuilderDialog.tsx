@@ -410,7 +410,7 @@ export default function AgentBuilderDialog({ open, onOpenChange, agent, orgslug,
                 <div className="flex items-start gap-3 rounded-xl border border-gray-200 px-3.5 py-3">
                   <GlobeSimple size={18} className="mt-0.5 shrink-0 text-gray-500" />
                   <p className="text-sm text-gray-600">
-                    <span className="font-semibold text-gray-900">Courses + general knowledge.</span> Copilot answers from your courses first and fills in from its own knowledge, clearly marked.
+                    <span className="font-semibold text-gray-900">Courses + general knowledge.</span> {draft.name || 'Prakto AI'} answers from your courses first and fills in from its own knowledge, clearly marked.
                   </p>
                 </div>
               </Field>
@@ -445,7 +445,7 @@ export default function AgentBuilderDialog({ open, onOpenChange, agent, orgslug,
                 <div className="flex items-start gap-3 rounded-xl border border-gray-200 px-3.5 py-3">
                   <BookOpen size={18} className="mt-0.5 shrink-0 text-gray-500" />
                   <p className="text-sm text-gray-600">
-                    <span className="font-semibold text-gray-900">Every course.</span> Copilot reads all the courses the person chatting can open, and connects them in its answers.
+                    <span className="font-semibold text-gray-900">Every course.</span> {draft.name || 'Prakto AI'} reads all the courses the person chatting can open, and connects them in its answers.
                   </p>
                 </div>
               </Field>

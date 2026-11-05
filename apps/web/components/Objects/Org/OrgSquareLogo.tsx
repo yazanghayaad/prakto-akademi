@@ -67,6 +67,63 @@ function corsSafeUrl(url: string): string {
 }
 
 /**
+ * The logo with its empty (transparent or white) margins cut away, so it can
+ * be centred on its ink rather than on whatever padding the uploaded file has.
+ * Returns the original URL until the trim is ready, or for good if the media
+ * host refuses the CORS load (the canvas would be tainted).
+ */
+export function useTrimmedLogo(url: string | null): string | null {
+  const [trimmed, setTrimmed] = React.useState<{ src: string; data: string } | null>(null)
+  React.useEffect(() => {
+    if (!url) return
+    let cancelled = false
+    const img = new window.Image()
+    img.crossOrigin = 'anonymous'
+    img.onload = () => {
+      try {
+        const w = img.naturalWidth
+        const h = img.naturalHeight
+        const canvas = document.createElement('canvas')
+        canvas.width = w
+        canvas.height = h
+        const ctx = canvas.getContext('2d')
+        if (!ctx || !w || !h) return
+        ctx.drawImage(img, 0, 0)
+        const px = ctx.getImageData(0, 0, w, h).data
+        let x0 = w, y0 = h, x1 = -1, y1 = -1
+        for (let y = 0; y < h; y++) {
+          for (let x = 0; x < w; x++) {
+            const i = (y * w + x) * 4
+            if (px[i + 3] > 40 && Math.min(px[i], px[i + 1], px[i + 2]) < 235) {
+              if (x < x0) x0 = x
+              if (x > x1) x1 = x
+              if (y < y0) y0 = y
+              if (y > y1) y1 = y
+            }
+          }
+        }
+        // Nothing to cut, or an all-white logo (meant for dark grounds): keep it.
+        if (x1 < 0 || (x0 === 0 && y0 === 0 && x1 === w - 1 && y1 === h - 1)) return
+        const cw = x1 - x0 + 1
+        const ch = y1 - y0 + 1
+        const out = document.createElement('canvas')
+        out.width = cw
+        out.height = ch
+        out.getContext('2d')?.drawImage(canvas, x0, y0, cw, ch, 0, 0, cw, ch)
+        if (!cancelled) setTrimmed({ src: url, data: out.toDataURL('image/png') })
+      } catch {
+        // Tainted canvas: the original stays.
+      }
+    }
+    img.src = corsSafeUrl(url)
+    return () => {
+      cancelled = true
+    }
+  }, [url])
+  return trimmed && trimmed.src === url ? trimmed.data : url
+}
+
+/**
  * Fills a square box with the best available logo: the square logo edge to
  * edge, otherwise the wide logo letterboxed inside the box, otherwise the
  * caller's fallback. Every place that shows the brand in a square (sign-in
@@ -91,14 +148,29 @@ export default function OrgSquareLogo({
   const wide = getOrgWideLogoUrl(org)
   const label = alt ?? org?.name ?? ''
 
+  // An upload in the square slot is not always square (a wordmark put there
+  // got cropped to its middle letters). Measure it once it loads and letterbox
+  // it like the wide logo when it is clearly not square.
+  const [notSquareSrc, setNotSquareSrc] = React.useState<string | null>(null)
+  const measure = React.useCallback((el: HTMLImageElement | null) => {
+    if (!el || !el.complete || !el.naturalWidth || !el.naturalHeight) return
+    const ratio = el.naturalWidth / el.naturalHeight
+    if (ratio > 1.2 || ratio < 1 / 1.2) setNotSquareSrc(el.getAttribute('src'))
+  }, [])
+
   if (square) {
+    const src = toSrc(square)
+    // Keyed by src, so a newly uploaded (square) logo starts out unmeasured.
+    const letterbox = notSquareSrc === src
     return (
       <img
-        src={toSrc(square)}
+        ref={measure}
+        src={src}
         alt={label}
         crossOrigin={cors}
         onError={onError}
-        className={cn('w-full h-full object-cover', className)}
+        onLoad={(e) => measure(e.currentTarget)}
+        className={cn('w-full h-full', letterbox ? cn('object-contain', wideInsetClassName) : 'object-cover', className)}
       />
     )
   }

@@ -34,7 +34,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           </PostHogProvider>
         </LHSessionProvider>
       </SessionProvider>
-      {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
+      {/* Opt-in: the floating devtools button sat on every page in local dev. */}
+      {process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_QUERY_DEVTOOLS === '1' && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   )
 }

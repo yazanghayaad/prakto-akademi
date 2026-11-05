@@ -1,70 +1,58 @@
 import { Callout } from 'nextra/components'
 
-# Authentication
+# Inloggning
 
-LearnHouse supports several ways to sign in. As an admin you choose which ones your organization accepts, and you can add a second factor on top.
+Det finns flera sätt att logga in på Prakto Akademi. Som admin väljer du vilka sätt organisationen tillåter, och du kan lägga till ett extra steg med tvåfaktorsautentisering.
 
-## Sign-in methods
+## Inloggningsmetoder
 
-| Method | How it works |
+| Metod | Så fungerar den |
 | --- | --- |
-| **Email + password** | The default. Passwords need at least 8 characters with an uppercase letter, a lowercase letter, a number and a special character. |
-| **Magic login link** | The user enters their email and receives a one-time sign-in link. The link is valid for 15 minutes. |
-| **Google** | Sign in with a Google account. Google is the only built-in social login. |
-| **SSO** | Sign in through your identity provider (WorkOS or any OpenID Connect provider). Enterprise only. See [Single Sign-On](/enterprise/sso). |
+| **E-post + lösenord** | Standardmetoden. Lösenordet måste ha minst 8 tecken, med en stor bokstav, en liten bokstav, en siffra och ett specialtecken. |
+| **Magisk inloggningslänk** | Du skriver din e-postadress och får en inloggningslänk som bara kan användas en gång. Länken gäller i 15 minuter. |
+| **Google** | Logga in med ett Google-konto. |
 
-Members who sign up with Google or SSO do not need a LearnHouse password.
+Medlemmar som registrerar sig med Google behöver inget lösenord.
 
-## Choosing allowed methods
+## Välja tillåtna metoder
 
-Go to **Users** → **Sign-in**. Under **Allowed sign-in methods**, tick the methods your members may use. Leave every method checked to keep sign-in unrestricted.
+Gå till **Användare** → **Inloggning**. Under **Tillåtna inloggningsmetoder** kryssar du i de metoder som medlemmarna får använda. Låt alla metoder vara ikryssade om du inte vill begränsa inloggningen.
 
-<img src="/img/pages/users/signin-methods.webp" alt="The Sign-in tab with Email + password, Magic login link, Google and SSO checked, and the Allow sharing sessions with learnhouse.io switch" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/users/signin-methods.webp" alt="Fliken Inloggning med listan över tillåtna inloggningsmetoder" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-- Unchecked methods disappear from your organization's login page.
-- Members already signed in with a method you turned off are asked to sign in again with an allowed one.
-- You must keep at least one method. You also cannot turn off the method you are signed in with, so you do not lock yourself out.
-
-### Sharing sessions with learnhouse.io
-
-**Allow sharing sessions with learnhouse.io** is on by default: someone signed in at the central learnhouse.io sign-in can open your organization without signing in again. This matters on LearnHouse Cloud, where one account spans many organizations. Turn it off to make members sign in from your organization's own login page with an allowed method. You can only turn it off from a session that started on your organization's login page.
-
-Sessions started on your [custom domain](/platform/organizations/custom-domains) are always tied to your organization.
+- Metoder som du kryssar ur försvinner från organisationens inloggningssida.
+- Medlemmar som redan är inloggade med en metod som du stänger av måste logga in igen med en tillåten metod.
+- Minst en metod måste vara kvar. Du kan inte heller stänga av den metod som du själv är inloggad med, så att du inte låser ute dig själv.
 
 <Callout type="info">
-Only the **Admin** role can change sign-in methods. Other roles with dashboard access can view the page.
+Bara rollen **Admin** kan ändra inloggningsmetoderna. Andra roller med åtkomst till adminpanelen kan se sidan.
 </Callout>
 
-## Email verification
+## Bekräfta e-postadressen
 
-On LearnHouse Cloud, new accounts must verify their email address before they can sign in with a password or a magic link. Verification links are valid for 1 hour, and the user can ask for a new one from the login page.
+Nya konton kan behöva bekräfta sin e-postadress innan de kan logga in med lösenord eller magisk länk. Bekräftelselänken gäller i 1 timme, och du kan be om en ny från inloggningssidan.
 
-## Password reset
+## Återställa lösenordet
 
-**Forgot password?** on the login page sends an 8-character code by email. The code is valid for 1 hour. Changing a password signs the account out of its existing sessions.
+Klicka på **Glömt lösenordet?** på inloggningssidan så får du en kod på 8 tecken via e-post. Koden gäller i 1 timme. När du byter lösenord loggas kontot ut från alla pågående sessioner.
 
-## Sessions
+## Sessioner
 
-| Token | Lifetime |
+När du loggar in får du en åtkomsttoken som gäller i 8 timmar. Den förnyas automatiskt med en förnyelsetoken som gäller i 30 dagar utan aktivitet. Varje förnyelse ger en ny förnyelsetoken, så du förblir inloggad så länge du använder Prakto Akademi. När du loggar ut avslutas sessionen.
+
+## Skydd mot missbruk
+
+| Gräns | Värde |
 | --- | --- |
-| Access token | 8 hours |
-| Refresh token | 30 days of inactivity. Each refresh issues a new one, so active users stay signed in. |
+| Inloggningsförsök | 30 per 5 minuter per IP-adress |
+| Kontolåsning | 5 minuter efter 10 misslyckade försök, när försöken kommer från minst 2 olika IP-adresser |
+| Registreringar | 10 per timme per IP-adress |
+| Begäran om magisk länk | 5 per e-postadress per 15 minuter |
+| E-post för lösenordsåterställning | 5 per e-postadress per 5 minuter och 10 per IP-adress per 30 minuter |
+| E-post för att bekräfta adressen | 5 per e-postadress per 5 minuter |
 
-Self-hosted operators can change the refresh window with `LEARNHOUSE_AUTH_REFRESH_TOKEN_DAYS`. Values below 14 days are raised to 14. Signing out revokes the session.
+Ett låst konto svarar på samma sätt som vid fel lösenord, så att en angripare inte kan se skillnad. Begäran om magisk länk eller lösenordsåterställning ger alltid samma meddelande, oavsett om kontot finns eller inte.
 
-## Protection against abuse
+## Tvåfaktorsautentisering
 
-| Limit | Value |
-| --- | --- |
-| Login attempts | 30 per 5 minutes per IP address |
-| Account lockout | 5 minutes after 10 failed attempts, when the failures come from at least 2 different IP addresses |
-| Signups | 10 per hour per IP address |
-| Magic link requests | 5 per email per 15 minutes |
-| Password reset emails | 5 per email per 5 minutes, and 10 per IP per 30 minutes |
-| Verification emails | 5 per email per 5 minutes |
-
-A locked account answers like a wrong password, so attackers cannot tell it apart. Magic link and reset requests always return the same message, whether or not the account exists.
-
-## Two-factor authentication
-
-Members can protect their account with an authenticator app, and admins can make it mandatory. See [Two-Factor Authentication](/platform/users/two-factor).
+Medlemmar kan skydda sitt konto med en autentiseringsapp, och admins kan göra det obligatoriskt. Läs mer i [Tvåfaktorsautentisering](/platform/users/two-factor).

@@ -22,7 +22,7 @@ import { usePath } from '@/hooks/queries/usePaths'
 import ThumbnailImage from '@components/Objects/Thumbnails/ThumbnailImage'
 
 // Same box the course page uses for its sidebar and lesson list.
-const BOX = 'bg-white shadow-md shadow-gray-300/25 outline outline-1 outline-neutral-200/40 rounded-lg overflow-hidden'
+const BOX = 'bg-white nice-shadow rounded-lg overflow-hidden'
 
 export default function PathClient({ orgslug, pathuuid }: { orgslug: string; pathuuid: string }) {
   const { t } = useTranslation()

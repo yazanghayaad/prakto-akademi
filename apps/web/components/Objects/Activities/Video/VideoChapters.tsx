@@ -67,7 +67,7 @@ export default function VideoChapters({ chapters, video, thumbnails, heading }: 
 
   return (
     <section className="mt-8">
-      <h2 className="mb-3 text-[11px] font-medium uppercase tracking-wider text-white/40">
+      <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-gray-500">
         {heading} · {chapters.length}
       </h2>
       <div ref={stripRef} className="flex snap-x gap-4 overflow-x-auto pb-2 [scrollbar-width:none]">
@@ -84,8 +84,8 @@ export default function VideoChapters({ chapters, video, thumbnails, heading }: 
               className="group flex min-w-52 flex-1 basis-0 snap-start items-center gap-3 text-start"
             >
               <span
-                className={`relative block aspect-video w-20 shrink-0 overflow-hidden rounded-md bg-white/5 bg-no-repeat ring-1 transition ${
-                  isActive ? 'ring-white/50' : 'opacity-70 ring-white/10 group-hover:opacity-100'
+                className={`relative block aspect-video w-20 shrink-0 overflow-hidden rounded-md bg-gray-100 bg-no-repeat ring-1 transition ${
+                  isActive ? 'ring-wine-700' : 'opacity-80 ring-gray-200 group-hover:opacity-100'
                 }`}
                 style={thumbnails ? spriteFrameAt(thumbnails, c.start + 2) : undefined}
               >
@@ -96,10 +96,10 @@ export default function VideoChapters({ chapters, video, thumbnails, heading }: 
                 )}
               </span>
               <span className="min-w-0 text-[13px] leading-snug">
-                <span className="block text-[11px] tabular-nums text-white/35">{formatClock(c.start)}</span>
+                <span className="block text-[11px] tabular-nums text-gray-500">{formatClock(c.start)}</span>
                 <span
                   className={`line-clamp-2 transition-colors ${
-                    isActive ? 'text-white' : 'text-white/60 group-hover:text-white/85'
+                    isActive ? 'text-gray-950 font-semibold' : 'text-gray-600 group-hover:text-gray-900'
                   }`}
                 >
                   {c.title}

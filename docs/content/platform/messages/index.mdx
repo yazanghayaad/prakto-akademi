@@ -1,85 +1,85 @@
 import { Callout } from 'nextra/components'
 
-# Messages
+# Meddelanden
 
-Messages is where members of your organization talk to each other and to AI agents. It has direct messages, group chats, course announcements, and agents such as **Copilot** that answer from your course content.
+I Meddelanden pratar medlemmarna i din organisation med varandra och med AI-agenter. Här finns direktmeddelanden, gruppchattar, kursmeddelanden och agenter som **Copilot**, som svarar utifrån innehållet i dina kurser.
 
 <Callout type="info">
-Messages is included in every LearnHouse Cloud plan. On self-hosted instances it is part of the [Enterprise Edition](/enterprise). Members must be signed in to use it.
+Du måste vara inloggad för att använda Meddelanden.
 </Callout>
 
-Open it from the **Messages** button in the organization's menu, or go to `/messages`. A chat dock also sits at the bottom of every page: open a conversation from it without leaving the lesson you are on, and minimize chats into small heads you can reopen later.
+Öppna Meddelanden med knappen **Meddelanden** i organisationens meny, eller gå till `/messages`. Längst ned på varje sida finns också en chattpanel. Där kan du öppna en konversation utan att lämna lektionen du är på, och minimera chattar till små bubblor som du kan öppna igen senare.
 
-## Conversations
+## Konversationer
 
-| Kind | What it is |
+| Typ | Vad det är |
 | --- | --- |
-| **Direct message** | A private chat between two members. |
-| **Group** | A chat with several members. The group's owner and admins can rename it and add people; anyone can leave. |
-| **Course announcements** | A one-way channel for everyone enrolled in a course. Only the course team and admins can post. |
-| **Agent chat** | Your own chat with an AI agent. |
+| **Direktmeddelande** | En privat chatt mellan två medlemmar. |
+| **Grupp** | En chatt med flera medlemmar. Gruppens ägare och administratörer kan byta namn på gruppen och lägga till personer. Alla kan lämna gruppen. |
+| **Kursmeddelanden** | En envägskanal till alla som är inskrivna i en kurs. Bara kursteamet och administratörer kan skriva där. |
+| **Agentchatt** | Din egen chatt med en AI-agent. |
 
-Click **New message**, pick one person to start a direct message, or pick several to start a group. Inside a conversation you can:
+Klicka på **Nytt meddelande** och välj en person för att starta ett direktmeddelande, eller välj flera för att starta en grupp. I en konversation kan du:
 
-- React to messages with emoji, reply, edit or delete your own messages.
-- See who is typing, who is online, and who has read your message.
-- Share a course: it shows as a card that opens the course. Courses also have a **Share in Messages** button, and member profiles a **Message** button.
-- Search your conversations.
+- Reagera på meddelanden med emoji, svara, och redigera eller radera dina egna meddelanden.
+- Se vem som skriver, vem som är online och vem som har läst ditt meddelande.
+- Dela en kurs. Den visas som ett kort som öppnar kursen. Kurser har också en knapp för att dela dem i Meddelanden, och medlemsprofiler har en knapp för att skicka ett meddelande.
+- Söka i dina konversationer.
 
-### Course announcements
+### Kursmeddelanden
 
-Course creators, maintainers, contributors and admins can message everyone in a course at once. Click **Message everyone in a course**, pick the course (it shows how many people it reaches), write the announcement, and optionally attach the course card. Learners receive it in the course's announcement channel and can't reply there.
+Kursens skapare, redaktörer, bidragsgivare och administratörer kan skicka ett meddelande till alla i en kurs på en gång. Klicka på **Skriv till alla i en kurs**, välj kursen (du ser hur många personer meddelandet når), skriv meddelandet och bifoga kurskortet om du vill. Eleverna får meddelandet i kursens meddelandekanal och kan inte svara där.
 
-## Agents
+## Agenter
 
-An agent is an AI assistant you can chat with in Messages. It answers from the [indexed](/platform/ai#indexing-courses-for-ai) course content of your organization, and only from courses the person asking can read. Answers cite their sources: click a source to jump to the lesson it came from.
+En agent är en AI-assistent som du kan chatta med i Meddelanden. Den svarar utifrån det [indexerade](/platform/ai) kursinnehållet i din organisation, och bara från kurser som den som frågar har tillgång till. Svaren anger sina källor. Klicka på en källa för att hoppa till lektionen den kommer från.
 
-Agents can also answer with interactive blocks: quizzes, flashcards, charts, mind maps, timelines and exercises.
+Agenter kan också svara med interaktiva block: quiz, vändkort, diagram, tankekartor, tidslinjer och övningar.
 
 ### Copilot
 
-Every organization has a built-in agent called **Copilot**. It answers from every course you can access and adds its own general knowledge, clearly marked. Admins can edit its look and instructions, but can't delete it. The old Copilot page now opens Messages.
+Varje organisation har en inbyggd agent som heter **Copilot**. Den svarar utifrån alla kurser som du har tillgång till och lägger till sin egen allmänna kunskap, tydligt markerad. Administratörer kan ändra hur den ser ut och vilka instruktioner den följer, men kan inte radera den.
 
-### Building your own agent
+### Bygg en egen agent
 
-Open the agents gallery in Messages and create an agent. Choose:
+Öppna agentgalleriet i Meddelanden och skapa en agent med **Ny agent**. Du väljer:
 
-| Setting | Options |
+| Inställning | Alternativ |
 | --- | --- |
-| **Name, emoji and colors** | How the agent looks in chats. |
-| **Tone** | Friendly, Concise, Socratic tutor, Expert or Playful. |
-| **Instructions** | What it should do, for example "Quiz me after each answer" or "Answer in French". |
-| **Knowledge** | **Course content only** sticks to what your courses say. **Courses + general knowledge** adds the model's own knowledge. |
-| **Courses** | All courses, or a few selected ones. |
-| **Visibility** | **Only me**, or **Everyone in the org** (admins only). |
+| **Namn, emoji och färger** | Hur agenten ser ut i chattarna. |
+| **Ton** | **Vänlig**, **Koncis**, **Sokratisk handledare**, **Expert** eller **Lekfull**. |
+| **Instruktioner** | Vad agenten ska göra, till exempel "Ställ en kontrollfråga efter varje svar" eller "Svara alltid på engelska". |
+| **Kunskap** | Antingen bara kursinnehåll, så att agenten håller sig till det som står i dina kurser, eller **Kurser + allmän kunskap**, så att den också använder modellens egen kunskap. |
+| **Kurser** | Alla kurser, eller några utvalda. |
+| **Synlighet** | Bara du, eller alla i organisationen (bara för administratörer). |
 
-Each member can create up to 25 agents.
+Varje medlem kan skapa upp till 25 agenter.
 
-### Agents in group chats
+### Agenter i gruppchattar
 
-Mention an agent in a group chat to have it answer there. Everyone in the group sees the answer as it is written. In a group, an agent only uses content that every member of the group can read.
+Nämn en agent i en gruppchatt så svarar den där. Alla i gruppen ser svaret medan det skrivs. I en grupp använder agenten bara innehåll som alla medlemmar i gruppen har tillgång till.
 
-### Credits
+### AI-krediter
 
-Each agent reply uses 2 of your organization's [AI credits](/platform/ai#ai-credits). Agents need **Enable AI Features** and **AI Copilot** to be on in the [AI settings](/platform/ai#turning-ai-on); turning **AI Copilot** off turns off every agent.
+Varje svar från en agent använder 2 av organisationens [AI-krediter](/platform/ai). Agenter kräver att **Aktivera AI-funktioner** och **Prakto AI** är påslagna i [AI-inställningarna](/platform/ai). Om du stänger av **Prakto AI** stängs alla agenter av.
 
-## Reminders
+## Påminnelser
 
-Ask any agent to remind you about something ("remind me to review chapter 3 tomorrow at 9"), or use **Remind me** on any message and pick a time. When it is due, the reminder arrives as a message in your chat with the agent, with a link back to the original message. You can list and cancel your upcoming reminders in Messages.
+Be en agent att påminna dig om något ("påminn mig om att repetera kapitel 3 i morgon klockan 9"), eller använd **Påminn mig** på ett meddelande och välj en tid. När det är dags kommer påminnelsen som ett meddelande i din chatt med agenten, med en länk tillbaka till det ursprungliga meddelandet. Du kan se och avbryta dina kommande påminnelser i Meddelanden.
 
-Reminders can be set up to a year ahead, and each member can have up to 50 upcoming ones.
+Du kan ställa in påminnelser upp till ett år framåt, och varje medlem kan ha upp till 50 kommande påminnelser.
 
-## Settings
+## Inställningar
 
-Open **Messages settings** to control how you show up and when you are notified.
+Öppna **Inställningar för meddelanden** för att styra hur du syns för andra och när du får aviseringar.
 
-| Setting | Options |
+| Inställning | Alternativ |
 | --- | --- |
-| **Status** | A short status message, with an optional time to clear it. |
-| **Availability** | Automatic (online while Messages is open), Away, Do not disturb (no sounds or desktop alerts) or Invisible. |
-| **Email me about unread messages** | All messages, Direct & mentions (the default) or Off. You get one summary email, never one per message. |
-| **Send after a message is unread for** | 15 minutes, 1 hour (the default), 4 hours or a day. |
-| **Course announcements** | Whether announcements are included in emails. |
-| **Desktop notifications and sounds** | Alerts when the tab is in the background. |
-| **Read receipts and typing indicator** | Whether others see when you have read a message or are typing. |
-| **Direct messages from anyone** | When off, only admins can start a new chat with you. |
+| **Status** | Ett kort statusmeddelande, med en tid då det ska tas bort om du vill. |
+| **Tillgänglighet** | **Automatisk** (online medan Meddelanden är öppet), **Borta**, **Stör ej** (inga ljud eller skrivbordsaviseringar) eller **Osynlig**. |
+| **E-post om olästa meddelanden** | Alla meddelanden, direktmeddelanden och omnämnanden (standard) eller av. Du får ett sammanfattande mejl, aldrig ett per meddelande. |
+| **Skicka när ett meddelande har varit oläst i** | 15 minuter, 1 timme (standard), 4 timmar eller en dag. |
+| **Kursmeddelanden** | Om kursmeddelanden ska ingå i mejlen. |
+| **Skrivbordsaviseringar och ljud** | Aviseringar när fliken ligger i bakgrunden. |
+| **Läskvitton och skrivindikator** | Om andra ska se när du har läst ett meddelande eller håller på att skriva. |
+| **Direktmeddelanden från alla** | När det är avstängt kan bara administratörer starta en ny chatt med dig. |

@@ -1,112 +1,105 @@
 import { Callout, Steps } from 'nextra/components'
 
-# Drip Content
+# Stegvis innehåll
 
-Drip content releases a course one chapter at a time instead of all at once. You set when each chapter opens, and learners see what is coming next and when. Locked chapters stay locked on the server, so a learner can't skip ahead with a direct link.
+Med stegvis innehåll släpper du en kurs ett kapitel i taget i stället för allt på en gång. Du bestämmer när varje kapitel öppnas, och eleverna ser vad som kommer härnäst och när. Låsta kapitel förblir låsta på servern, så en elev kan inte hoppa framåt via en direktlänk.
 
-<YouTube video="feature-drip" />
-<YouTube video="growth-5" />
+## Slå på stegvis innehåll
 
-<Callout>
-On LearnHouse Cloud, drip content needs the Standard plan or higher. Self-hosted instances do not apply this plan restriction.
-</Callout>
-
-## Turning it on
-
-Open a course from **Courses** in the dashboard and go to the **Schedule** tab.
+Öppna en kurs från **Kurser** i adminpanelen och gå till fliken **Schema**.
 
 <Steps>
 
-### Switch drip content on
+### Slå på funktionen
 
-Turn on **Drip content** at the top of the tab. Until you do, every chapter is available at once.
+Slå på **Stegvis innehåll** högst upp på fliken. Tills du gör det är alla kapitel tillgängliga direkt.
 
-### Choose when the schedule starts
+### Välj när schemat startar
 
-Under **When does the schedule start?**, pick one:
+Välj ett alternativ under **När börjar schemat?**:
 
-| Option | What it does |
+| Val | Vad det gör |
 | --- | --- |
-| **When each learner enrolls** | Every learner gets their own clock, starting the first time they start the course. Best for self-paced courses. |
-| **On a fixed start date** | One date for the whole cohort, set in **Cohort starts on**. Best for live launches and bootcamps. |
+| **När varje deltagare går med** | Varje elev får sin egen klocka, som startar första gången eleven startar kursen. Passar bäst för kurser i egen takt. |
+| **På ett fast startdatum** | Ett datum för hela gruppen, som du anger i **Gruppen startar**. Passar bäst när alla börjar samtidigt, till exempel vid en kursstart eller ett intensivprogram. |
 
-### Set early access and emails
+### Ställ in tidig åtkomst och e-post
 
-- **Early access**: pick the user groups whose members get every chapter right away, for example staff, beta testers or a premium tier.
-- **Email learners when a chapter opens**: enrolled learners get a short email with a link back to the course as soon as a scheduled chapter opens for them. Emails are sent by a job that runs every hour.
+- **Tidig åtkomst**: välj de användargrupper vars medlemmar får alla kapitel direkt, till exempel personal eller testare.
+- **Skicka e-post till deltagare när ett kapitel öppnas**: elever som har gått med i kursen får ett kort mejl med en länk till kursen så snart ett schemalagt kapitel öppnas för dem. Mejlen skickas en gång i timmen.
 
-<img src="/img/pages/drip-content/schedule-settings.webp" alt="The Schedule tab with drip content on, the schedule starting when each learner enrolls, a Beta testers group with early access and unlock emails turned on" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/drip-content/schedule-settings.webp" alt="Fliken Schema med stegvis innehåll påslaget, ett schema som startar när varje elev går med, en grupp betatestare med tidig åtkomst och e-post vid upplåsning påslaget" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-### Build the release plan
+### Gör en publiceringsplan
 
-The **Release plan** lists every chapter of the course, with the date it opens for someone who enrolls today (or for the cohort, with a fixed start date). Give each chapter a rule:
+**Publiceringsplan** listar alla kapitel i kursen, med datumet då de öppnas för någon som går med i dag (eller för gruppen, om du har ett fast startdatum). Ge varje kapitel en regel:
 
-| Rule | When the chapter opens |
+| Regel | När kapitlet öppnas |
 | --- | --- |
-| **Right away** | As soon as the schedule starts. |
-| **After a delay** | A number of days after the learner enrolls, or after the cohort start date. |
-| **On a date** | On a fixed date and time, for everyone at once. |
+| **Direkt** | Så snart schemat startar. |
+| **Efter en fördröjning** | Ett antal dagar efter att eleven gick med, eller efter gruppens startdatum. |
+| **På ett datum** | På ett fast datum och klockslag, för alla samtidigt. |
 
-To space chapters evenly, use **One chapter every**: enter a number, pick **days** or **weeks** and click **Apply**. The first chapter opens right away and each next chapter opens one interval later.
+Vill du sprida ut kapitlen jämnt använder du **Ett kapitel var**: skriv ett antal, välj **dagar** eller **veckor** och klicka på **Tillämpa**. Det första kapitlet öppnas direkt och varje följande kapitel öppnas ett intervall senare.
 
-Tick **Only after the previous chapter is completed** to also wait until the learner has finished every published activity of the chapter before it.
+Kryssa i **Först när föregående kapitel är slutfört** om kapitlet också ska vänta tills eleven har gjort klart alla publicerade aktiviteter i kapitlet före.
 
-<img src="/img/pages/drip-content/release-plan.webp" alt="A release plan with one chapter every week: week 1 right away, then weeks 2 to 5 at 7, 14, 21 and 28 days after enrolling, and a launch day chapter on a date" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/drip-content/release-plan.webp" alt="En publiceringsplan med ett kapitel i veckan: vecka 1 direkt, sedan vecka 2 till 5 efter 7, 14, 21 och 28 dagar från att eleven gick med, och ett lanseringskapitel på ett fast datum" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-### Add more conditions
+### Lägg till fler villkor
 
-Click **More conditions** on a chapter for finer control:
+Klicka på **Fler villkor** på ett kapitel för att styra mer i detalj:
 
-- **Requires these chapters to be completed**: pick earlier chapters the learner must finish first.
-- **Close it again**: the chapter closes a number of days after it opens (**Days open**). Use it for limited-time content like a replay or a live-week bonus.
+- **Kräver att dessa kapitel är slutförda**: välj tidigare kapitel som eleven måste göra klart först.
+- **Stäng det igen**: kapitlet stängs ett antal dagar efter att det har öppnats (**Antal dagar öppet**). Använd det för tidsbegränsat innehåll, till exempel en inspelning av en livelektion eller extramaterial under en viss vecka.
 
-<img src="/img/pages/drip-content/more-conditions.webp" alt="More conditions open on a chapter, requiring weeks 3 and 4 to be completed, with the Close it again option" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/drip-content/more-conditions.webp" alt="Fler villkor öppnat på ett kapitel, där vecka 3 och 4 måste vara slutförda, och valet Stäng det igen" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-### Preview and save
+### Förhandsgranska och spara
 
-Drag the **Preview a learner's view on any day** slider to see which chapters are **Open**, which open later (**Opens on day N**) and which are **Closed** on that day of a learner's schedule. Click **Clear** to reset it.
+Dra reglaget **Förhandsgranska en deltagares vy valfri dag** för att se vilka kapitel som är **Öppen**, vilka som öppnas senare (**Öppnas dag N**) och vilka som är **Stängd** den dagen i elevens schema. Klicka på **Rensa** för att återställa.
 
-Click **Save schedule**.
+Klicka på **Spara schema**.
 
-<img src="/img/pages/drip-content/preview-slider.webp" alt="The preview slider set to day 16 after enrolling: weeks 1 to 3 are open, week 4 opens on day 21 and week 5 on day 28" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/drip-content/preview-slider.webp" alt="Förhandsgranskningsreglaget på dag 16 efter att eleven gick med: vecka 1 till 3 är öppna, vecka 4 öppnas dag 21 och vecka 5 dag 28" width={1600} height={900} style={{ borderRadius: 10 }} />
 
 </Steps>
 
-After you save, each scheduled chapter shows its release day (for example **Day 7**) in the course **Content** tab. Edit the rules from the **Schedule** tab.
+När du har sparat visar varje schemalagt kapitel vilken dag det släpps (till exempel **Dag 7**) på fliken **Innehåll** i kursen. Du ändrar reglerna på fliken **Schema**.
 
-<img src="/img/pages/drip-content/content-day-badges.webp" alt="The Content tab with Day 0, Day 7 and Day 14 badges on the chapters" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/drip-content/content-day-badges.webp" alt="Fliken Innehåll med märkena Dag 0, Dag 7 och Dag 14 på kapitlen" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-## What learners see
+## Vad eleverna ser
 
-On the course page, a banner says **New chapters are released over time** and names the next chapter and when it opens. Upcoming chapters show their date (for example **Opens Sat, Nov 7**) and their lessons stay locked until then.
+På kurssidan finns en banner med texten **Nya kapitel släpps över tid**, som visar vilket kapitel som kommer härnäst och när det öppnas. Kommande kapitel visar när de öppnas (**Öppnas** följt av datumet), och deras lektioner är låsta tills dess.
 
-Click **Add to calendar** to download an `.ics` file with one event per upcoming release that has a known date, to open in any calendar app.
+Klicka på **Lägg till i kalender** för att ladda ner en `.ics`-fil med en händelse för varje kommande släpp som har ett känt datum. Filen kan öppnas i vilken kalenderapp som helst.
 
-<img src="/img/pages/drip-content/learner-course-page.webp" alt="A learner's course page with the release banner, an Add to calendar button and upcoming chapters marked with their opening date" width={1600} height={836} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/drip-content/learner-course-page.webp" alt="En elevs kurssida med bannern om stegvis innehåll, knappen Lägg till i kalender och kommande kapitel markerade med sitt öppningsdatum" width={1600} height={836} style={{ borderRadius: 10 }} />
 
-A learner who opens a locked lesson, even through a direct link, sees when it opens instead of the content:
+En elev som öppnar en låst lektion, även via en direktlänk, ser när den öppnas i stället för innehållet:
 
-| Why it is locked | What the learner sees |
+| Varför lektionen är låst | Vad eleven ser |
 | --- | --- |
-| The release time is not reached yet | The opening date, and **This course releases its chapters over time. Come back when this one opens.** |
-| The schedule starts on enrollment and the learner hasn't started the course | A note to start the course from the course page to unlock their schedule. Chapters set to **Right away** stay open as a preview. |
-| The previous chapter is not finished | **Finish every lesson of the previous chapter and this one opens right away.** |
-| Required chapters are not finished | **Finish the chapters this one builds on and it opens right away.** |
-| The chapter was open for a limited time | **No longer available** |
+| Tiden för släppet har inte kommit än | Öppningsdatumet och **Den här kursen släpper sina kapitel över tid. Kom tillbaka när det här kapitlet öppnas.** |
+| Schemat startar när eleven går med, och eleven har inte startat kursen | En uppmaning att starta kursen från kurssidan för att låsa upp sitt schema. Kapitel som är inställda på **Direkt** är öppna som en försmak. |
+| Föregående kapitel är inte klart | **Slutför alla lektioner i föregående kapitel så öppnas det här direkt.** |
+| Kapitel som krävs är inte klara | **Slutför kapitlen som det här bygger på så öppnas det direkt.** |
+| Kapitlet var bara öppet en begränsad tid | **Inte längre tillgängligt** |
 
-<img src="/img/pages/drip-content/locked-lesson.webp" alt="A locked lesson showing Opens Sat, Nov 7, in 4 days, with a Back to course button" width={1600} height={520} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/drip-content/locked-lesson.webp" alt="En låst lektion som visar att den öppnas lör 7 nov. om 4 dagar, med knappen Tillbaka till kursen" width={1600} height={520} style={{ borderRadius: 10 }} />
 
-The lock is applied by the API, not only in the page. A locked lesson's content, its files and media, its assignments and its progress are not sent to the learner, and the AI assistant does not answer from chapters that are not released yet.
+Låset kontrolleras på servern, inte bara på sidan. En låst lektions innehåll, filer och media, uppgifter och framsteg skickas inte till eleven, och AI-assistenten svarar inte utifrån kapitel som inte har släppts än.
 
-## Who is not affected
+## Vilka som inte påverkas
 
-- Admins and anyone who can edit the course always see every chapter.
-- Members of the **Early access** user groups get every chapter right away.
+- Admins och alla som kan redigera kursen ser alltid alla kapitel.
+- Medlemmar i användargrupperna under **Tidig åtkomst** får alla kapitel direkt.
 
 <Callout type="info">
-Drip content works on whole chapters. To hide or reveal part of a page instead, for example a note that appears after the first week, use a [conditional block](/platform/editor/dynamic-content#conditional-content) with the **After a week** preset.
+Stegvis innehåll gäller hela kapitel. Vill du i stället dölja eller visa en del av en sida, till exempel en notis som dyker upp efter första veckan, använder du ett [villkorligt block](/platform/editor/dynamic-content#villkorligt-innehåll) med förinställningen **Efter en vecka**.
 </Callout>
 
-## Turning it off
+## Stänga av stegvis innehåll
 
-Switch **Drip content** off and click **Save schedule**. Every chapter becomes available again. The chapter rules are kept, so turning it back on restores the same schedule.
+Slå av **Stegvis innehåll** och klicka på **Spara schema**. Då blir alla kapitel tillgängliga igen. Reglerna för kapitlen sparas, så om du slår på funktionen igen får du tillbaka samma schema.

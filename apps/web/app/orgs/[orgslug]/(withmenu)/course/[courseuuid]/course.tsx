@@ -17,7 +17,6 @@ import { useOrg } from '@components/Contexts/OrgContext'
 import { CourseProvider } from '@components/Contexts/CourseContext'
 import CoursesActions from '@components/Objects/Courses/CourseActions/CoursesActions'
 import CourseAuthors from '@components/Objects/Courses/CourseAuthors/CourseAuthors'
-import CoursePaths from '@components/Objects/Courses/CoursePaths/CoursePaths'
 import LinkifiedText from '@components/Objects/StyledElements/LinkifiedText/LinkifiedText'
 import { Breadcrumbs } from '@components/Objects/Breadcrumbs/Breadcrumbs'
 import { useLHSession } from '@components/Contexts/LHSessionContext'
@@ -36,6 +35,8 @@ import { Keys } from '@components/Objects/Shortcuts/Kbd'
 import DripBadge, { DripIcon, DripUntilBadge, useDripLabel } from '@components/Objects/Courses/DripBadge'
 import { buildIcs } from '@/lib/drip'
 import ThumbnailImage from '@components/Objects/Thumbnails/ThumbnailImage'
+import CourseCover from '@components/Objects/Thumbnails/CourseCover'
+import { CourseHeroText, CourseStatsBar, OfferedByCard, ProgrammeCourses, chapterMinutes, useCourseProgramme, useDurationLabel } from '@components/Objects/Courses/CourseLanding/CourseLanding'
 
 const CourseClient = (props: any) => {
   const { t } = useTranslation()
@@ -123,6 +124,10 @@ const CourseClient = (props: any) => {
 
   // Fetch trail data; shared cache with useTrail hook used elsewhere
   const { data: trailData } = useTrail(org?.id);
+  // Prakto: the programme (learning path) this course belongs to, and a
+  // spoken-style study-time label for modules.
+  const programme = useCourseProgramme(course?.course_uuid ?? '')
+  const duration = useDurationLabel()
 
   // Must be before any early returns (React rules of hooks)
   useEffect(() => {
@@ -186,7 +191,7 @@ const CourseClient = (props: any) => {
           {/* Chapter list */}
           <div className="w-full my-5 mb-10">
             <div className="h-7 bg-gray-200 rounded w-40 mb-5" />
-            <div className="bg-white shadow-md shadow-gray-300/25 outline outline-1 outline-neutral-200/40 rounded-lg overflow-hidden">
+            <div className="bg-white nice-shadow rounded-lg overflow-hidden">
               {Array.from({ length: 3 }).map((_, chIdx) => (
                 <div key={chIdx}>
                   {/* Chapter header */}
@@ -381,15 +386,14 @@ const CourseClient = (props: any) => {
       {!course || !org ? null : (
         <>
           <GeneralWrapperStyled>
-            <div className="hidden sm:block pb-4">
-              <Breadcrumbs items={[
-                { label: t('courses.courses'), href: getUriWithOrg(orgslug, '/courses'), icon: <BookCopy size={14} /> },
-                { label: course.name }
-              ]} />
-            </div>
-            <div className="pb-2 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-              <h1 className="text-3xl max-sm:text-[26px] max-sm:leading-tight font-bold" dir="auto">{course.name}</h1>
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between gap-3 pb-4">
+              <div className="hidden sm:block min-w-0">
+                <Breadcrumbs items={[
+                  { label: t('courses.courses'), href: getUriWithOrg(orgslug, '/courses'), icon: <BookCopy size={14} /> },
+                  { label: course.name }
+                ]} />
+              </div>
+              <div className="flex items-center gap-2 ms-auto">
                 <ShareCourseInMessagesButton orgslug={orgslug} courseUuid={`course_${courseuuid}`} />
                 <CourseShare
                   courseName={course.name}
@@ -397,16 +401,18 @@ const CourseClient = (props: any) => {
                 />
               </div>
             </div>
-
-            <div className="flex flex-col md:flex-row gap-5 md:gap-8 pt-2">
-              <div className="w-full md:w-3/4 space-y-4">
+            {/* Prakto: title block beside the course artwork, then the key
+                facts, the way a university course page opens. */}
+            <section className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,460px)] lg:items-center pt-2 pb-8">
+              <CourseHeroText course={course} orgslug={orgslug} programme={programme} />
+              <div className="min-w-0">
                 {(() => {
                   const showVideo = course.thumbnail_type === 'video' || (course.thumbnail_type === 'both' && activeThumbnailType === 'video');
                   const showImage = course.thumbnail_type === 'image' || (course.thumbnail_type === 'both' && activeThumbnailType === 'image') || !course.thumbnail_type;
 
                   if (showVideo && course.thumbnail_video) {
                     return (
-                      <div className="relative inset-0 ring-1 ring-inset ring-black/10 max-sm:-mx-4 max-sm:w-auto max-sm:rounded-none max-sm:ring-0 max-sm:shadow-none rounded-lg shadow-xl w-full aspect-video sm:aspect-auto sm:h-[200px] md:h-[400px]">
+                      <div className="relative inset-0 ring-1 ring-inset ring-black/10 max-sm:-mx-4 max-sm:w-auto max-sm:rounded-none max-sm:ring-0 max-sm:shadow-none rounded-lg shadow-xl w-full aspect-video">
                         {course.thumbnail_type === 'both' && (
                           <div className="absolute top-3 end-3 z-10">
                             <div className="bg-black/20 backdrop-blur-sm rounded-lg p-1 flex space-x-1">
@@ -454,7 +460,7 @@ const CourseClient = (props: any) => {
                     );
                   } else if (showImage && course.thumbnail_image) {
                     return (
-                      <div className="relative overflow-hidden ring-1 ring-black/10 max-sm:-mx-4 max-sm:w-auto max-sm:rounded-none max-sm:ring-0 max-sm:shadow-none rounded-lg shadow-xl w-full aspect-video sm:aspect-auto sm:h-[200px] md:h-[400px] bg-gray-50">
+                      <div className="relative overflow-hidden ring-1 ring-black/10 max-sm:-mx-4 max-sm:w-auto max-sm:rounded-none max-sm:ring-0 max-sm:shadow-none rounded-lg shadow-xl w-full aspect-video bg-gray-50">
                         <ThumbnailImage
                           src={getCourseThumbnailMediaDirectory(org?.org_uuid, course?.course_uuid, course?.thumbnail_image)}
                           fetchPriority="high"
@@ -493,17 +499,24 @@ const CourseClient = (props: any) => {
                     );
                   } else {
                     return (
-                      <div
-                        className="inset-0 ring-1 ring-inset ring-black/10 max-sm:-mx-4 max-sm:w-auto max-sm:rounded-none rounded-lg shadow-xl relative w-full aspect-video sm:aspect-auto sm:h-[400px] bg-cover bg-center"
-                        style={{
-                          backgroundImage: `url('/empty_thumbnail.png')`,
-                          backgroundSize: 'auto',
-                        }}
-                      ></div>
+                      <div className="rounded-lg overflow-hidden relative w-full aspect-video">
+                        <CourseCover
+                          art
+                          title={course.name}
+                          paletteSeed={course.description || undefined}
+                          eyebrow={course.description && course.description.length <= 48 ? course.description : undefined}
+                        />
+                      </div>
                     );
                   }
                 })()}
 
+              </div>
+            </section>
+            <CourseStatsBar course={course} programme={programme} orgslug={orgslug} />
+
+            <div className="flex flex-col md:flex-row gap-5 md:gap-8 pt-10">
+              <div className="w-full md:w-3/4 space-y-4">
                 {(() => {
                   const cleanCourseUuid = course.course_uuid?.replace('course_', '');
                   const run = trailData?.runs?.find(
@@ -522,27 +535,13 @@ const CourseClient = (props: any) => {
                   />
                 )}
 
-                <div className="course_metadata_left space-y-2">
-                  <div className="">
-                    <LinkifiedText text={course.about} className="py-5 whitespace-pre-line break-words w-full leading-relaxed tracking-normal text-pretty hyphens-auto" />
+                {course.about && course.about.trim() !== '' && (
+                  <div className="course_metadata_left space-y-2">
+                    <div className="">
+                      <LinkifiedText text={course.about} className="py-5 whitespace-pre-line break-words w-full leading-relaxed tracking-normal text-pretty hyphens-auto" />
+                    </div>
                   </div>
-                </div>
-              </div>
-
-              <div className='course_metadata_right w-full md:w-1/4 space-y-4'>
-                {/* Actions Box */}
-                <CoursesActions courseuuid={courseuuid} orgslug={orgslug} course={course} trailData={trailData} />
-
-                <CoursePaths courseUuid={course.course_uuid} orgslug={orgslug} />
-                
-                {/* Authors & Updates Box */}
-                <div className="bg-white shadow-md shadow-gray-300/25 outline outline-1 outline-neutral-200/40 rounded-lg overflow-hidden p-4">
-                  <CourseProvider courseuuid={course.course_uuid}>
-                    <CourseAuthors authors={course.authors} />
-                  </CourseProvider>
-                </div>
-              </div>
-            </div>
+                )}
 
             {(() => {
               const displayLearnings = learnings.filter((l: any) => {
@@ -553,7 +552,7 @@ const CourseClient = (props: any) => {
               return (
                 <div className="w-full">
                   <h2 className="py-5 text-xl md:text-2xl font-bold">{t('courses.what_you_will_learn')}</h2>
-                  <div className="bg-white shadow-md shadow-gray-300/25 outline outline-1 outline-neutral-200/40 rounded-lg overflow-hidden px-5 py-5 space-y-2">
+                  <div className="bg-white nice-shadow rounded-lg overflow-hidden px-5 py-5 space-y-2">
                     {displayLearnings.map((learning: any) => {
                       const learningText = typeof learning === 'string' ? learning : learning.text
                       const learningEmoji = typeof learning === 'string' ? null : learning.emoji
@@ -590,9 +589,9 @@ const CourseClient = (props: any) => {
               )
             })()}
 
-            <div className="w-full my-5 mb-10">
+            <div className="w-full mb-10">
               <div className="flex items-center justify-between gap-3">
-                <h2 className="py-5 text-xl md:text-2xl font-bold">{t('courses.course_lessons')}</h2>
+                <h2 className="pb-4 text-xl md:text-2xl font-bold">{t('courses.modules_in_course', { count: chapters.length })}</h2>
                 {chapters.length > 1 && (
                   <button
                     type="button"
@@ -637,37 +636,22 @@ const CourseClient = (props: any) => {
                   )}
                 </div>
               )}
-              <div className="bg-white shadow-md shadow-gray-300/25 outline outline-1 outline-neutral-200/40 rounded-lg overflow-hidden">
+              <div className="bg-white nice-shadow rounded-lg overflow-hidden">
                 {(course.chapters ?? []).map((chapter: any, idx: number) => {
                   const isExpanded = expandedChapters[chapter.chapter_uuid] ?? (idx === 0); // Default to expanded for first chapter
                   return (
                     <div key={chapter.chapter_uuid || `chapter-${chapter.name}`} className="">
                       <div 
-                        className="flex items-start py-4 px-4 outline outline-1 outline-neutral-200/40 font-bold bg-neutral-50 text-neutral-600 cursor-pointer hover:bg-neutral-100 transition-colors"
+                        className={`flex items-start py-5 px-6 ${idx > 0 ? 'border-t border-gray-200' : ''} bg-white text-gray-900 cursor-pointer hover:bg-gray-50 transition-colors`}
                         onClick={() => setExpandedChapters(prev => ({
                           ...prev,
                           [chapter.chapter_uuid]: !isExpanded
                         }))}
                       >
-                        {/* Chevron on the far left, vertically centered with the title */}
-                        <div className="flex flex-col justify-center me-3 pt-1">
-                          <svg 
-                            className={`w-5 h-5 transition-transform ${isExpanded ? 'rotate-180' : ''}`} 
-                            fill="none" 
-                            stroke="currentColor" 
-                            viewBox="0 0 24 24"
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </div>
                         {/* Title and badge column */}
                         <div className="flex flex-col items-start w-full">
                           <div className="flex items-center flex-wrap mb-1 w-full min-w-0">
-                            {/* Numbered badge */}
-                            <span className="flex items-center justify-center w-5 h-5 rounded-full bg-neutral-200 text-neutral-600 text-xs font-semibold me-2 border border-neutral-300 flex-shrink-0">
-                              {idx + 1}
-                            </span>
-                            <h3 className="text-lg font-bold leading-tight truncate min-w-0 sm:text-base md:text-lg" style={{lineHeight: '1.2'}}>{chapter.name}</h3>
+                            <h3 className="text-[19px] font-semibold text-gray-900 leading-snug min-w-0">{chapter.name}</h3>
                             {chapter.drip_locked ? (
                               <DripBadge className="ms-2" drip_reason={chapter.drip_reason} drip_unlock_at={chapter.drip_unlock_at} drip_closes_at={chapter.drip_closes_at} />
                             ) : chapter.drip_closes_at && !chapter.is_locked ? (
@@ -679,15 +663,32 @@ const CourseClient = (props: any) => {
                               </span>
                             )}
                           </div>
-                          <div className="flex items-center space-x-1 text-sm text-neutral-400 font-normal">
-                            <Layers size={16} className="me-1" />
-                            <span>{chapter.activities.length} {t('activities.activities')}</span>
+                          <div className="text-[13px] text-gray-500 font-normal">
+                            {[
+                              t('courses.module_n', { n: idx + 1 }),
+                              chapterMinutes(chapter) > 0 ? `${duration(chapterMinutes(chapter))} ${t('courses.to_complete')}` : null,
+                              t('courses.n_activities', { count: chapter.activities.length }),
+                            ].filter(Boolean).join(' • ')}
                           </div>
+                        </div>
+                        <div className="ms-4 pt-1 text-wine-800 shrink-0">
+                          <svg
+                            className={`w-5 h-5 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
                         </div>
                       </div>
                       <div className={`transition-all duration-200 ${isExpanded ? 'block' : 'hidden'}`}>
                         <div className="">
                           {chapter.activities.map((activity: any) => {
+                            const lessonHeading = chapter.extra_metadata?.prakto_outline?.lessons?.find((l: any) => l.start === activity.activity_uuid)?.title
+                            const itemMinutes = chapter.extra_metadata?.prakto_outline?.minutes?.[activity.activity_uuid]
+                            const row = (() => {
                             const locked = !!activity.is_locked
                             const dripped = locked && !!chapter.drip_locked
                             const RowInner = (
@@ -714,7 +715,7 @@ const CourseClient = (props: any) => {
                                 </div>
                                 <div className="flex flex-col grow">
                                   <div className="flex items-center space-x-2 w-full">
-                                    <p className={`font-semibold transition-colors ${locked ? 'text-neutral-400' : 'text-neutral-600 group-hover:text-neutral-800'}`}>{activity.name}</p>
+                                    <p className={`text-[15px] transition-colors ${locked ? 'text-neutral-400' : 'text-gray-700 group-hover:text-gray-950'}`}>{activity.name}</p>
                                     {locked && !dripped && (
                                       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 text-[10px] font-semibold">
                                         <Lock size={10} />
@@ -734,14 +735,17 @@ const CourseClient = (props: any) => {
                                       </span>
                                     )}
                                     {!locked && isActivityCurrent(activity) && (
-                                      <div className="flex items-center space-x-1 text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full text-xs font-semibold animate-pulse">
+                                      <div className="flex items-center space-x-1 text-wine-800 bg-wine-50 border border-wine-100 px-2 py-0.5 rounded text-[11px] font-semibold">
                                         <span>{t('activities.current')}</span>
                                       </div>
                                     )}
                                   </div>
                                   <div className="flex items-center space-x-1.5 mt-0.5 text-neutral-400">
                                     {getActivityTypeIcon(activity.activity_type, activity.activity_sub_type, 10)}
-                                    <span className="text-xs font-medium">{getActivityTypeLabel(activity.activity_type, activity.activity_sub_type)}</span>
+                                    <span className="text-xs font-medium">
+                                      {getActivityTypeLabel(activity.activity_type, activity.activity_sub_type)}
+                                      {itemMinutes ? ` • ${t('courses.minutes_short', { count: itemMinutes })}` : ''}
+                                    </span>
                                   </div>
                                 </div>
                                 <div className={`transition-colors ${locked ? 'text-neutral-200' : 'text-neutral-300 group-hover:text-neutral-400 cursor-pointer'}`}>
@@ -754,7 +758,7 @@ const CourseClient = (props: any) => {
                               return (
                                 <div
                                   key={activity.activity_uuid}
-                                  className="block activity-container px-4 py-4 cursor-not-allowed select-none"
+                                  className="block activity-container ps-12 pe-5 py-2.5 cursor-not-allowed select-none"
                                   title={dripped
                                     ? dripLabel(chapter).label
                                     : t('course.activity_locked_hint', 'Sign in or join the right user group to unlock this.')}
@@ -773,11 +777,20 @@ const CourseClient = (props: any) => {
                                 }
                                 rel="noopener noreferrer"
                                 prefetch={false}
-                                className="block group activity-container transition-all duration-200 px-4 py-4"
+                                className="block group activity-container transition-colors duration-150 ps-12 pe-5 py-2.5 hover:bg-gray-50"
                                 onMouseEnter={() => handleActivityMouseEnter(activity)}
                               >
                                 {RowInner}
                               </Link>
+                            )
+                            })()
+                            return (
+                              <React.Fragment key={activity.activity_uuid}>
+                                {lessonHeading && (
+                                  <div className="ps-12 pe-5 pt-4 pb-1 text-[13px] font-semibold text-gray-600">{lessonHeading}</div>
+                                )}
+                                {row}
+                              </React.Fragment>
                             )
                           })}
                         </div>
@@ -792,6 +805,27 @@ const CourseClient = (props: any) => {
             <Suspense fallback={<div className="animate-pulse h-48 bg-gray-100 rounded-lg mt-4" />}>
               <CourseCommunitySection courseUuid={course.course_uuid} orgslug={orgslug} />
             </Suspense>
+              </div>
+
+              {/* Prakto: the sidebar stays in view while the syllabus scrolls, and the
+                  syllabus sits right under the cover instead of below the sidebar. */}
+              <div className='course_metadata_right w-full md:w-1/4 space-y-4 md:sticky md:top-[84px] md:self-start'>
+                {/* Actions Box */}
+                <CoursesActions courseuuid={courseuuid} orgslug={orgslug} course={course} trailData={trailData} />
+
+                
+                {/* Authors & Updates Box */}
+                <div className="bg-white nice-shadow rounded-lg overflow-hidden p-4">
+                  <CourseProvider courseuuid={course.course_uuid}>
+                    <CourseAuthors authors={course.authors} />
+                  </CourseProvider>
+                </div>
+
+                <OfferedByCard />
+              </div>
+            </div>
+
+            <ProgrammeCourses programme={programme} currentCourseUuid={course.course_uuid} orgslug={orgslug} />
           </GeneralWrapperStyled>
 
           {/* Room for the start / continue button docked on phones. */}

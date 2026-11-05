@@ -1,78 +1,75 @@
 import { Callout } from 'nextra/components'
 
-# Assignments
+# Uppgifter
 
-An assignment is an activity inside a course chapter that learners hand work in for. It is made of one or more tasks (quizzes, file uploads, fill-in-the-blank forms, code challenges, short and number answers). You can grade it by hand, let LearnHouse grade it automatically, or not grade it at all.
-
-<YouTube video="guide-2" />
+En uppgift är en aktivitet i ett kurskapitel där eleverna lämnar in arbete. Den består av en eller flera deluppgifter (quiz, filinlämningar, ifyllnadsformulär, kodutmaningar, kortsvar och numeriska svar). Du kan bedöma den för hand, låta Prakto Akademi bedöma den automatiskt eller inte bedöma den alls.
 
 <Callout>
-Assignments must be enabled in your [Organization Settings](/platform/organizations/settings). On the Free plan of LearnHouse Cloud an organization can have up to 5 assignments.
+Uppgifter måste vara aktiverade i [Organisationsinställningar](/platform/organizations/settings).
 </Callout>
 
-## Creating an assignment
+## Skapa en uppgift
 
-You can create one in two ways:
+Du kan skapa en uppgift på två sätt:
 
-- From **Assignments** in the dashboard: click **New Assignment**, choose the course, then the chapter.
-- From the course editor: add an activity of type **Assignments** to a chapter.
+- Från **Uppgifter** i adminpanelen: klicka på **Ny uppgift**, välj kurs och sedan kapitel.
+- Från kursredigeraren: lägg till en aktivitet av typen **Uppgifter** i ett kapitel.
 
-<img src="/img/pages/assignments/assignments-list.webp" alt="The Assignments page in the dashboard, with assignments grouped by course and badges for grading type and auto-grading" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/assignments/assignments-list.webp" alt="Sidan Uppgifter i adminpanelen, med uppgifterna grupperade per kurs och märken för betygstyp och automatisk bedömning" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-Then fill in the form:
+Fyll sedan i formuläret:
 
-| Field | What it does |
+| Fält | Vad det gör |
 | --- | --- |
-| **Assignment Title** and **Assignment Description** | Shown to learners at the top of the assignment. |
-| **Due Date** | Optional. See [Deadlines](#deadlines). |
-| **Grading Type** | How grades are shown: **Alphabet**, **Numeric**, **Percentage**, **Pass / Fail** or **GPA Scale**. See [Grading](/platform/assignments/grading#grading-types). |
-| **Automatic grading** | Grade and complete the activity as soon as the learner submits. |
-| **Block copy & paste** | Block paste events in code editors and text inputs. |
-| **Reveal correct answers after grading** | Show learners the right answers next to their own once graded. |
+| **Uppgiftens titel** och **Uppgiftens beskrivning** | Visas för eleverna högst upp i uppgiften. |
+| **Inlämningsdatum** | Valfritt. Se [Deadline](#deadline). |
+| **Betygstyp** | Hur betygen visas: **Bokstav**, **Numerisk**, **Procent**, **Godkänd / Underkänd** eller **GPA-skala**. Se [Bedömning](/platform/assignments/grading#betygstyper). |
+| **Automatisk bedömning** | Bedöm och slutför aktiviteten så fort eleven lämnar in. |
+| **Blockera kopiera och klistra in** | Stoppar inklistring i kodredigerare och textfält. |
+| **Visa rätta svar efter bedömning** | Visar de rätta svaren bredvid elevens egna när uppgiften har bedömts. |
 
-<img src="/img/pages/assignments/assignment-create-form.webp" alt="The Create Activity form for an assignment, with title, description, due date and the five grading types" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/assignments/assignment-create-form.webp" alt="Formuläret Skapa aktivitet för en uppgift, med titel, beskrivning, inlämningsdatum och de fem betygstyperna" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-The assignment page in the dashboard has three tabs: **Editor** (the tasks), **Submissions** and **Analytics**. Use **Edit** to change the settings above and the extra ones described below, **Preview** to see it as a learner, and **Publish** / **Unpublish** to control whether learners can see it.
+Uppgiftens sida i adminpanelen har tre flikar: **Redigerare** (deluppgifterna), **Inlämningar** och **Statistik**. Använd **Redigera** för att ändra inställningarna ovan och de extra inställningarna som beskrivs nedan, **Förhandsgranska** för att se uppgiften som en elev ser den, och **Publicera** / **Avpublicera** för att styra om eleverna kan se den.
 
 <Callout type="warning">
-Unpublish an assignment before changing its tasks, then publish it again when you are done. Otherwise learners may be working on tasks while you edit them.
+Avpublicera uppgiften innan du ändrar deluppgifterna, och publicera den igen när du är klar. Annars kan elever arbeta med deluppgifter medan du ändrar dem.
 </Callout>
 
-## Settings
+## Inställningar
 
-These options are in the **Edit** dialog:
+De här alternativen finns i dialogrutan **Redigera**:
 
-<img src="/img/pages/assignments/assignment-grading-options.webp" alt="The Grading options of an assignment: Formative, Automatic grading, Block copy & paste, Reveal correct answers, Allow retries and Maximum attempts" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/assignments/assignment-grading-options.webp" alt="Bedömningsalternativen för en uppgift: Formativ, Automatisk bedömning, Blockera kopiera och klistra in, Visa rätta svar, Tillåt nya försök och Maximalt antal försök" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-| Setting | What it does |
+| Inställning | Vad den gör |
 | --- | --- |
-| **Automatic grading** | Grades the submission and marks the activity complete on submit. Only available when every task can be graded without a human, so not when the assignment has a File submission task. |
-| **Block copy & paste** | A deterrent against pasting AI-generated answers. It blocks paste in the code editor and text inputs, but it can be bypassed. |
-| **Reveal correct answers after grading** | After grading, learners see which quiz options were correct, the expected short or number answer, and the correct form blanks. |
-| **Allow retries** | After grading, learners can reset their work and try again. The new grade replaces the old one. |
-| **Maximum attempts** | Total attempts including the first. `0` means unlimited. |
-| **Passing threshold** | The minimum score to pass, as a percentage. Leave it empty for the default: 50%, or 60% for Alphabet and GPA Scale. |
-| **Formative (no grading)** | The work is handed in but never marked. See [Formative Assessment](/platform/assignments/formative). |
-| **Model answer** | A worked solution, with an optional attached document, that unlocks for learners **Never**, **On hand-in** or **After grading**. |
+| **Automatisk bedömning** | Bedömer inlämningen och markerar aktiviteten som slutförd när eleven lämnar in. Går bara att välja när alla deluppgifter kan bedömas utan en lärare, alltså inte när uppgiften har en deluppgift av typen Filinlämning. |
+| **Blockera kopiera och klistra in** | Ska avskräcka från att klistra in AI-genererade svar. Inklistring stoppas i kodredigeraren och i textfält, men spärren går att kringgå. |
+| **Visa rätta svar efter bedömning** | Efter bedömningen ser eleverna vilka quizalternativ som var rätt, det förväntade kortsvaret eller numeriska svaret och de rätta orden i formulärets luckor. |
+| **Tillåt nya försök** | Efter bedömningen kan eleverna nollställa sitt arbete och försöka igen. Det nya betyget ersätter det gamla. |
+| **Maximalt antal försök** | Totalt antal försök, det första inräknat. `0` betyder obegränsat. |
+| **Gräns för godkänt** | Lägsta resultat för godkänt, i procent. Lämna tomt för att använda standardvärdet: 50 %, eller 60 % för Bokstav och GPA-skala. |
+| **Formativ (ingen bedömning)** | Arbetet lämnas in men bedöms aldrig. Se [Formativ bedömning](/platform/assignments/formative). |
+| **Facit** | En genomarbetad lösning, eventuellt med ett bifogat dokument, som låses upp för eleverna **Aldrig**, **Vid inlämning** eller **Efter bedömning**. |
 
-## Deadlines
+## Deadline
 
-A due date is optional. Set one and the assignment closes when it passes: submissions, edits and retries are all refused after that, and learners see **Deadline passed**.
+En deadline är valfri. Om du anger en stängs uppgiften när den har passerat: inlämningar, ändringar och nya försök tas inte längre emot, och eleverna ser **Deadline har passerat**.
 
-Leave it empty (**No deadline**) and the assignment stays open. That suits self-paced courses where learners enrol on different days. You can remove a deadline later from the assignment's settings.
+Lämnar du fältet tomt (**Ingen deadline**) är uppgiften öppen hela tiden. Det passar kurser där eleverna går i egen takt och börjar olika dagar. Du kan också ta bort en deadline i efterhand i uppgiftens inställningar.
 
-## What learners see
+## Det här ser eleverna
 
-Learners work through the tasks in order. Their answers are saved as they go. When they are done they click **Submit for grading** (or **Hand in my work** on a formative assignment). After submitting they can no longer change their answers.
+Eleverna arbetar sig igenom deluppgifterna i ordning. Svaren sparas medan de arbetar. När de är klara klickar de på **Lämna in för bedömning** (eller **Lämna in mitt arbete** på en formativ uppgift). Efter inlämningen kan de inte längre ändra sina svar.
 
-Once graded, they see their grade, a **Task breakdown** with each task marked **Passed** or **Not passed**, and any feedback you wrote. If retries are allowed, a **Try again** button shows how many attempts are left.
+När uppgiften har bedömts ser de sitt betyg, en **Fördelning av deluppgifter** där varje deluppgift är markerad som **Godkänd** eller **Ej godkänd**, och den feedback du har skrivit. Om nya försök är tillåtna visar knappen **Försök igen** hur många försök som finns kvar.
 
-Passing every graded assignment is required for a [course certificate](/platform/certifications), and for the course to count as finished in a [learning path](/platform/paths).
+Eleven måste klara alla uppgifter som bedöms för att få ett [kurscertifikat](/platform/certifications), och för att kursen ska räknas som avklarad i en [lärväg](/platform/paths).
 
-## Learn More
+## Läs mer
 
-- [Task Types](/platform/assignments/task-types): every task type and its options, plus AI task generation.
-- [Grading & Submissions](/platform/assignments/grading): reviewing and grading submissions.
-- [Analytics](/platform/assignments/analytics): class results for one assignment.
-- [Formative Assessment](/platform/assignments/formative): ungraded hand-ins that unlock a model answer.
-- [Headless Assignments](/developers/api/headless-assignments): drive assignments from your own frontend with an API token.
+- [Typer av deluppgifter](/platform/assignments/task-types): alla typer av deluppgifter och deras inställningar, och hur du skapar deluppgifter med AI.
+- [Bedömning och inlämningar](/platform/assignments/grading): granska och bedöma inlämningar.
+- [Statistik](/platform/assignments/analytics): klassens resultat för en uppgift.
+- [Formativ bedömning](/platform/assignments/formative): inlämningar som inte bedöms men låser upp ett facit.

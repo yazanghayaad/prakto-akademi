@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 import { useCourseCertification } from '@components/Hooks/useCourseCertification'
+import { useCompleteActivity, completesOnNext } from '@components/Pages/Activity/useCompleteActivity'
 
 interface Props {
   course: any
@@ -311,6 +312,7 @@ function ActivityIndicators(props: Props) {
   const courseid = props.course_uuid.replace('course_', '')
   const enableNavigation = props.enableNavigation || false
   const router = useRouter()
+  const completeActivity = useCompleteActivity()
 
   // The trophy promises a certificate, so it only makes sense on a course that
   // actually has certification. A definitive "no certification" hides it; a
@@ -319,9 +321,11 @@ function ActivityIndicators(props: Props) {
     useCourseCertification(props.course_uuid)
   const showCertificationBadge = certificationEnabled || certificationUnknown
 
-  const done_activity_style = 'bg-teal-500 hover:bg-teal-600'
-  const black_activity_style = 'bg-zinc-200/80 hover:bg-zinc-300'
-  const current_activity_style = 'bg-gray-500 animate-pulse hover:bg-gray-600'
+  // Prakto: a quiet track. Done is wine, the current step a lighter wine, the
+  // rest a hairline grey; no pulsing.
+  const done_activity_style = 'bg-wine-800 hover:bg-wine-700'
+  const black_activity_style = 'bg-gray-200 hover:bg-gray-300'
+  const current_activity_style = 'bg-wine-400 hover:bg-wine-500'
 
   // Flatten all activities for navigation and rendering
   const allActivities = useMemo(() => {
@@ -393,6 +397,9 @@ function ActivityIndicators(props: Props) {
     allActivities.length > 0 && currentActivityIndex === allActivities.length - 1
 
   const navigateToNext = () => {
+    // Prakto: moving on completes a reading item (videos complete by watching).
+    const current = currentActivityIndex >= 0 ? allActivities[currentActivityIndex] : null
+    if (completesOnNext(current)) completeActivity(course, current)
     if (currentActivityIndex < allActivities.length - 1) {
       const nextActivity = allActivities[currentActivityIndex + 1]
       const activityId = nextActivity.activity_uuid.replace('activity_', '')
@@ -468,7 +475,7 @@ function ActivityIndicators(props: Props) {
           </div>
           <div className="w-full bg-zinc-200/80 rounded-full h-[6px] overflow-hidden">
             <div
-              className="h-full bg-teal-500 rounded-full transition-all duration-300"
+              className="h-full bg-wine-800 rounded-full transition-all duration-300"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -534,34 +541,25 @@ function ActivityIndicators(props: Props) {
                   }
                 >
                   {chapterLinkHref ? (
-                    <Link href={chapterLinkHref} prefetch={false} className="relative z-10 shrink-0 flex items-center cursor-pointer focus:outline-none">
-                      <div className={`w-[22px] h-[22px] rounded-full flex items-center justify-center text-[10px] font-bold transition-all border-2 border-white ${
-                        isChapterComplete
-                          ? 'bg-teal-500 text-white'
-                          : 'bg-gray-200 text-gray-500'
-                      }`}>
-                        {chapterIndex + 1}
-                      </div>
+                    <Link href={chapterLinkHref} prefetch={false} aria-label={`${t('courses.chapter')} ${chapterIndex + 1}`} className="relative z-10 shrink-0 flex items-center px-[3px] py-1.5 cursor-pointer focus:outline-none">
+                      <div className={`w-[2px] h-[12px] rounded-full transition-colors ${
+                        isChapterComplete ? 'bg-wine-800' : 'bg-gray-300'
+                      }`} />
                     </Link>
                   ) : (
-                    <div className="relative z-10 shrink-0 flex items-center cursor-not-allowed">
-                      <div className={`w-[22px] h-[22px] rounded-full flex items-center justify-center text-[10px] font-bold transition-all border-2 border-white ${
-                        isChapterComplete
-                          ? 'bg-teal-500 text-white'
-                          : 'bg-gray-200 text-gray-500'
-                      }`}>
-                        {chapterIndex + 1}
-                      </div>
+                    <div className="relative z-10 shrink-0 flex items-center px-[3px] py-1.5 cursor-not-allowed">
+                      <div className={`w-[2px] h-[12px] rounded-full ${
+                        isChapterComplete ? 'bg-wine-800' : 'bg-gray-300'
+                      }`} />
                     </div>
                   )}
                 </ToolTip>
 
                 {/* Activity segments, glued to circle, flush together */}
-                <div className="flex-1 flex items-center min-w-0 -ms-[4px]">
+                <div className="flex-1 flex items-center min-w-0 overflow-hidden rounded-full">
                   {chapter.activities.map((activity: any, activityIndex: number) => {
                     const isDone = isActivityDone(activity)
                     const isCurrent = isActivityCurrent(activity)
-                    const isLast = activityIndex === chapter.activities.length - 1
                     return (
                       <ToolTip
                         sideOffset={8}
@@ -584,10 +582,10 @@ function ActivityIndicators(props: Props) {
                               ''
                             )}`
                           }
-                          className={`${isCurrent ? 'flex-2' : 'flex-1'} min-w-[12px] ${!isLast ? 'border-e-[1.5px] border-white' : ''}`}
+                          className={`${isCurrent ? 'flex-2' : 'flex-1'} min-w-[6px] py-1.5`}
                         >
                           <div
-                            className={`h-[7px] ${getActivityClass(activity)} ${isLast ? 'rounded-e-full' : ''} transition-all hover:brightness-110`}
+                            className={`h-[4px] ${getActivityClass(activity)} transition-colors`}
                           ></div>
                         </Link>
                       </ToolTip>

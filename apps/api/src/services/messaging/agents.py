@@ -427,7 +427,7 @@ def _system_prompt(agent: Agent, context: str, catalog: list[dict] | None = None
     parts = [persona, TONE_PROMPTS.get(agent.tone, TONE_PROMPTS["friendly"])]
     if agent.is_default:
         parts.append(
-            "You are this organization's Copilot. You can draw on every course the learner has access "
+            "You are this organization's built-in assistant. You can draw on every course the learner has access "
             "to, so connect ideas across courses and point them to the course that covers what they need. "
             "You also answer from your own general knowledge, including questions no course covers."
         )

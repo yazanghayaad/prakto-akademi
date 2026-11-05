@@ -9,25 +9,30 @@ export type AgentAvatarProps = {
   className?: string
 }
 
-/** The LearnHouse AI mark Copilot wears instead of an emoji tile. */
+/** The LearnHouse AI mark. Copilot no longer wears it here (see below). */
 export const COPILOT_LOGO = '/learnhouse_ai_simple_colored.png'
 
-/** An agent's face: its two colors as a rounded tile, its emoji on top. Copilot wears the LearnHouse AI mark. */
+/** An agent's face: its two colors as a rounded tile, its emoji on top. Copilot wears the Prakto star on wine. */
 export default function AgentAvatar({ agent, size = 36, className = '' }: AgentAvatarProps) {
-  const radius = Math.max(6, Math.round(size * 0.25))
+  const radius = Math.max(4, Math.round(size * 0.18))
   if (agent.is_default) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={COPILOT_LOGO}
-        alt={agent.name}
+      <span
+        className={`inline-flex items-center justify-center shrink-0 select-none bg-wine-900 ${className}`}
+        style={{ width: size, height: size, borderRadius: radius }}
+        role="img"
+        aria-label={agent.name}
         title={agent.name}
-        width={size}
-        height={size}
-        className={`shrink-0 select-none ${className}`}
-        style={{ width: size, height: size }}
-        draggable={false}
-      />
+      >
+        <svg viewBox="0 0 24 24" style={{ width: Math.round(size * 0.56), height: Math.round(size * 0.56) }} aria-hidden="true">
+          <g stroke="var(--color-wine-100)" strokeWidth={size < 24 ? 2.6 : 2} strokeLinecap="round">
+            <line x1="12" y1="2" x2="12" y2="22" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <line x1="4.9" y1="4.9" x2="19.1" y2="19.1" />
+            <line x1="19.1" y1="4.9" x2="4.9" y2="19.1" />
+          </g>
+        </svg>
+      </span>
     )
   }
   return (

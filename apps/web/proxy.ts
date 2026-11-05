@@ -1,4 +1,5 @@
 import { getAPIUrl } from './services/config/config'
+import { isSelfSignupDisabled } from './services/config/signup'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { isLocalhost as isLocalhostCheck } from './services/utils/ts/hostUtils'
@@ -432,6 +433,13 @@ export default async function proxy(req: NextRequest) {
   // 3. Auth pages: resolve tenant for cookie context, rewrite to /auth
   // -------------------------------------------------------------------------
   const authPaths = ['/login', '/signup', '/reset', '/forgot', '/verify-email']
+
+  // Prakto Akademi: no sign-up here, so every "sign up" link lands on the login
+  // page, where "Fortsätt med Prakto-konto" is.
+  if (pathname === '/signup' && isSelfSignupDisabled()) {
+    return NextResponse.redirect(new URL('/login', req.url))
+  }
+
   if (authPaths.includes(pathname)) {
     const hasSession = !!req.cookies.get('LH_session')?.value
 

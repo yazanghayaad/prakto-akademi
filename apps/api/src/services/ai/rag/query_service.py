@@ -7,6 +7,8 @@ grounded in course content.
 
 import json
 import logging
+import re
+import time
 
 from sqlalchemy import bindparam, text
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -39,6 +41,31 @@ _KIND_LABELS = {
 }
 
 
+# Prakto: the embedding provider can be down or out of quota (Cloudflare Workers
+# AI free tier: 10k neurons/day). Then search falls back to keywords, and the
+# provider is skipped for a while instead of paying its retries (several
+# seconds) on every question.
+EMBEDDING_COOLDOWN_SECONDS = 600
+_embedding_down_until = 0.0
+
+
+async def _try_embed_query(question: str):
+    """The question's embedding, or None while the provider is failing."""
+    global _embedding_down_until
+    if time.monotonic() < _embedding_down_until:
+        return None
+    try:
+        return await embed_single_text(question)
+    except Exception as e:
+        _embedding_down_until = time.monotonic() + EMBEDDING_COOLDOWN_SECONDS
+        logger.warning(
+            "Query embedding failed; keyword search for the next %d min: %s",
+            EMBEDDING_COOLDOWN_SECONDS // 60,
+            e,
+        )
+        return None
+
+
 async def search_course_content(
     question: str,
     org_id: int,
@@ -50,7 +77,9 @@ async def search_course_content(
     if not scope.course_ids:
         return []
 
-    query_embedding = await embed_single_text(question)
+    query_embedding = await _try_embed_query(question)
+    if query_embedding is None:
+        return await keyword_search_course_content(question, org_id, db_session, scope, top_k)
     embedding_str = "[" + ",".join(str(v) for v in query_embedding) + "]"
 
     # Course-level access is enforced in SQL. Activity-level rules (drafts,
@@ -69,6 +98,74 @@ async def search_course_content(
     """).bindparams(bindparam("course_ids", expanding=True))
     params = {
         "query_embedding": embedding_str,
+        "org_id": org_id,
+        "course_ids": scope.course_ids,
+        "limit": top_k * OVERFETCH_FACTOR,
+    }
+
+    rows = (await db_session.execute(sql, params)).fetchall()
+    return (await filter_readable_chunks(rows, scope, db_session))[:top_k]
+
+
+# Letters/digits only (no "_"), so every term is a plain tsquery lexeme.
+_KEYWORD_RE = re.compile(r"[^\W_]{3,}", re.UNICODE)
+_MAX_KEYWORDS = 12
+_STOPWORDS = frozenset(
+    # Swedish
+    "och att det som för med har till inte den kan var jag vad hur när där här "
+    "ska skulle om eller men från vid över under efter alla också mycket finns "
+    "detta dessa sin sina min mitt mina din ditt dina vilken vilket vilka varför "
+    "kurs kursen kurser "
+    # English
+    "the and for with what how when where why which who this that these those "
+    "are was were can could should would does did has have had you your about "
+    "from into there their they them course courses"
+    .split()
+)
+
+
+def keyword_terms(question: str) -> list[str]:
+    """Distinct, lower-cased content words of a question, in order."""
+    terms: list[str] = []
+    for word in _KEYWORD_RE.findall(question.lower()):
+        if word not in _STOPWORDS and word not in terms:
+            terms.append(word)
+    return terms[:_MAX_KEYWORDS]
+
+
+async def keyword_search_course_content(
+    question: str,
+    org_id: int,
+    db_session: AsyncSession,
+    scope: RagAccessScope,
+    top_k: int = TOP_K,
+) -> list:
+    """Full-text fallback over the indexed chunks when no query embedding exists.
+
+    Any term may match (OR); chunks matching more and rarer-in-chunk terms rank
+    higher. Same access rules as the vector search. ``distance`` is NULL, so the
+    sources carry no similarity score.
+    """
+    if not scope.course_ids:
+        return []
+    terms = keyword_terms(question)
+    if not terms:
+        return []
+
+    sql = text("""
+        SELECT ce.id, ce.chunk_text, ce.activity_id, ce.activity_uuid, ce.activity_name,
+               ce.chapter_name, ce.course_name, ce.source_type, ce.block_uuid, ce.locator,
+               ce.course_id, c.course_uuid,
+               NULL AS distance
+        FROM course_embedding ce
+        JOIN course c ON c.id = ce.course_id
+        WHERE ce.org_id = :org_id AND ce.course_id IN :course_ids
+          AND to_tsvector('simple', coalesce(ce.chunk_text, '')) @@ to_tsquery('simple', :tsquery)
+        ORDER BY ts_rank(to_tsvector('simple', coalesce(ce.chunk_text, '')), to_tsquery('simple', :tsquery)) DESC
+        LIMIT :limit
+    """).bindparams(bindparam("course_ids", expanding=True))
+    params = {
+        "tsquery": " | ".join(terms),
         "org_id": org_id,
         "course_ids": scope.course_ids,
         "limit": top_k * OVERFETCH_FACTOR,

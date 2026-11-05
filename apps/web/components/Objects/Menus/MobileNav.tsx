@@ -22,11 +22,13 @@ import {
   Check,
   SquaresFour,
 } from '@phosphor-icons/react'
+import { HELP_LINKS } from '@/lib/helpLinks'
 import { Dialog, DialogContent, DialogTitle } from '@components/ui/dialog'
 import UserAvatar from '@components/Objects/UserAvatar'
 import { useLHSession } from '@components/Contexts/LHSessionContext'
 import { useOrg } from '@components/Contexts/OrgContext'
 import { signOut } from '@components/Contexts/AuthContext'
+import { isSelfSignupDisabled } from '@services/config/signup'
 import useAdminStatus from '@components/Hooks/useAdminStatus'
 import { useMessaging, useMessagingEnabled } from '@components/Messaging/MessagingProvider'
 import { useSiteCommandPalette } from '@components/Objects/Search/SiteCommandPaletteContext'
@@ -290,19 +292,21 @@ function MobileMoreSheet({
               <CaretRight size={14} weight="bold" className="text-neutral-300 rtl:rotate-180" />
             </Link>
           ) : (
-            <div className="mx-3 grid grid-cols-2 gap-2">
+            <div className={`mx-3 grid gap-2 ${isSelfSignupDisabled() ? 'grid-cols-1' : 'grid-cols-2'}`}>
               <Link
                 href={getUriWithOrg(orgslug, '/login')}
                 className="lh-press flex h-12 items-center justify-center rounded-xl bg-neutral-100 text-[15px] font-semibold text-neutral-900"
               >
                 {t('auth.login')}
               </Link>
+              {!isSelfSignupDisabled() && (
               <Link
                 href={getUriWithOrg(orgslug, '/signup')}
                 className="lh-press flex h-12 items-center justify-center rounded-xl bg-neutral-900 text-[15px] font-semibold text-white"
               >
                 {t('auth.sign_up')}
               </Link>
+              )}
             </div>
           )}
 
@@ -375,7 +379,7 @@ function MobileMoreSheet({
                 </button>
               ))}
             {isAdmin && (
-              <SheetRow href="https://docs.learnhouse.app" external Icon={Book} label={t('common.help_menu.documentation')} />
+              <SheetRow href={HELP_LINKS.docs} external Icon={Book} label={t('common.help_menu.documentation')} />
             )}
             {isAuthenticated && (
               <SheetRow

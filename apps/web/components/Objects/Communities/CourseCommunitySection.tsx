@@ -52,7 +52,7 @@ export function CourseCommunitySection({ courseUuid, orgslug }: CourseCommunityS
       <h2 className="py-5 text-xl md:text-2xl font-bold text-gray-900">
         {t('communities.course_section.title')}
       </h2>
-      <div className="bg-white shadow-md shadow-gray-300/25 outline outline-1 outline-neutral-200/40 rounded-lg overflow-hidden">
+      <div className="bg-white nice-shadow rounded-lg overflow-hidden">
         {/* Header */}
         <div className="p-4 border-b border-gray-100 flex items-center justify-between">
           <div>

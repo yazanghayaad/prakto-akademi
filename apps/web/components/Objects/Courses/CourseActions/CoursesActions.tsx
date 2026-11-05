@@ -6,7 +6,7 @@ import { useLHSession } from '@components/Contexts/LHSessionContext'
 import { getUriWithOrg } from '@services/config/config'
 import { getOffersByResource } from '@ee/services/payments/offers'
 import { getResourcePaywall } from '@ee/services/payments/access'
-import { UserPen, ClockIcon, ArrowRight, BookOpen, UserPlus } from 'lucide-react'
+import { UserPen, ClockIcon, ArrowRight, UserPlus } from 'lucide-react'
 import { OfferCard } from '@ee/components/Payments/OfferCard'
 import { useShortcut } from '@/lib/shortcuts/ShortcutsContext'
 import { Keys } from '@components/Objects/Shortcuts/Kbd'
@@ -325,43 +325,12 @@ function CoursesActions({ courseuuid, orgslug, course, trailData }: CourseAction
     const progressPercentage = totalActivities > 0 ? Math.round((completedActivities / totalActivities) * 100) : 0;
 
     if (!isStarted) {
+      // Prakto: a plain summary line, no dotted texture or empty progress ring.
       return (
-        <div className="relative bg-white nice-shadow rounded-lg overflow-hidden">
-          <div
-            className="absolute inset-0 opacity-[0.05]"
-            style={{
-              backgroundImage: 'radial-gradient(circle at center, #101010 1px, transparent 1px)',
-              backgroundSize: '12px 12px'
-            }}
-          />
-          <div className="relative p-4">
-            <div className="flex items-center gap-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-4">
-                  <div className="relative w-16 h-16">
-                    <svg className="w-full h-full transform -rotate-90">
-                      <circle
-                        cx="32"
-                        cy="32"
-                        r="28"
-                        stroke="#e5e7eb"
-                        strokeWidth="6"
-                        fill="none"
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <BookOpen className="w-6 h-6 text-neutral-400" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm font-medium text-gray-900">{t('courses.ready_to_begin')}</div>
-                    <div className="text-sm text-gray-500">
-                      {t('courses.start_learning_journey', { count: totalActivities })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div className="bg-white nice-shadow rounded-lg px-5 py-4">
+          <div className="text-[15px] font-semibold text-gray-900">{t('courses.ready_to_begin')}</div>
+          <div className="mt-0.5 text-sm text-gray-500">
+            {t('courses.start_learning_journey', { count: totalActivities })}
           </div>
         </div>
       );
@@ -442,7 +411,7 @@ function CoursesActions({ courseuuid, orgslug, course, trailData }: CourseAction
   // Show join organization prompt for authenticated users who are not part of the org
   if (session.data?.user && !isUserPartOfTheOrg) {
     return (
-      <div className="bg-white shadow-md shadow-gray-300/25 outline outline-1 outline-neutral-200/40 rounded-lg overflow-hidden p-4">
+      <div className="bg-white nice-shadow rounded-lg overflow-hidden p-4">
         <div className="space-y-4">
           <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg nice-shadow">
             <div className="flex items-center gap-3">
@@ -455,7 +424,7 @@ function CoursesActions({ courseuuid, orgslug, course, trailData }: CourseAction
           </div>
           <a
             href={getUriWithOrg(orgslug, '/signup')}
-            className="w-full bg-neutral-900 text-white py-3 rounded-lg nice-shadow font-semibold hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-wine-900 text-white py-3 rounded-lg font-semibold hover:bg-wine-800 transition-colors flex items-center justify-center gap-2"
           >
             <UserPlus className="w-5 h-5" />
             {t('courses.join_organization')}
@@ -516,7 +485,7 @@ function CoursesActions({ courseuuid, orgslug, course, trailData }: CourseAction
   const totalActivities = course.chapters?.reduce((acc: number, chapter: any) => acc + chapter.activities.length, 0) || 0
 
   return (
-    <div ref={boxRef} className="bg-white shadow-md shadow-gray-300/25 outline outline-1 outline-neutral-200/40 rounded-lg overflow-hidden p-4">
+    <div ref={boxRef} className="bg-white nice-shadow rounded-lg overflow-hidden p-4">
       {totalActivities > 0 && (
         <div
           aria-hidden={boxVisible}
@@ -530,7 +499,7 @@ function CoursesActions({ courseuuid, orgslug, course, trailData }: CourseAction
             tabIndex={boxVisible ? -1 : 0}
             onClick={() => (isStarted ? resumeCourse() : handleCourseAction())}
             disabled={isActionLoading}
-            className="lh-press flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 text-[15px] font-semibold text-white shadow-lg shadow-black/15"
+            className="lh-press flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-wine-900 text-[15px] font-semibold text-white"
           >
             {isStarted ? t('shortcuts.continue_course') : t('courses.start_course')}
             <ArrowRight className="w-5 h-5 rtl:rotate-180" />
@@ -549,7 +518,7 @@ function CoursesActions({ courseuuid, orgslug, course, trailData }: CourseAction
           className={`w-full py-3 rounded-lg nice-shadow font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer ${
             isStarted
               ? 'bg-red-500 text-white hover:bg-red-600 disabled:bg-red-400'
-              : 'bg-neutral-900 text-white hover:bg-neutral-800 disabled:bg-neutral-700'
+              : 'bg-wine-900 text-white hover:bg-wine-800 disabled:bg-wine-700'
           }`}
         >
           {isActionLoading ? (

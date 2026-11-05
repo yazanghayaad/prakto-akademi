@@ -1,80 +1,74 @@
-import { Callout } from 'nextra/components'
+# Redigeraren
 
-# Editor
+Aktiviteter av typen Dynamisk sida skrivs i en blockbaserad redigerare. Du bygger en sida genom att lägga block efter varandra (text, bilder, quiz, kodutmaningar, inbäddningar) och flytta runt dem.
 
-Dynamic Page activities are written in a block-based editor. You build a page by stacking blocks (text, images, quizzes, code challenges, embeds) and rearranging them.
+Du öppnar redigeraren genom att gå till en kurs i adminpanelen, öppna fliken **Innehåll** och klicka på **Redigera sida** på en aktivitet av typen **Dynamisk sida**. Redigeraren fungerar bara i en webbläsare på dator. På en mobil visas **Endast dator**.
 
-To open it, go to a course in the dashboard, open the **Content** tab and click **Edit Page** on a Dynamic Page activity. The editor only works on a desktop browser. On a phone it shows **Desktop Only**.
+<img src="/docs/img/pages/editor/slash-menu.webp" alt="Redigeraren med snedstrecksmenyn öppen, med Stycke och rubrikblocken under Text" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-<img src="/img/pages/editor/slash-menu.webp" alt="The editor with the slash menu open, listing Paragraph and heading blocks under Text" width={1600} height={900} style={{ borderRadius: 10 }} />
+## Skriva
 
-## Writing
+- **Snedstrecksmenyn**: skriv `/` för att infoga ett block. Se [Block](/platform/editor/blocks) för hela listan.
+- **Verktygsfältet**: se nedan.
+- **Klistra in eller släpp filer**: bilder, MP4- och WebM-videor och PDF-filer som du släpper eller klistrar in på sidan laddas upp och blir block.
+- **Draghandtaget**: håll muspekaren över ett block och dra i handtaget till vänster om det för att flytta blocket.
+- **Aktivitetsväxlaren**: hoppa till en annan aktivitet i samma kurs utan att lämna redigeraren. Har du osparade ändringar får du först frågan om du vill spara.
 
-- **Slash menu**: type `/` to insert any block. See [Blocks](/platform/editor/blocks) for the full list.
-- **Toolbar**: see below.
-- **Paste or drop files**: images, MP4 or WebM videos and PDFs dropped or pasted into the page are uploaded and become blocks.
-- **Drag handle**: hover a block and drag the handle on its left to move it.
-- **Activity switcher**: jump to another activity of the same course without leaving the editor. If you have unsaved changes, you are asked to save first.
+## Verktygsfältet
 
-## The toolbar
+Verktyg som hör ihop är samlade i rullgardinsmenyer, så att verktygsfältet ryms på en eller två rader. Från vänster till höger:
 
-Related tools are grouped into dropdown menus, so the toolbar stays on one or two rows. From left to right:
-
-| Tool | What it holds |
+| Verktyg | Vad det innehåller |
 | --- | --- |
-| Undo, Redo, Bold, Italic, Strikethrough, **Link** | Single buttons. |
-| Text style | **Paragraph** or **Heading 1** to **Heading 6**. |
-| **List** | **Bullet List** and **Ordered List**. |
-| **Table** | Insert a 3 by 3 table, add a row below, add a column to the right, delete the current row or column. |
-| **Callout** | **Info**, **Warning**, **Tip**, **Success** or **Error**. |
-| Media buttons | **Image**, **Video**, **Audio**, **PDF Document** and **Library**, each its own button. |
-| Embed menu | **External Object (Embed)**, **YouTube Video** and **Web Preview**. |
-| **Math Equation (LaTeX)** | Single button. |
-| **Code Block** | **Code Block** and **Code Playground**. |
-| Interactive buttons | **Interactive Quiz**, **Flipcard**, **Interactive Scenarios** and **H5P Interactive Content**. |
-| **Elements** | **Divider**, **Badges**, **Button** and **User**. |
-| **Personalize** | Variables, conditional content and community tags. See [Dynamic Content](/platform/editor/dynamic-content). |
-| **Magic Block (AI Generated)** | Inserts an AI-generated interactive block. Greyed out when AI is not available to your organization. |
+| Ångra, Gör om, Fet, Kursiv, Genomstruken, **Länk** | Separata knappar. |
+| Textstil | **Stycke** eller **Rubrik 1** till **Rubrik 6**. |
+| **Lista** | **Punktlista** och **Numrerad lista**. |
+| **Tabell** | Infoga en tabell med 3 × 3 celler, lägg till en rad nedanför, lägg till en kolumn till höger, radera aktuell rad eller kolumn. |
+| **Textruta** | **Info**, **Varning**, **Tips**, **Lyckades** eller **Fel**. |
+| Mediaknappar | **Bild**, **Video**, **Ljud**, **PDF-dokument** och **Bibliotek**, var och en som egen knapp. |
+| Inbäddningsmeny | **Externt objekt (inbäddning)**, **YouTube-video** och **Webbförhandsvisning**. |
+| **Matematisk ekvation (LaTeX)** | Separat knapp. |
+| **Kodblock** | **Kodblock** och **Kodlekplats**. |
+| Interaktiva knappar | **Interaktivt quiz**, **Vändkort**, **Interaktiva scenarier** och **H5P-interaktivt innehåll**. |
+| **Element** | **Avdelare**, **Utmärkelser**, **Knapp** och **Användare**. |
+| **Anpassa** | Variabler, villkorligt innehåll och communitytaggar. Se [Dynamiskt innehåll](/platform/editor/dynamic-content). |
+| **Magiskt block (AI-genererat)** | Infogar ett AI-genererat interaktivt block. Knappen är gråtonad när AI inte är tillgängligt för din organisation. |
 
-Click a menu to open it. Clicking outside or pressing `Esc` closes it.
+Klicka på en meny för att öppna den. Klicka utanför den eller tryck på `Esc` för att stänga den.
 
-## Templates
+## Mallar
 
-The **Templates** button in the editor header opens your organization's saved blocks and pages, plus ready-made starters. Type `/` and pick **Save as template** to save a selection or a page. See [Templates](/platform/editor/dynamic-content#templates).
+Knappen **Mallar** i redigerarens sidhuvud öppnar organisationens sparade block och sidor, plus färdiga startmallar. Skriv `/` och välj **Spara som mall** för att spara en markering eller en hel sida. Se [Mallar](/platform/editor/dynamic-content#mallar).
 
-## Saving and version history
+## Spara och versionshistorik
 
-Click **Save** to save the page. Every save creates a new version of the activity.
+Klicka på **Spara** för att spara sidan. Varje gång du sparar skapas en ny version av aktiviteten.
 
-To see older versions, open the menu on the right of **Save** (**More save options**) and click **Version History**. You can preview any saved version and click **Restore this version** to go back to it. Up to 20 versions are kept per activity.
+Vill du se äldre versioner öppnar du menyn till höger om **Spara** (**Fler sparalternativ**) och klickar på **Versionshistorik**. Där kan du förhandsgranska alla sparade versioner och klicka på **Återställ den här versionen** för att gå tillbaka till en av dem. Upp till 20 versioner sparas per aktivitet.
 
-If another teacher saved the same page while you were editing, the save button turns amber and LearnHouse asks which version to keep:
+Om en annan lärare har sparat samma sida medan du redigerade blir spara-knappen orange, och Prakto Akademi frågar vilken version du vill behålla:
 
-| Option | What happens |
+| Alternativ | Vad som händer |
 | --- | --- |
-| **Keep my version** | Your content replaces theirs. |
-| **Keep their version** | Your unsaved changes are dropped. |
-| **Keep both** | Your content is kept, with their changes added below. |
+| **Behåll min version** | Ditt innehåll ersätter deras. |
+| **Behåll deras version** | Dina osparade ändringar tas bort. |
+| **Behåll båda** | Ditt innehåll behålls, och deras ändringar läggs till nedanför. |
 
-<Callout>
-On LearnHouse Cloud, Version History needs the Pro plan or higher. Self-hosted instances do not apply plan restrictions to it.
-</Callout>
+## AI-redigeraren
 
-## AI Editor
+Klicka på **AI-redigerare** i redigerarens sidhuvud för att öppna en chattpanel som redigerar sidan tillsammans med dig. Markera ett block om du vill att förfrågan ska gälla just det, eller fråga om hela sidan. Snabbåtgärderna är **Förbättra språket**, **Lägg till exempel**, **Förenkla**, **Utöka**, **Lägg till quiz**, **Översätt**, **Lägg till sammanfattning**, **Lägg till tips** och **Lägg till definition**.
 
-Click **AI Editor** in the editor header to open a chat panel that edits the page with you. Select a block to focus the request on it, or ask about the whole page. Quick actions include **Improve writing**, **Add examples**, **Simplify**, **Expand**, **Add quiz**, **Translate**, **Add summary**, **Add tip** and **Add definition**.
+<img src="/docs/img/pages/editor/ai-editor-panel.webp" alt="AI-redigerarens panel öppen bredvid en lektion, med förslag på frågor och snabbåtgärderna" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-<img src="/img/pages/editor/ai-editor-panel.webp" alt="The AI Editor panel open next to a lesson, with suggested prompts and the quick actions" width={1600} height={900} style={{ borderRadius: 10 }} />
+Varje meddelande använder en AI-kredit. Se [AI för lärare](/platform/ai/for-teachers).
 
-Each message uses one AI credit. See [AI for Teachers](/platform/ai/for-teachers).
+## Förhandsgranska
 
-## Preview
+Klicka på förhandsgranskningsknappen (ögonikonen) för att öppna aktiviteten i en ny flik, så som eleverna ser den. I menyn bredvid finns **Visa som**, som visar sidan för en viss elevprofil när sidan använder [dynamiskt innehåll](/platform/editor/dynamic-content#förhandsgranska-med-visa-som).
 
-Click the preview button (the eye icon) to open the activity as learners see it, in a new tab. The menu next to it holds **View as**, which shows the page for a given learner profile when it uses [dynamic content](/platform/editor/dynamic-content#previewing-with-view-as).
+## Läs mer
 
-## Learn More
-
-- [Blocks](/platform/editor/blocks): every block type and its options.
-- [Dynamic Content & Templates](/platform/editor/dynamic-content): variables, conditional blocks, community tags and reusable templates.
-- [H5P Interactive Content](/platform/editor/h5p): embed H5P activities hosted on your own H5P provider.
-- [Code Execution](/platform/code-execution): the Code Playground block.
+- [Block](/platform/editor/blocks): alla blocktyper och deras inställningar.
+- [Dynamiskt innehåll och mallar](/platform/editor/dynamic-content): variabler, villkorliga block, communitytaggar och återanvändbara mallar.
+- [H5P-interaktivt innehåll](/platform/editor/h5p): bädda in H5P-aktiviteter som ligger hos din egen H5P-leverantör.
+- [Kodkörning](/platform/code-execution): blocket Kodlekplats.

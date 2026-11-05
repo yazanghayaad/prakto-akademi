@@ -5,29 +5,10 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import en from '../locales/en.json';
 import { loadDateLocale } from './format';
+import { AVAILABLE_LANGUAGES, DEFAULT_LANGUAGE } from './languages';
 
 const LOCALE_LOADERS: Record<string, () => Promise<{ default: any }>> = {
-  fr: () => import('../locales/fr.json'),
-  de: () => import('../locales/de.json'),
-  es: () => import('../locales/es.json'),
-  ar: () => import('../locales/ar.json'),
-  ja: () => import('../locales/ja.json'),
-  pt: () => import('../locales/pt.json'),
-  ru: () => import('../locales/ru.json'),
-  zh: () => import('../locales/zh.json'),
-  hi: () => import('../locales/hi.json'),
-  ko: () => import('../locales/ko.json'),
-  it: () => import('../locales/it.json'),
-  tr: () => import('../locales/tr.json'),
-  vi: () => import('../locales/vi.json'),
-  id: () => import('../locales/id.json'),
-  pl: () => import('../locales/pl.json'),
-  uk: () => import('../locales/uk.json'),
-  nl: () => import('../locales/nl.json'),
-  th: () => import('../locales/th.json'),
-  bn: () => import('../locales/bn.json'),
-  fa: () => import('../locales/fa.json'),
-  sk: () => import('../locales/sk.json'),
+  sv: () => import('../locales/sv.json'),
 };
 
 // Only bundle English; lazy-load all other locales on demand
@@ -48,19 +29,32 @@ async function loadLocale(lng: string) {
   }
 }
 
+// Visitors who have not chosen a language get DEFAULT_LANGUAGE instead of their
+// browser's language. Missing translations still fall back to English.
+const languageDetector = new LanguageDetector();
+languageDetector.addDetector({
+  name: 'platformDefault',
+  lookup: () => DEFAULT_LANGUAGE,
+});
+
 i18n
-  .use(LanguageDetector)
+  .use(languageDetector)
   .use(initReactI18next)
   .init({
     resources,
     fallbackLng: 'en',
+    // A language picked before the other translations were removed (still in
+    // localStorage or the cookie) is ignored, and the platform default applies.
+    supportedLngs: AVAILABLE_LANGUAGES.map((l) => l.code),
+    load: 'languageOnly',
     ns: ['common'],
     defaultNS: 'common',
     interpolation: {
       escapeValue: false, // react already safes from xss
     },
     detection: {
-      order: ['localStorage', 'cookie', 'querystring', 'navigator', 'path', 'subdomain'],
+      // Mirrored in public/dir-init.js: keep the two in sync.
+      order: ['localStorage', 'cookie', 'querystring', 'platformDefault'],
       caches: ['localStorage', 'cookie'],
       lookupLocalStorage: 'i18nextLng',
       lookupCookie: 'i18next',

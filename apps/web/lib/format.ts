@@ -15,27 +15,7 @@ dayjs.extend(relativeTime)
 
 /** Mirrors LOCALE_LOADERS in lib/i18n.ts. English is dayjs's built-in default. */
 const DAYJS_LOCALES: Record<string, () => Promise<unknown>> = {
-  ar: () => import('dayjs/locale/ar'),
-  bn: () => import('dayjs/locale/bn'),
-  de: () => import('dayjs/locale/de'),
-  es: () => import('dayjs/locale/es'),
-  fa: () => import('dayjs/locale/fa'),
-  fr: () => import('dayjs/locale/fr'),
-  hi: () => import('dayjs/locale/hi'),
-  id: () => import('dayjs/locale/id'),
-  it: () => import('dayjs/locale/it'),
-  ja: () => import('dayjs/locale/ja'),
-  ko: () => import('dayjs/locale/ko'),
-  nl: () => import('dayjs/locale/nl'),
-  pl: () => import('dayjs/locale/pl'),
-  pt: () => import('dayjs/locale/pt'),
-  ru: () => import('dayjs/locale/ru'),
-  sk: () => import('dayjs/locale/sk'),
-  th: () => import('dayjs/locale/th'),
-  tr: () => import('dayjs/locale/tr'),
-  uk: () => import('dayjs/locale/uk'),
-  vi: () => import('dayjs/locale/vi'),
-  zh: () => import('dayjs/locale/zh'),
+  sv: () => import('dayjs/locale/sv'),
 }
 
 const INTL_LOCALE_CACHE_MAX = 64

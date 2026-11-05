@@ -55,6 +55,7 @@ from src.services.auth.session import issue_session_or_challenge
 from src.security.session_context import (
     AUTH_METHOD_GOOGLE,
     AUTH_METHOD_PASSWORD,
+    AUTH_METHOD_SSO,
     carry_session_claims,
 )
 from src.db.organizations import Organization
@@ -725,7 +726,8 @@ async def login(
 
 class ThirdPartyLogin(BaseModel):
     email: EmailStr
-    provider: Literal["google"]
+    # "prakto": Prakto-konto (Prakto Akademi), see services/auth/prakto.py
+    provider: Literal["google", "prakto"]
     access_token: str
 
 
@@ -763,6 +765,11 @@ async def third_party_login(
     import logging
     import redis as _redis
     _logger = logging.getLogger(__name__)
+
+    # Prakto-konto: Prakto is this instance's identity provider, with its own org
+    # resolution and no invite gate. Kept out of the Google flow below.
+    if body.provider == "prakto":
+        return await _prakto_login(request, response, body.access_token, current_user, db_session)
 
     # Usergroup to attach the user to after sign-in, when they joined through an
     # invite code that is linked to one (mirrors create_user_with_invite).
@@ -1007,6 +1014,62 @@ async def third_party_login(
         },
     }
     return result
+
+
+async def _prakto_login(
+    request: Request,
+    response: Response,
+    access_token: str,
+    current_user,
+    db_session: AsyncSession,
+):
+    """``POST /auth/oauth`` with provider "prakto" ("Fortsätt med Prakto-konto").
+
+    The person joins the configured org (LEARNHOUSE_PRAKTO_SSO_ORG_SLUG) as a
+    learner without an invite: Prakto vouches for them. The session is stamped
+    amr=sso, so the org's auth-method policy governs it like any SSO sign-in, and
+    an enrolled second factor is still challenged.
+    """
+    from src.services.auth.prakto import (
+        resolve_prakto_org_id,
+        sign_in_with_prakto,
+        verify_prakto_access_token,
+    )
+    from src.services.orgs.auth_policy import enforce_login_auth_method
+
+    claims = verify_prakto_access_token(access_token)
+    org_id = await resolve_prakto_org_id(db_session)
+    await enforce_login_auth_method(db_session, org_id, AUTH_METHOD_SSO)
+
+    user = await sign_in_with_prakto(request, claims, org_id, current_user, db_session)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Inloggningen med Prakto-konto misslyckades",
+        )
+
+    session_org_id, on_custom_domain = await _bind_session_to_custom_domain(
+        request, db_session, user.id, org_id, AUTH_METHOD_SSO
+    )
+    issue = await issue_session_or_challenge(
+        db_session,
+        user,
+        amr=AUTH_METHOD_SSO,
+        org_id=session_org_id,
+        custom_domain=on_custom_domain,
+    )
+    if issue.mfa_required:
+        return {"mfa_required": True, "mfa_token": issue.mfa_token}
+
+    set_auth_cookies(response, issue.access_token, issue.refresh_token, request)
+    return {
+        "user": UserRead.model_validate(user),
+        "tokens": {
+            "access_token": issue.access_token,
+            "refresh_token": issue.refresh_token,
+            "expiry": get_token_expiry_ms(),
+        },
+    }
 
 
 class MagicLinkLoginRequest(BaseModel):

@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'motion/react'
 import {
   BellSlash,
-  ChatsCircle,
   GearSix,
   MagnifyingGlass,
   Megaphone,
@@ -51,6 +50,9 @@ const FILTERS: { key: Filter; label: string }[] = [
   { key: 'agents', label: 'Agents' },
 ]
 
+/** Small-caps section label, the same eyebrow the course outline uses. */
+const EYEBROW = 'text-[11px] font-semibold uppercase tracking-[0.12em] text-wine-800'
+
 function matchesFilter(c: Conversation, f: Filter) {
   switch (f) {
     case 'unread':
@@ -77,6 +79,7 @@ export function ConversationRow({
   active: boolean
   onClick: () => void
 }) {
+  const { t } = useTranslation()
   const { userId, typing, presence } = useMessaging()
   const title = conversationTitle(c, userId)
   const typers = (typing[c.conversation_uuid] || []).map((x) => x.user.first_name || x.user.username)
@@ -89,20 +92,20 @@ export function ConversationRow({
   if (typers.length) {
     preview = (
       <span className="text-gray-600 italic">
-        {typers.length === 1 ? `${typers[0]} is typing…` : `${typers.length} people are typing…`}
+        {typers.length === 1
+          ? t('messaging.typing_one', { defaultValue: '{{name}} is typing…', name: typers[0] })
+          : t('messaging.typing_many', { defaultValue: '{{count}} people are typing…', count: typers.length })}
       </span>
     )
   } else if (streaming) {
-    preview = (
-      <span className="text-gray-500 italic">
-        Writing…
-      </span>
-    )
+    preview = <span className="text-gray-500 italic">{t('messaging.writing', { defaultValue: 'Writing…' })}</span>
   } else if (last && c.kind !== 'dm' && c.kind !== 'agent' && last.kind !== 'system' && last.sender) {
     const mine = last.sender.type === 'user' && last.sender.id === userId
-    preview = `${mine ? 'You' : senderName(last).split(' ')[0]}: ${previewText(last)}`
+    preview = mine
+      ? t('messaging.you_prefix', { defaultValue: 'You: {{text}}', text: previewText(last) })
+      : t('messaging.sender_prefix', { defaultValue: '{{name}}: {{text}}', name: senderName(last).split(' ')[0], text: previewText(last) })
   } else if (last && last.sender?.type === 'user' && last.sender.id === userId) {
-    preview = `You: ${previewText(last)}`
+    preview = t('messaging.you_prefix', { defaultValue: 'You: {{text}}', text: previewText(last) })
   }
 
   const unread = c.unread_count > 0
@@ -112,8 +115,8 @@ export function ConversationRow({
       aria-label={unread ? `${title}, ${c.unread_count} unread` : title}
       aria-current={active ? 'true' : undefined}
       data-conversation={c.conversation_uuid}
-      className={`group w-full flex items-center gap-3 rounded-lg px-2.5 py-2.5 md:py-2 text-start transition-colors active:bg-gray-100 ${
-        active ? 'bg-gray-100' : 'hover:bg-gray-50'
+      className={`group w-full flex items-center gap-3 rounded-md px-2.5 py-2.5 text-start transition-colors active:bg-gray-100 ${
+        active ? 'bg-wine-50' : 'hover:bg-gray-50'
       }`}
     >
       <ConversationAvatar conversation={c} viewerId={userId} size={40} />
@@ -135,7 +138,7 @@ export function ConversationRow({
             (c.muted ? (
               <span className="ms-auto h-2 w-2 rounded-full bg-gray-300 flex-shrink-0" />
             ) : (
-              <span className="ms-auto min-w-[18px] h-[18px] px-1.5 rounded-full bg-gray-900 text-white text-[11px] font-semibold flex items-center justify-center flex-shrink-0">
+              <span className="ms-auto min-w-[18px] h-[18px] px-1.5 rounded-full bg-wine-900 text-white text-[11px] font-semibold flex items-center justify-center flex-shrink-0">
                 {c.unread_count > 99 ? '99+' : c.unread_count}
               </span>
             ))}
@@ -215,35 +218,30 @@ export default function ConversationSidebar({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 pt-4 pb-2">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white nice-shadow">
-            <ChatsCircle size={16} weight="fill" className="text-black" />
-          </div>
-          <h1 className="text-xl font-bold tracking-tight text-gray-900">{t('messaging.title', { defaultValue: 'Messages' })}</h1>
-        </div>
+      <div className="flex items-center justify-between px-4 pt-5 pb-3">
+        <h1 className="text-2xl text-gray-900">{t('messaging.title', { defaultValue: 'Messages' })}</h1>
         <div className="flex items-center gap-0.5">
           {targets.length > 0 && (
             <button
               onClick={onAnnounce}
               title={t('messaging.announce', { defaultValue: 'Message everyone in a course' })}
-              className="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-md text-gray-500 hover:text-wine-900 hover:bg-gray-100 transition-colors"
             >
-              <Megaphone size={18} weight="fill" />
+              <Megaphone size={18} />
             </button>
           )}
           <RemindersButton onOpenConversation={(uuid) => onSelect(uuid)} />
           <button
             onClick={onSettings}
             title={t('messaging.settings', { defaultValue: 'Messages settings' })}
-            className="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-md text-gray-500 hover:text-wine-900 hover:bg-gray-100 transition-colors"
           >
-            <GearSix size={18} weight="fill" />
+            <GearSix size={18} />
           </button>
           <button
             onClick={onNewMessage}
             title={t('messaging.new_message', { defaultValue: 'New message' })}
-            className="ms-1 p-2 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors"
+            className="ms-1.5 p-2 rounded-md bg-wine-900 text-white hover:bg-wine-800 transition-colors"
           >
             <NotePencil size={16} weight="bold" />
           </button>
@@ -251,9 +249,9 @@ export default function ConversationSidebar({
       </div>
 
       {/* Search */}
-      <div className="px-3 pt-1 pb-2">
-        <div className="flex items-center gap-2 rounded-lg bg-white nice-shadow px-3 py-2 focus-within:ring-2 focus-within:ring-gray-200 transition-shadow">
-          <MagnifyingGlass size={16} className="text-gray-400" />
+      <div className="px-4 pb-1">
+        <div className="flex items-center gap-2 rounded-md border border-gray-200 bg-white px-3 py-2 transition-colors focus-within:border-gray-400">
+          <MagnifyingGlass size={15} className="text-gray-400" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -268,20 +266,20 @@ export default function ConversationSidebar({
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="px-3 pb-2 flex gap-1 overflow-x-auto [scrollbar-width:none]">
+      {/* Filters: text tabs on a hairline, the active one underlined in wine. */}
+      <div className="mx-4 mb-2 flex gap-3 overflow-x-auto border-b border-gray-200 [scrollbar-width:none]">
         {FILTERS.map((f) => {
           const count = f.key === 'unread' ? conversations.filter((c) => c.unread_count > 0).length : 0
           return (
             <button
               key={f.key}
               onClick={() => setFilter(f.key)}
-              className={`flex-shrink-0 rounded-md px-3 py-1.5 md:px-2.5 md:py-1 text-[13px] md:text-xs font-medium transition-colors ${
-                filter === f.key ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:text-gray-900'
+              className={`-mb-px flex-shrink-0 border-b-2 pt-2.5 pb-2 text-[13px] font-medium transition-colors ${
+                filter === f.key ? 'border-wine-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-900'
               }`}
             >
-              {f.label}
-              {count > 0 && <span className="ms-1 opacity-70">{count}</span>}
+              {t(`messaging.filters.${f.key}`, { defaultValue: f.label })}
+              {count > 0 && <span className="ms-1 text-wine-800">{count}</span>}
             </button>
           )
         })}
@@ -302,13 +300,11 @@ export default function ConversationSidebar({
 
         {pinned.length > 0 && (
           <>
-            <p className="px-2.5 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
-              {t('messaging.pinned', { defaultValue: 'Pinned' })}
-            </p>
+            <p className={`px-2.5 pt-2 pb-1 ${EYEBROW}`}>{t('messaging.pinned', { defaultValue: 'Pinned' })}</p>
             {pinned.map((c) => (
               <ConversationRow key={c.conversation_uuid} c={c} active={c.conversation_uuid === selected} onClick={() => onSelect(c.conversation_uuid)} />
             ))}
-            <div className="h-px bg-gray-100 mx-2.5 my-1.5" />
+            <div className="h-px bg-gray-200 mx-2.5 my-1.5" />
           </>
         )}
         <AnimatePresence initial={false}>
@@ -320,13 +316,16 @@ export default function ConversationSidebar({
         </AnimatePresence>
 
         {!isLoading && visible.length === 0 && !hits.length && (
-          <div className="text-center py-10 px-6">
-            <p className="text-sm font-medium text-gray-700">
+          <div className="px-2.5 py-6">
+            <p className="text-sm text-gray-500">
               {query ? t('messaging.no_results', { defaultValue: 'No matches' }) : t('messaging.empty', { defaultValue: 'No conversations yet' })}
             </p>
             {!query && (
-              <button onClick={onNewMessage} className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-black px-3 py-1.5 text-xs font-semibold text-white hover:bg-gray-800">
-                <Plus size={12} weight="bold" /> {t('messaging.new_message', { defaultValue: 'New message' })}
+              <button
+                onClick={onNewMessage}
+                className="mt-1 text-sm font-medium text-wine-900 underline decoration-wine-200 underline-offset-4 hover:decoration-wine-900"
+              >
+                {t('messaging.start_one', { defaultValue: 'Write a message' })}
               </button>
             )}
           </div>
@@ -334,17 +333,16 @@ export default function ConversationSidebar({
 
         {hits.length > 0 && (
           <>
-            <p className="px-2.5 pt-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
-              {t('messaging.in_messages', { defaultValue: 'In messages' })}
-            </p>
+            <p className={`px-2.5 pt-3 pb-1 ${EYEBROW}`}>{t('messaging.in_messages', { defaultValue: 'In messages' })}</p>
             {hits.map((m) => (
               <button
                 key={m.message_uuid}
                 onClick={() => onSelect(m.conversation_uuid, m.message_uuid)}
-                className="w-full text-start rounded-lg px-2.5 py-2 hover:bg-gray-50"
+                className="w-full text-start rounded-md px-2.5 py-2 hover:bg-gray-50"
               >
                 <p className="text-xs text-gray-400 truncate">
-                  {titleByUuid[m.conversation_uuid] || 'Conversation'} · {senderName(m)} · {shortTime(m.creation_date)}
+                  {titleByUuid[m.conversation_uuid] || t('messaging.conversation', { defaultValue: 'Conversation' })} · {senderName(m)} ·{' '}
+                  {shortTime(m.creation_date)}
                 </p>
                 <p className="text-sm text-gray-700 line-clamp-2">{previewText(m)}</p>
               </button>
@@ -354,12 +352,10 @@ export default function ConversationSidebar({
 
         {/* Agents */}
         {(filter === 'all' || filter === 'agents') && !query && (
-          <div className="mt-3 pt-3 border-t border-gray-100">
-            <div className="flex items-center justify-between px-2.5 pb-1">
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 flex items-center gap-1">
-                {t('messaging.agents', { defaultValue: 'Agents' })}
-              </p>
-              <button onClick={onNewAgent} className="text-xs font-medium text-gray-500 hover:text-gray-900 inline-flex items-center gap-1">
+          <div className="mt-3 mx-2 pt-4 border-t border-gray-200">
+            <div className="flex items-center justify-between px-0.5 pb-1.5">
+              <p className={EYEBROW}>{t('messaging.agents', { defaultValue: 'Agents' })}</p>
+              <button onClick={onNewAgent} className="text-xs font-medium text-gray-500 hover:text-wine-900 inline-flex items-center gap-1">
                 <Plus size={11} weight="bold" /> {t('messaging.new_agent', { defaultValue: 'New agent' })}
               </button>
             </div>
@@ -370,10 +366,10 @@ export default function ConversationSidebar({
 
       {/* Me */}
       {sessionUser && (
-        <div className="border-t border-gray-100 px-3 py-2.5">
+        <div className="border-t border-gray-200 px-3 py-2.5">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="w-full flex items-center gap-2.5 rounded-lg px-1.5 py-1 hover:bg-gray-50 transition-colors text-start">
+              <button className="w-full flex items-center gap-2.5 rounded-md px-1.5 py-1 hover:bg-gray-50 transition-colors text-start">
                 <span className="relative">
                   <PersonAvatar user={sessionUser} size={32} showPresence={false} />
                   <span className={`absolute bottom-0 end-0 h-2.5 w-2.5 rounded-full ring-2 ring-white ${connected ? currentAvailability.dot : 'bg-gray-300'}`} />
@@ -383,7 +379,11 @@ export default function ConversationSidebar({
                     {sessionUser.first_name} {sessionUser.last_name}
                   </p>
                   <p className="text-xs text-gray-500 truncate">
-                    {me?.status_text ? `${me.status_emoji} ${me.status_text}` : connected ? currentAvailability.label : t('messaging.connecting', { defaultValue: 'Connecting…' })}
+                    {me?.status_text
+                      ? `${me.status_emoji} ${me.status_text}`
+                      : connected
+                        ? t(`messaging.availability_${currentAvailability.key}`, { defaultValue: currentAvailability.label })
+                        : t('messaging.connecting', { defaultValue: 'Connecting…' })}
                   </p>
                 </div>
               </button>
@@ -394,8 +394,8 @@ export default function ConversationSidebar({
                 <DropdownMenuItem key={a.key} onClick={() => setAvailability(a.key)} className="flex items-start gap-2">
                   <span className={`mt-1.5 h-2 w-2 rounded-full ${a.dot}`} />
                   <span>
-                    <span className="block text-sm">{a.label}</span>
-                    <span className="block text-[11px] text-gray-500">{a.hint}</span>
+                    <span className="block text-sm">{t(`messaging.availability_${a.key}`, { defaultValue: a.label })}</span>
+                    <span className="block text-[11px] text-gray-500">{t(`messaging.availability_${a.key}_hint`, { defaultValue: a.hint })}</span>
                   </span>
                 </DropdownMenuItem>
               ))}

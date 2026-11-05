@@ -2,47 +2,37 @@ import { Callout } from 'nextra/components'
 
 # Communities
 
-A community is a discussion space inside your organization. Members start discussions, reply, upvote and react. You can have as many communities as you need: one for the whole organization, one per course, one per cohort.
-
-<YouTube video="guide-8" />
-
-<YouTube video="start-community" />
+En community är en plats för diskussioner i din organisation. Medlemmarna startar diskussioner, svarar, röstar upp och reagerar. Du kan ha så många communities som du behöver: en för hela organisationen, en per kurs eller en per klass.
 
 <Callout>
-Communities must be enabled in your [Organization Settings](/platform/organizations/settings). On LearnHouse Cloud they need the Standard plan or higher.
+Communities måste vara påslaget i [organisationsinställningarna](/platform/organizations/settings).
 </Callout>
 
-## Creating a community
+## Skapa en community
 
-Go to **Communities** in the dashboard and click **New Community**. Give it a name (3 to 100 characters), an optional description (up to 500 characters) and choose whether it is public.
+Gå till **Communities** i adminpanelen och klicka på **Ny community**. Ge den ett namn (3 till 100 tecken), en beskrivning om du vill (högst 500 tecken) och välj om den ska vara offentlig.
 
-Each community then has its own settings, with tabs for **General**, **Thumbnail**, **Access**, **Linked Course** and **Moderation**. See [Managing Communities](/platform/discussions/managing).
+Varje community har sedan egna inställningar, med flikarna **Allmänt**, **Miniatyrbild**, **Åtkomst**, **Länkad kurs** och **Moderering**. Läs mer under [Hantera communities](/platform/discussions/managing).
 
-A community can also be sold, alone or with other content, as a [product](/platform/payments/offers). Until someone buys it, they see the community's page but not its discussions.
+## Länka en community till en kurs
 
-## Linking a community to a course
+På fliken **Länkad kurs** klickar du på **Länka kurs** och väljer en kurs. Kurssidan visar sedan communityns senaste trådar under **Communitydiskussioner**, med länkarna **Visa alla** och **Starta den första diskussionen**. En community kan vara länkad till en kurs i taget. Använd **Ta bort länk** för att ta bort kopplingen.
 
-In the **Linked Course** tab, click **Link Course** and pick a course. The course page then shows the community's latest threads under **Community Discussions**, with **View All** and **Start the first discussion** links. A community can be linked to one course at a time. Use **Unlink** to remove the link.
+<img src="/docs/img/pages/communities/linked-course.webp" alt="Fliken Länkad kurs i en community, med kursen den är länkad till och knappen Ta bort länk" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-<img src="/img/pages/communities/linked-course.webp" alt="The Linked Course tab of a community, showing the course it is linked to and an Unlink button" width={1600} height={900} style={{ borderRadius: 10 }} />
+## Så använder medlemmarna den
 
-## How members use it
+Medlemmarna hittar alla communities på organisationens sida **Communities** (`g` och sedan `m`). Inne i en community kan de:
 
-Members find communities on the organization's **Communities** page (`g` then `m`). Inside a community they can:
+- Starta en diskussion med **Ny diskussion** (eller tangenten `n`).
+- Söka bland diskussionerna, filtrera dem efter etikett och sortera efter **Senaste aktivitet**, **Topp** eller **Hetast**.
+- Öppna en diskussion för att svara, rösta upp och reagera.
 
-- Start a discussion with **New Discussion** (or the `n` key).
-- Search discussions, filter them by label, and sort by **Latest activity**, **Top** or **Hot**.
-- Open a discussion to reply, upvote and react.
+<img src="/docs/img/pages/communities/community-page.webp" alt="En communitysida med diskussioner med etiketter, antal uppröstningar, sökning, etikettfilter och sortering, och den länkade kursen i sidofältet" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-<img src="/img/pages/communities/community-page.webp" alt="A community page with its labelled discussions, upvote counts, search, label filter and sorting, and the linked course in the sidebar" width={1600} height={900} style={{ borderRadius: 10 }} />
+Användare som inte är medlemmar i organisationen kan läsa offentliga communities, men de måste gå med innan de kan svara. Läs mer under [Diskussioner och svar](/platform/discussions/comments).
 
-Users who are not members of the organization can read public communities but are asked to join before they can reply. See [Discussions & Replies](/platform/discussions/comments).
+## Läs mer
 
-## Growing a community
-
-<YouTube video="growth-6" />
-
-## Learn More
-
-- [Discussions & Replies](/platform/discussions/comments): posting, replying, voting, reactions and moderation actions.
-- [Managing Communities](/platform/discussions/managing): access, linked course and moderation rules.
+- [Diskussioner och svar](/platform/discussions/comments): skriva inlägg, svara, rösta, reagera och moderera.
+- [Hantera communities](/platform/discussions/managing): åtkomst, länkad kurs och modereringsregler.

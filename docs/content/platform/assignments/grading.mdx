@@ -1,73 +1,73 @@
 import { Callout } from 'nextra/components'
 
-# Grading & Submissions
+# Bedömning och inlämningar
 
-## How a grade is calculated
+## Så räknas betyget ut
 
-Each task is scored out of 100. The assignment grade is the average of its task scores, as a percentage. The **Grading Type** only changes how that percentage is shown to learners.
+Varje deluppgift ger högst 100 poäng. Uppgiftens betyg är medelvärdet av deluppgifternas poäng, i procent. **Betygstyp** ändrar bara hur procentsatsen visas för eleverna.
 
-## Grading types
+## Betygstyper
 
-| Grading Type | Shown as | Passes by default at |
+| Betygstyp | Visas som | Godkänt som standard vid |
 | --- | --- | --- |
-| **Alphabet** | A (90% and up), B (80%), C (70%), D (60%), F | 60% |
-| **Numeric** | A score from 0 to 100 | 50% |
-| **Percentage** | A percentage | 50% |
-| **Pass / Fail** | Pass or fail | 50% |
-| **GPA Scale** | A 4.0 scale, from 4.0 (93% and up) down to 0.0 | 60% |
+| **Bokstav** | A (90 % och uppåt), B (80 %), C (70 %), D (60 %), F | 60 % |
+| **Numerisk** | Poäng från 0 till 100 | 50 % |
+| **Procent** | En procentsats | 50 % |
+| **Godkänd / Underkänd** | Godkänd eller underkänd | 50 % |
+| **GPA-skala** | En skala upp till 4,0, från 4,0 (93 % och uppåt) ner till 0,0 | 60 % |
 
-Set **Passing threshold** in the assignment settings to use a different pass mark.
+Ange **Gräns för godkänt** i uppgiftens inställningar om du vill använda en annan gräns.
 
-## Automatic grading
+## Automatisk bedömning
 
-Quiz, Form, Code, Short answer and Number answer tasks are graded automatically. File submission tasks always need a teacher.
+Deluppgifter av typerna Quiz, Formulär, Kod, Kortsvar och Numeriskt svar bedöms automatiskt. Deluppgifter av typen Filinlämning behöver alltid en lärare.
 
-With **Automatic grading** turned on, a learner's submission is graded and the activity is marked complete the moment they submit. This is only possible when the assignment has no File submission task. You can still change the grade by hand afterwards.
+När **Automatisk bedömning** är påslaget bedöms elevens inlämning och aktiviteten markeras som slutförd i samma stund som eleven lämnar in. Det går bara när uppgiften saknar deluppgifter av typen Filinlämning. Du kan fortfarande ändra betyget för hand efteråt.
 
-Without it, open the submission and click **Run Auto-grade** on a task to score it.
+Utan automatisk bedömning öppnar du inlämningen och klickar på **Kör automatisk bedömning** på en deluppgift för att sätta poäng.
 
-## The Submissions tab
+## Fliken Inlämningar
 
-The **Submissions** tab lists every learner who started or submitted the assignment, with their status:
+Fliken **Inlämningar** visar alla elever som har påbörjat eller lämnat in uppgiften, med deras status:
 
-| Status | Meaning |
+| Status | Betydelse |
 | --- | --- |
-| **In progress** | The learner has saved work but not submitted. |
-| **Submitted** | Submitted and waiting for a grade. |
-| **Late** | Submitted after the due date. |
-| **Graded** | A grade has been recorded. |
+| **Pågående** | Eleven har sparat arbete men inte lämnat in. |
+| **Inlämnad** | Inlämnad och väntar på bedömning. |
+| **Sen** | Inlämnad efter deadline. |
+| **Bedömd** | Ett betyg har registrerats. |
 
-Search by name or email, filter by status, and sort by **Date submitted**, **Student name**, **Status**, **Grade**, **Needs grading first**, **Late submissions first** or **Recently graded first**.
+Sök på namn eller e-post, filtrera på status och sortera på **Inlämningsdatum**, **Elevens namn**, **Status**, **Betyg**, **Behöver bedömas först**, **Sena inlämningar först** eller **Nyligen bedömda först**.
 
-<img src="/img/pages/assignments/assignment-submissions.webp" alt="The Submissions tab with counts for total, late, submitted and graded, and an Evaluate button on each learner" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/assignments/assignment-submissions.webp" alt="Fliken Inlämningar med antal för totalt, sena, inlämnade och bedömda, och en Bedöm-knapp för varje elev" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-## Grading a submission
+## Bedöma en inlämning
 
-Click **Evaluate** on a submission. For each task you see what the learner handed in, the task's hint and reference document, and the current grade.
+Klicka på **Bedöm** vid en inlämning. För varje deluppgift ser du vad eleven har lämnat in, deluppgiftens ledtråd och referensdokument och det nuvarande betyget.
 
-- Enter a score out of 100, or use **Full**, **Half** or **Zero**.
-- Add a note for the task. It is saved with the grade.
-- For a file submission, download the file, review it, and enter the grade.
-- Write **Overall feedback** for the whole submission. The learner sees it next to their grade.
+- Ange poäng av 100, eller använd **Full**, **Halv** eller **Noll**.
+- Lägg till en kommentar för deluppgiften. Den sparas tillsammans med betyget.
+- För en filinlämning laddar du ner filen, granskar den och anger betyget.
+- Skriv **Övergripande feedback** för hela inlämningen. Eleven ser den bredvid sitt betyg.
 
-<img src="/img/pages/assignments/assignment-evaluate.webp" alt="The Evaluate dialog showing the current grade, Passing, and a quiz task with each answer marked true or false" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/assignments/assignment-evaluate.webp" alt="Dialogrutan Bedöm med nuvarande betyg, Godkänd och en quizdeluppgift där varje svar är markerat som sant eller falskt" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-The header shows the **Current grade** and whether it is **Passing** or **Not passing**. Then pick an action:
+Överst visas **Nuvarande betyg** och om det är **Godkänd** eller **Inte godkänd**. Välj sedan en åtgärd:
 
-| Action | What it does |
+| Åtgärd | Vad den gör |
 | --- | --- |
-| **Set final grade** | Calculates and saves the grade without completing the activity. |
-| **Finalize & Complete** | Sets the final grade and marks the activity as done for the learner. |
-| **Reject Assignment** | Deletes the submission so the learner can submit again. |
+| **Sätt slutbetyg** | Räknar ut och sparar betyget utan att slutföra aktiviteten. |
+| **Slutför och markera som klar** | Sätter slutbetyget och markerar aktiviteten som klar för eleven. |
+| **Avvisa uppgift** | Raderar inlämningen så att eleven kan lämna in igen. |
 
 <Callout>
-Graded assignments count toward [course certificates](/platform/certifications): every graded assignment must be passed before a certificate is issued.
+Uppgifter som bedöms räknas in i [kurscertifikat](/platform/certifications): eleven måste klara alla uppgifter som bedöms innan ett certifikat utfärdas.
 </Callout>
 
-## Retries
+## Nya försök
 
-With **Allow retries** on, a learner whose submission is graded can click **Try again**. Their answers are wiped, the attempt counter goes up, and the next grade replaces the previous one. No history of earlier attempts is kept. **Maximum attempts** caps the total, with `0` meaning unlimited.
+När **Tillåt nya försök** är påslaget kan en elev vars inlämning har bedömts klicka på **Försök igen**. Svaren rensas, antalet försök räknas upp och nästa betyg ersätter det förra. Ingen historik över tidigare försök sparas. **Maximalt antal försök** sätter ett tak för det totala antalet, där `0` betyder obegränsat.
 
-## Not grading at all
+## Ingen bedömning alls
 
-An assignment can opt out of grading entirely. See [Formative Assessment](/platform/assignments/formative): the learner hands work in, receives the model answer, and no grade is ever recorded.
+En uppgift kan helt hoppa över bedömning. Se [Formativ bedömning](/platform/assignments/formative): eleven lämnar in sitt arbete, får facit och inget betyg registreras någonsin.

@@ -1,61 +1,55 @@
 import { Callout } from 'nextra/components'
 
-# Import & Export
+# Import och export
 
-LearnHouse can move courses between organizations and instances, bring them in from other learning platforms, and build a course from a folder of files.
+Du kan exportera kurser och importera dem igen, hämta in kurser från andra lärplattformar och bygga en kurs av en mapp med filer.
 
-<YouTube video="growth-7" />
+## Exportera kurser
 
-## Exporting courses
+Från **Kurser** i adminpanelen:
 
-From **Courses** in the dashboard:
+- Använd **Exportera kurs** på en kurs för att ladda ner den som ett `.zip`-paket.
+- Klicka på **Välj**, markera flera kurser och klicka på **Exportera valda** för att ladda ner dem i en och samma `.zip`-fil. Du kan exportera upp till 20 kurser åt gången.
 
-- Use **Export Course** on a course to download it as a `.zip` package.
-- Click **Select**, pick several courses and click **Export Selected** to download them in one `.zip`. You can export up to 20 courses at a time.
+En export innehåller kursens struktur, innehåll och filer. Du importerar den igen med **LearnHouse-kurser**, som beskrivs nedan.
 
-An export contains the course structure, its content and its files. Import it into any LearnHouse organization with **LearnHouse Courses** below.
+## Klona en kurs
 
-## Cloning a course
+**Klona kurs** gör en fullständig kopia av en kurs i samma organisation. Kopian är privat. Använd **Klona valda** för att klona flera kurser på en gång.
 
-**Clone Course** makes a full copy of a course in the same organization. The copy is private. Use **Clone Selected** to clone several at once.
+## Importera kurser
 
-## Importing courses
+Klicka på **Importera kurs** i kurslistan och välj en källa:
 
-Click **Import Course** in the course list and pick a source:
+<img src="/docs/img/pages/courses/import-course-sources.webp" alt="Fönstret Importera kurs med SCORM-paket, LearnHouse-kurser och Annat LMS" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-<img src="/img/pages/courses/import-course-sources.webp" alt="The Import Course window with SCORM Package, LearnHouse Courses and Another LMS" width={1600} height={900} style={{ borderRadius: 10 }} />
-
-| Source | Accepts |
+| Källa | Tar emot |
 | --- | --- |
-| **SCORM Package** | SCORM 1.2 or SCORM 2004 packages. Enterprise only. |
-| **LearnHouse Courses** | A LearnHouse course export (`.zip`), up to 500 MB. |
-| **Another LMS** | Exports from Moodle, Canvas, Blackboard, Brightspace, Open edX or any Common Cartridge. See [Import from Another LMS](/developers/migration/from-another-lms). |
+| **SCORM-paket** | SCORM 1.2- eller SCORM 2004-paket. Kan bara väljas om SCORM är aktiverat för din organisation. |
+| **LearnHouse-kurser** | En kursexport (`.zip`) från Prakto Akademi, högst 500 MB. |
+| **Annat LMS** | Exporter från Moodle, Canvas, Blackboard, Brightspace, Open edX eller valfri Common Cartridge. |
 
-### LearnHouse Courses
+### Importera en kursexport
 
-1. **Upload Package**: drop the `.zip` and click **Analyze Package**.
-2. **Configure**: pick the courses to import from the package, then set the **Import Options**:
-   - **Course Name Prefix**: text added in front of every imported course name (for example `Imported - `).
-   - **Set as private**
-   - **Set as unpublished**
-3. Click the import button, which shows how many courses you selected (for example **Import 2 Course(s)**). The summary shows which courses were created, with a link to open each one.
+1. **Ladda upp paket**: släpp `.zip`-filen och klicka på **Analysera paket**.
+2. **Konfigurera**: välj vilka kurser i paketet som ska importeras och gör sedan dina **Importalternativ**:
+   - **Prefix för kursnamn**: text som läggs till före namnet på varje importerad kurs (till exempel `Importerad - `).
+   - **Gör privat**
+   - **Gör opublicerad**
+3. Klicka på importknappen, som visar hur många kurser du har valt (till exempel **Importera 2 kurser**). Sammanfattningen visar vilka kurser som skapades, med en länk för att öppna var och en.
 
-### Another LMS
+### Annat LMS
 
-The **Import from Another LMS** window has three steps: **Upload Package**, **Configure** and **Complete**. Choose the **Source platform** (or leave **Auto-detect**), choose how **Quizzes** are converted (**Graded assignments** or **Interactive quiz blocks in pages**), drop the export and click **Upload and Convert**.
+Fönstret **Importera från ett annat LMS** har tre steg: **Ladda upp paket**, **Konfigurera** och **Slutför**. Välj **Källplattform** (eller låt den stå på **Identifiera automatiskt**), välj hur **Quiz** ska konverteras (**Betygsatta uppgifter** eller **Interaktiva quizblock på sidor**), släpp exportfilen och klicka på **Ladda upp och konvertera**.
 
-<img src="/img/pages/courses/import-another-lms.webp" alt="The Import from Another LMS window on the Upload Package step, with Source platform set to Auto-detect and the two quiz options" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/courses/import-another-lms.webp" alt="Fönstret Importera från ett annat LMS på steget Ladda upp paket, med Källplattform inställd på Identifiera automatiskt och de två valen för quiz" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-After the conversion you get a report of what was created and skipped, then the same import options as above. The full list of supported formats and what each item becomes is in [Import from Another LMS](/developers/migration/from-another-lms).
+Efter konverteringen får du en rapport över vad som skapades och vad som hoppades över, och sedan samma importalternativ som ovan.
 
-## From existing content
+## Från befintligt innehåll
 
-If you have a set of files but no course yet, use **New Course** > **From Existing Content**. The **Migrate Content** wizard has three steps:
+Har du en samling filer men ingen kurs än? Använd **Ny kurs** > **Från befintligt innehåll**. Guiden **Migrera innehåll** har tre steg:
 
-1. **Upload**: drop your files. Accepted: videos (MP4, WebM, MOV), documents (PDF), images (PNG, JPG, WebP) and audio (MP3, WAV). Up to 5 GB per file and 20 GB in total. Enter a **Course Name** and a **One-liner Description**.
-2. **Organize**: click **Organize with AI** to have the files sorted into chapters and activities for you (1 AI credit), or **Organize Manually**. Either way you can then drag files between chapters and activities, and use **Add Chapter** and **Add Activity**.
-3. **Complete**: click **Create Course**. LearnHouse uploads the files and creates the chapters and activities.
-
-<Callout>
-The same flows are available through the API. See [Migrating Content](/developers/migration).
-</Callout>
+1. **Ladda upp**: släpp dina filer. Godkända format är video (MP4, WebM, MOV), dokument (PDF), bilder (PNG, JPG, WebP) och ljud (MP3, WAV). Högst 5 GB per fil och 20 GB totalt. Fyll i **Kursnamn** och **Kort beskrivning**.
+2. **Organisera**: klicka på **Organisera med AI** så sorteras filerna i kapitel och aktiviteter åt dig (1 AI-kredit), eller välj **Organisera manuellt**. Oavsett vilket kan du sedan dra filer mellan kapitel och aktiviteter och använda **Lägg till kapitel** och **Lägg till aktivitet**.
+3. **Slutför**: klicka på **Skapa kurs**. Prakto Akademi laddar upp filerna och skapar kapitlen och aktiviteterna.

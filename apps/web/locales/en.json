@@ -36,6 +36,7 @@
     "thai": "Thai",
     "bengali": "Bengali",
     "slovak": "Slovak",
+    "swedish": "Swedish",
     "persian": "Persian",
     "unknown": "Unknown",
     "loading": "Loading...",
@@ -48,8 +49,9 @@
     "help": "Help",
     "help_menu": {
       "documentation": "Documentation",
-      "website": "LearnHouse Website",
+      "website": "Prakto Website",
       "discord": "Discord",
+      "linkedin": "LinkedIn",
       "report_feedback": "Report Issue or Feedback",
       "feedback_title": "Send Feedback",
       "feedback_description": "Help us improve LearnHouse by sharing your thoughts, reporting bugs, or suggesting new features.",
@@ -280,6 +282,7 @@
     "login_to": "Welcome back",
     "sign_up": "Sign up",
     "sign_in_with_google": "Sign in with Google",
+    "sign_in_with_prakto": "Continue with Prakto account",
     "wrong_email_password": "Wrong Email or password",
     "turnstile_failed": "Verification failed. Please try again.",
     "error_generic": "Something went wrong. Please try again.",
@@ -439,7 +442,8 @@
       "login_failed": "Login failed",
       "sign_in_failed": "Sign in failed",
       "link_invalid": "This link is no longer valid.",
-      "google_not_configured": "Google OAuth not configured"
+      "google_not_configured": "Google OAuth not configured",
+      "prakto_not_configured": "Sign-in with a Prakto account is not configured"
     },
     "sso_errors": {
       "access_denied": "Access was denied. You may have declined the login request or don't have permission to access this application.",
@@ -496,6 +500,13 @@
       "success": "Success!",
       "redirecting": "Redirecting you now...",
       "google_failed": "Google authentication failed: {{error}}"
+    },
+    "prakto_callback": {
+      "provider_failed": "Signing in with your Prakto account failed: {{error}}",
+      "no_code": "No sign-in code was received from Prakto",
+      "exchange_failed": "Could not complete the sign-in with your Prakto account.",
+      "email_not_verified": "Verify your email address in Prakto first, then try again.",
+      "account_blocked": "Your Prakto account is blocked. Contact Prakto if you think this is a mistake."
     },
     "magic": {
       "expired": "This link has expired or was already used. Request a new one to sign in.",
@@ -1011,7 +1022,30 @@
       "single_failed": "Export failed",
       "single_exporting": "Exporting \"{{name}}\"",
       "generic_error": "An error occurred during export"
-    }
+    },
+    "module_n": "Module {{n}}",
+    "minutes_short": "{{count}} min",
+    "other_courses": "Other courses",
+    "course_n_of": "Course {{n}} of {{total}}",
+    "n_courses_one": "{{count}} course",
+    "n_courses_other": "{{count}} courses",
+    "duration_minutes": "{{count}} min",
+    "duration_hours_one": "about {{count}} hour",
+    "duration_hours_other": "about {{count}} hours",
+    "to_complete": "to complete",
+    "n_modules_one": "{{count}} module",
+    "n_modules_other": "{{count}} modules",
+    "n_activities_one": "{{count}} activity",
+    "n_activities_other": "{{count}} activities",
+    "self_paced": "Self-paced",
+    "self_paced_desc": "Study when it suits you",
+    "part_of_path": "Learning path",
+    "offered_by": "Offered by",
+    "instructor": "Instructor",
+    "more_in_programme": "More courses in {{name}}",
+    "view_path": "View path",
+    "modules_in_course_one": "There is {{count}} module in this course",
+    "modules_in_course_other": "There are {{count}} modules in this course"
   },
   "communities": {
     "title": "Communities",
@@ -1862,6 +1896,15 @@
     "file": "File",
     "embed": "Embed",
     "download": "Download",
+    "preview": {
+      "loading": "Loading preview…",
+      "failed": "Could not show a preview of this file.",
+      "empty": "This file is empty.",
+      "no_preview": "There is no preview for this file type. Download it to open it.",
+      "showing_rows": "Showing the first {{shown}} of {{total}} rows",
+      "slide": "Slide {{n}} of {{total}}",
+      "files": "{{count}} files"
+    },
     "add_media": "Add media",
     "upload": "Upload",
     "media_name": "Media name",

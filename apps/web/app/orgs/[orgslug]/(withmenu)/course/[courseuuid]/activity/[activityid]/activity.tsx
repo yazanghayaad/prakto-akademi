@@ -64,6 +64,8 @@ const AssignmentStudentActivity = lazy(() => import('@components/Objects/Activit
 // what the API will actually accept. Static import: it's a pure function, and
 // gating render on the lazy chunk would flash the wrong control.
 import { isAssignmentPastDue } from '@components/Objects/Activities/Assignment/AssignmentStudentActivity'
+import CourseOutlineSidebar from '@components/Pages/Activity/CourseOutlineSidebar'
+import { useCompleteActivity, completesOnNext, findCourseActivity } from '@components/Pages/Activity/useCompleteActivity'
 const AIActivityAsk = lazy(() => import('@components/Objects/Activities/AI/AIActivityAsk'))
 const AISidePanelContentWrapper = lazy(() => import('@components/Objects/Activities/AI/AIActivityAsk').then(mod => ({ default: mod.AISidePanelContentWrapper })))
 const AISidePanelInline = lazy(() => import('@components/Objects/Activities/AI/AIActivityAsk').then(mod => ({ default: mod.AISidePanelInline })))
@@ -706,7 +708,7 @@ function ActivityClient(props: ActivityClientProps) {
                                 cx="16"
                                 cy="16"
                                 r="14"
-                                stroke="#e5e7eb"
+                                stroke="#e9e7e4"
                                 strokeWidth="3"
                                 fill="none"
                               />
@@ -714,7 +716,7 @@ function ActivityClient(props: ActivityClientProps) {
                                 cx="16"
                                 cy="16"
                                 r="14"
-                                stroke="#10b981"
+                                stroke="#256849"
                                 strokeWidth="3"
                                 fill="none"
                                 strokeLinecap="round"
@@ -927,7 +929,17 @@ function ActivityClient(props: ActivityClientProps) {
                     trailData={trailData}
                   />
                 ) : (
-                  <div className="space-y-4 pt-0 relative">
+                  // Prakto: the course outline sits beside the lesson on wide
+                  // screens, the way a university course page lays it out.
+                  <div className="lg:flex lg:items-start lg:gap-8">
+                  <CourseOutlineSidebar
+                    course={course}
+                    currentActivityId={activityid}
+                    orgslug={orgslug}
+                    trailData={trailData}
+                    className="hidden lg:flex mt-2"
+                  />
+                  <div className="space-y-4 pt-0 relative min-w-0 lg:flex-1">
                     {/* Phones: one back row to the course instead of the
                         breadcrumb trail and the course header below. */}
                     <Link
@@ -947,45 +959,16 @@ function ActivityClient(props: ActivityClientProps) {
                       />
                       <span className="truncate text-sm font-semibold text-gray-700">{course.name}</span>
                     </Link>
-                    <div className="hidden sm:block pt-2 pb-6">
+                    {/* Prakto: the trail already names the course, so the separate
+                        course row (thumbnail, "Kurs", course title) is gone and
+                        sharing sits at the end of the trail. */}
+                    <div className="hidden sm:flex items-center justify-between gap-3 pt-2 pb-5 relative" style={{ zIndex: 'var(--z-interactive)' }}>
                       <Breadcrumbs items={[
                         { label: t('courses.courses'), href: getUriWithOrg(orgslug, '/courses'), icon: <BookCopy size={14} /> },
                         { label: course.name, href: getUriWithOrg(orgslug, `/course/${courseuuid}`) },
                         { label: displayName }
                       ]} />
-                    </div>
-                    <div className="space-y-3 sm:space-y-4 activity-info-section relative" style={{ zIndex: 'var(--z-content)' }}>
-                        <div className="hidden sm:flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-                          <div className="flex space-x-4 sm:space-x-6 items-center">
-                            <div className="flex shrink-0">
-                              <Link
-                                href={getUriWithOrg(orgslug, '') + `/course/${courseuuid}`}
-                              >
-                                <img
-                                  className="w-[60px] h-[34px] sm:w-[100px] sm:h-[57px] shrink-0 rounded-md drop-shadow-md object-cover"
-                                  src={course.thumbnail_image
-                                    ? getCourseThumbnailMediaDirectory(
-                                        org?.org_uuid,
-                                        course.course_uuid,
-                                        course.thumbnail_image
-                                      )
-                                    : '/empty_thumbnail.png'
-                                  }
-                                  onError={(e) => {
-                                    if (!e.currentTarget.src.endsWith('/empty_thumbnail.png')) e.currentTarget.src = '/empty_thumbnail.png'
-                                  }}
-                                  alt=""
-                                />
-                              </Link>
-                            </div>
-                            <div className="flex flex-col -space-y-1">
-                              <p className="font-bold text-gray-700 text-xs sm:text-md">{t('search.course')} </p>
-                              <h1 className="font-bold text-gray-950 text-lg sm:text-3xl">
-                                {course.name}
-                              </h1>
-                            </div>
-                          </div>
-                          {activity && (
+                      {activity && (
                             <div className="hidden sm:block">
                               <ActivityShareDropdown
                                 activityName={activity.name}
@@ -997,24 +980,26 @@ function ActivityClient(props: ActivityClientProps) {
                               />
                             </div>
                           )}
+                    </div>
+                    <div className="space-y-3 sm:space-y-4 activity-info-section relative" style={{ zIndex: 'var(--z-content)' }}>
+                        <div className="lg:hidden">
+                          <ActivityIndicators
+                            course_uuid={courseuuid}
+                            current_activity={activityid}
+                            orgslug={orgslug}
+                            course={course}
+                            enableNavigation={true}
+                            trailData={trailData}
+                          />
                         </div>
-
-                        <ActivityIndicators
-                          course_uuid={courseuuid}
-                          current_activity={activityid}
-                          orgslug={orgslug}
-                          course={course}
-                          enableNavigation={true}
-                          trailData={trailData}
-                        />
 
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center w-full gap-3">
                           <div className="flex flex-1 items-center space-x-3 min-w-0">
-                            <div className="flex flex-col -space-y-1 min-w-0">
-                              <p className="font-bold text-gray-700 text-xs sm:text-md max-sm:font-semibold max-sm:text-gray-500 max-sm:text-[11px] max-sm:uppercase max-sm:tracking-wide">
+                            <div className="flex flex-col gap-1 min-w-0">
+                              <p className="font-semibold uppercase tracking-[0.08em] text-wine-800 text-[11px] sm:text-xs max-sm:text-gray-500 max-sm:tracking-wide">
                                 {getChapterNameByActivityId(course, activity?.id) ?? chapterNameFromCourse}
                               </p>
-                              <h1 className="font-bold text-gray-950 text-base sm:text-2xl max-sm:text-[22px] max-sm:leading-tight max-sm:pt-1">
+                              <h1 className="font-bold text-gray-950 text-base sm:text-[30px] sm:leading-tight max-sm:text-[22px] max-sm:leading-tight max-sm:pt-1">
                                 {displayName}
                               </h1>
                               {/* Authors and Dates Section */}
@@ -1108,7 +1093,7 @@ function ActivityClient(props: ActivityClientProps) {
                                     {contributorStatus === 'ACTIVE' && activity.activity_type == 'TYPE_DYNAMIC' && (
                                       <Link
                                         href={getUriWithOrg(orgslug, '') + `/course/${courseuuid}/activity/${activityid}/edit`}
-                                        className="bg-emerald-600 rounded-full px-5 drop-shadow-md flex items-center space-x-2 p-2.5 text-white hover:cursor-pointer transition delay-150 duration-300 ease-in-out"
+                                        className="bg-white rounded-md px-4 nice-shadow flex items-center space-x-2 p-2.5 text-gray-700 hover:bg-gray-50 hover:cursor-pointer transition-colors duration-150"
                                       >
                                         <Edit2 size={17} />
                                         <span className="text-xs font-bold">{t('courses.contribute')}</span>
@@ -1137,8 +1122,9 @@ function ActivityClient(props: ActivityClientProps) {
                           {activity.content.paid_access == false ? (
                             <PaidCourseActivityDisclaimer course={course} activity={activity} />
                           ) : (
-                            // Video activities sit on a dark theater band (theater.css).
-                            <div className={activity.activity_type === 'TYPE_VIDEO' ? 'lh-theater-band py-8 sm:py-12' : ''}>
+                            // Prakto: videos sit on the same paper ground as everything else; the
+                            // dark theater band (theater.css) made every video page a black slab.
+                            <div className={activity.activity_type === 'TYPE_VIDEO' ? 'relative pt-2' : ''}>
                             {activity.activity_type === 'TYPE_VIDEO' && (
                               <button
                                 onClick={() => setIsFocusMode(true)}
@@ -1192,7 +1178,7 @@ function ActivityClient(props: ActivityClientProps) {
                               course={course}
                               currentActivityId={activity.id}
                               orgslug={orgslug}
-                              dark={activity.activity_type === 'TYPE_VIDEO'}
+                              dark={false}
                             />
                           </div>
                           <div className="flex items-center justify-between sm:justify-end space-x-2 order-2 sm:order-none">
@@ -1204,13 +1190,13 @@ function ActivityClient(props: ActivityClientProps) {
                               assignment={assignment}
                               showNavigation={false}
                               trailData={trailData}
-                              dark={activity.activity_type === 'TYPE_VIDEO'}
+                              dark={false}
                             />
                             <NextActivityButton
                               course={course}
                               currentActivityId={activity.id}
                               orgslug={orgslug}
-                              dark={activity.activity_type === 'TYPE_VIDEO'}
+                              dark={false}
                             />
                           </div>
                         </div>
@@ -1223,7 +1209,7 @@ function ActivityClient(props: ActivityClientProps) {
                           currentActivityId={activityid}
                           orgslug={orgslug}
                           activity={activity}
-                          dark={activity.activity_type === 'TYPE_VIDEO'}
+                          dark={false}
                         />
                       )}
 
@@ -1234,7 +1220,7 @@ function ActivityClient(props: ActivityClientProps) {
                           currentActivityId={activityid}
                           orgslug={orgslug}
                           trailData={trailData}
-                          dark={activity.activity_type === 'TYPE_VIDEO'}
+                          dark={false}
                         >
                           <ActivityActions
                             activity={activity}
@@ -1244,7 +1230,7 @@ function ActivityClient(props: ActivityClientProps) {
                             assignment={assignment}
                             showNavigation={false}
                             trailData={trailData}
-                            dark={activity.activity_type === 'TYPE_VIDEO'}
+                            dark={false}
                             compact
                           />
                         </MobileActivityBar>
@@ -1252,6 +1238,7 @@ function ActivityClient(props: ActivityClientProps) {
 
                       <div className="h-6 sm:h-[100px]"></div>
                     </div>
+                  </div>
                 )}
               </GeneralWrapperStyled>
             )}
@@ -1503,7 +1490,7 @@ export function MarkStatus(props: {
   useShortcut(
     { id: 'activity.complete', keys: 'm', label: t('shortcuts.mark_complete'), group: 'page',
       run: () => { if (!isLoading) markActivityAsCompleteFront() } },
-    !!props.trailData && isUserPartOfTheOrg && !completed,
+    !!props.trailData && isUserPartOfTheOrg && !completed && props.activity?.activity_type !== 'TYPE_VIDEO',
   )
 
   // Don't render until we have trail data
@@ -1513,6 +1500,12 @@ export function MarkStatus(props: {
 
   // Don't show progress tracking for non-members
   if (!isUserPartOfTheOrg) {
+    return null;
+  }
+
+  // Prakto: a video is completed by watching it to (almost) the end, not by
+  // a button; the status shows once that has happened.
+  if (props.activity?.activity_type === 'TYPE_VIDEO' && !isActivityCompleted()) {
     return null;
   }
 
@@ -1656,6 +1649,7 @@ export function MarkStatus(props: {
 function NextActivityButton({ course, currentActivityId, orgslug, dark = false }: { course: any, currentActivityId: string, orgslug: string, dark?: boolean }) {
   const { t } = useTranslation();
   const router = useRouter();
+  const completeActivity = useCompleteActivity();
   const _isMobile = useMediaQuery('(max-width: 768px)');
 
   const findNextActivity = () => {
@@ -1694,6 +1688,9 @@ function NextActivityButton({ course, currentActivityId, orgslug, dark = false }
   const cleanCourseUuid = course.course_uuid?.replace('course_', '');
 
   const navigateToActivity = () => {
+    // Prakto: moving on completes a reading item (videos complete by watching).
+    const current = findCourseActivity(course, currentActivityId);
+    if (completesOnNext(current)) completeActivity(course, current);
     router.push(
       isLastActivity
         ? getUriWithOrg(orgslug, '') + `/course/${cleanCourseUuid}/activity/end`
@@ -1707,10 +1704,10 @@ function NextActivityButton({ course, currentActivityId, orgslug, dark = false }
       className={`rounded-md px-3 sm:px-4 flex flex-col p-2 sm:p-2.5 hover:cursor-pointer transition delay-150 duration-300 ease-in-out ${
         dark
           ? 'bg-white/10 text-white ring-1 ring-white/10 hover:bg-white/15'
-          : 'bg-gray-200 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] text-gray-600 hover:bg-gray-200'
+          : 'bg-white nice-shadow text-gray-900 hover:bg-gray-50'
       }`}
     >
-      <span className={`text-[10px] font-bold mb-1 uppercase ${dark ? 'text-white/50' : 'text-gray-500'}`}>{t('common.next')}</span>
+      <span className={`text-[10px] font-semibold mb-1 uppercase tracking-[0.08em] ${dark ? 'text-white/50' : 'text-wine-800'}`}>{t('common.next')}</span>
       <div className="flex items-center space-x-1">
         <span className="text-xs sm:text-sm font-semibold truncate max-w-[120px] sm:max-w-[200px]">
           {isLastActivity ? t('course.finish_course', 'Finish course') : nextActivity.name}
@@ -1767,7 +1764,7 @@ function PreviousActivityButton({ course, currentActivityId, orgslug, dark = fal
         dark ? 'bg-white/5 text-white/85 ring-1 ring-white/10 hover:bg-white/10' : 'bg-white nice-shadow text-gray-600'
       }`}
     >
-      <span className={`text-[10px] font-bold mb-1 uppercase ${dark ? 'text-white/50' : 'text-gray-500'}`}>{t('common.previous')}</span>
+      <span className={`text-[10px] font-semibold mb-1 uppercase tracking-[0.08em] ${dark ? 'text-white/50' : 'text-wine-800'}`}>{t('common.previous')}</span>
       <div className="flex items-center space-x-1">
         <ChevronLeft size={17} className="shrink-0" />
         <span className="text-xs sm:text-sm font-semibold truncate max-w-[120px] sm:max-w-[200px]">{previousActivity.name}</span>
@@ -2143,7 +2140,7 @@ function AssignmentTools(props: {
               recycle={false}
               gravity={0.18}
               tweenDuration={6000}
-              colors={['#10b981', '#14b8a6', '#06b6d4', '#fbbf24', '#f59e0b', '#ec4899']}
+              colors={['#4f0f10', '#98302f', '#d5766f', '#c2892c', '#345c84', '#256849']}
             />
           </div>
         )}

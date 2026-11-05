@@ -3,6 +3,9 @@ import nextra from 'nextra'
 const withNextra = nextra({ search: true })
 
 export default withNextra({
+  // Served at prakto.se/docs.
+  basePath: '/docs',
+  devIndicators: false,
   trailingSlash: false,
   async headers() {
     return [

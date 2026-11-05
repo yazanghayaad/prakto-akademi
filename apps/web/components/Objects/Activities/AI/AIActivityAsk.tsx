@@ -4,12 +4,20 @@ import {
   startActivityAIChatSessionStream,
   StreamCallbacks,
 } from '@services/ai/ai'
-import { AlertTriangle, BadgeInfo, NotebookTabs, Maximize2, Minimize2, PanelRightOpen, PanelRightClose, PanelTop } from 'lucide-react'
+import {
+  AlertTriangle,
+  ArrowUp,
+  BadgeInfo,
+  Lightbulb,
+  Maximize2,
+  Minimize2,
+  NotebookTabs,
+  PanelRightOpen,
+  PanelTop,
+  Sparkle,
+  X,
+} from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
-import { FlaskConical, MessageCircle, X } from 'lucide-react'
-import Image from 'next/image'
-import learnhouseAI_icon from 'public/learnhouse_ai_simple.png'
-import learnhouseAI_logo_black from 'public/learnhouse_ai_black_logo.png'
 import React, { useEffect, useRef } from 'react'
 import {
   AIChatBotStateTypes,
@@ -17,7 +25,6 @@ import {
   useAIChatBotDispatch,
 } from '@components/Contexts/AI/AIChatBotContext'
 import useGetAIFeatures from '../../../Hooks/useGetAIFeatures'
-import UserAvatar from '@components/Objects/UserAvatar'
 import { useTranslation } from 'react-i18next'
 import AIMarkdownRenderer from './AIMarkdownRenderer'
 import AIFollowUpSuggestions from './AIFollowUpSuggestions'
@@ -68,25 +75,14 @@ function AIActivityAsk(props: AIActivityAskProps) {
       {isButtonAvailable && (
         <div>
           <ActivityChatMessageBox activity={props.activity} />
-          <div
+          <button
+            type="button"
             onClick={handleOpenAI}
-            style={{
-              background:
-                'conic-gradient(from 32deg at 53.75% 50%, rgb(35, 40, 93) 4deg, rgba(20, 0, 52, 0.95) 59deg, rgba(164, 45, 238, 0.88) 281deg)',
-            }}
-            className="rounded-full px-5 drop-shadow-md flex  items-center space-x-1.5 p-2.5 text-sm text-white hover:cursor-pointer transition delay-150 duration-300 ease-in-out hover:scale-105"
+            className="inline-flex items-center gap-1.5 rounded-md bg-wine-900 px-3.5 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-wine-800"
           >
-            {' '}
-            <i>
-              <Image
-                className="outline outline-1 outline-neutral-200/20 rounded-md"
-                width={20}
-                src={learnhouseAI_icon}
-                alt=""
-              />
-            </i>{' '}
-            <i className="not-italic text-xs font-bold">{t('ai.ask_ai')}</i>
-          </div>
+            <Sparkle size={14} strokeWidth={2} />
+            {t('ai.ask_ai')}
+          </button>
         </div>
       )}
     </>
@@ -97,6 +93,311 @@ export type AIMessage = {
   sender: string
   message: any
   type: 'ai' | 'user'
+}
+
+/* --- Shared panel parts ---------------------------------------------------
+   Both display modes (the floating bottom panel and the side column) are built
+   from these, so the two stay visually identical. */
+
+const SMALL_CAPS = 'text-[11px] font-semibold uppercase tracking-[0.08em] text-gray-400'
+
+function PanelIconButton(props: {
+  onClick: () => void
+  label: string
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      onClick={props.onClick}
+      title={props.label}
+      aria-label={props.label}
+      className="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
+    >
+      {props.children}
+    </button>
+  )
+}
+
+function PanelHeader(props: { busy: boolean; children: React.ReactNode }) {
+  const { t } = useTranslation()
+  return (
+    <div className="flex shrink-0 items-center justify-between gap-3 border-b border-gray-200 px-4 py-3">
+      <div className="flex min-w-0 items-center gap-2.5">
+        <span
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wine-900 text-white ${
+            props.busy ? 'animate-pulse' : ''
+          }`}
+        >
+          <Sparkle size={15} strokeWidth={2} />
+        </span>
+        <div className="min-w-0 leading-tight">
+          <p className="font-serif text-[17px] font-semibold text-gray-900">
+            {t('ai.ask_ai')}
+          </p>
+          <p className={SMALL_CAPS}>{t('ai.experimental')}</p>
+        </div>
+      </div>
+      <div className="flex shrink-0 items-center gap-0.5">{props.children}</div>
+    </div>
+  )
+}
+
+function ThinkingDots() {
+  return (
+    <div className="flex items-center gap-1.5 py-1" aria-hidden="true">
+      {[0, 0.2, 0.4].map((delay) => (
+        <motion.span
+          key={delay}
+          className="h-1.5 w-1.5 rounded-full bg-wine-700"
+          animate={{ opacity: [0.25, 1, 0.25] }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut', delay }}
+        />
+      ))}
+    </div>
+  )
+}
+
+type AIMessageComponentProps = {
+  message: AIMessage
+  isAI: boolean
+  isStreaming?: boolean
+}
+
+function AIMessageComponent({ message, isAI, isStreaming = false }: AIMessageComponentProps) {
+  if (isAI) {
+    return (
+      <div className="w-full min-w-0">
+        <AIMarkdownRenderer content={message.message} isStreaming={isStreaming} tone="light" />
+      </div>
+    )
+  }
+  return (
+    <div className="flex justify-end">
+      <div className="max-w-[85%] rounded-md bg-gray-100 px-3 py-2 text-sm leading-relaxed text-gray-900 whitespace-pre-wrap">
+        {message.message}
+      </div>
+    </div>
+  )
+}
+
+const PREDEFINED_QUESTIONS = [
+  { label: 'about', key: 'ai.about_question', Icon: BadgeInfo },
+  { label: 'flashcards', key: 'ai.flashcards_question', Icon: NotebookTabs },
+  { label: 'examples', key: 'ai.examples_question', Icon: Lightbulb },
+] as const
+
+function ChatEmptyState(props: { sendMessage: (message: string) => void; wide?: boolean }) {
+  const session = useLHSession() as any
+  const { t } = useTranslation()
+  const username = session?.data?.user?.username
+  const help = t('ai.how_can_we_help')
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
+      className={`flex min-h-full flex-col justify-center ${props.wide ? 'mx-auto w-full max-w-3xl' : ''}`}
+    >
+      <p className="font-serif text-xl font-semibold text-gray-900">
+        {t('common.hello')}
+        {username ? <span className="capitalize"> {username}</span> : null},
+      </p>
+      <p className="mt-0.5 text-sm text-gray-500">
+        {help.charAt(0).toUpperCase() + help.slice(1)}
+      </p>
+      <div className={`mt-4 grid gap-1.5 ${props.wide ? 'sm:grid-cols-3' : 'grid-cols-1'}`}>
+        {PREDEFINED_QUESTIONS.map(({ label, key, Icon }) => (
+          <button
+            key={label}
+            type="button"
+            onClick={() => props.sendMessage(t(key))}
+            className="group flex items-start gap-2.5 rounded-md border border-gray-200 bg-white px-3 py-2 text-start text-[13px] leading-snug text-gray-700 transition-colors hover:border-wine-300 hover:bg-wine-50 hover:text-wine-900"
+          >
+            <Icon size={15} className="mt-px shrink-0 text-gray-400 transition-colors group-hover:text-wine-700" />
+            <span>{t(key)}</span>
+          </button>
+        ))}
+      </div>
+    </motion.div>
+  )
+}
+
+function ChatError(props: { message: string }) {
+  const { t } = useTranslation()
+  return (
+    <div className="flex min-h-full items-center justify-center">
+      <div className="flex w-full max-w-[600px] gap-2.5 rounded-md border border-red-200 bg-red-50 p-3">
+        <AlertTriangle size={18} className="mt-0.5 shrink-0 text-red-700" />
+        <div className="min-w-0">
+          <h3 className="text-sm font-semibold text-red-900">
+            {t('common.something_wrong_happened')}
+          </h3>
+          <p className="text-sm text-red-800 break-words">{props.message}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/** The scrollable middle of the panel: conversation, empty state or error. */
+function ChatThread(props: {
+  state: AIChatBotStateTypes
+  sendMessage: (message: string) => void
+  isInputDisabled: boolean
+  containerRef: React.RefObject<HTMLDivElement | null>
+  keyPrefix: string
+  wide?: boolean
+}) {
+  const { state } = props
+
+  let body: React.ReactNode
+  if (state.error.isError) {
+    body = <ChatError message={state.error.error_message} />
+  } else if (state.messages.length === 0) {
+    body = <ChatEmptyState sendMessage={props.sendMessage} wide={props.wide} />
+  } else {
+    body = (
+      <div className={`flex flex-col space-y-5 ${props.wide ? 'mx-auto w-full max-w-3xl' : ''}`}>
+        <AnimatePresence mode="popLayout">
+          {state.messages.map((message: AIMessage, index: number) => (
+            <motion.div
+              key={`${props.keyPrefix}-${index}`}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <AIMessageComponent message={message} isAI={message.sender === 'ai'} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+
+        {/* Waiting for the first chunk */}
+        <AnimatePresence>
+          {state.isStreaming && !state.streamingContent && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ThinkingDots />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Streaming answer */}
+        <AnimatePresence>
+          {state.isStreaming && state.streamingContent && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+            >
+              <AIMessageComponent
+                message={{ sender: 'ai', message: state.streamingContent, type: 'ai' }}
+                isAI={true}
+                isStreaming={true}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Follow-up suggestions, or the indicator while they load */}
+        <AnimatePresence>
+          {!state.isStreaming && (
+            <>
+              {state.isLoadingFollowUps && state.followUpSuggestions.length === 0 && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex items-center gap-1.5 py-1"
+                >
+                  {[0, 0.15, 0.3].map((delay) => (
+                    <motion.span
+                      key={delay}
+                      className="h-1 w-1 rounded-full bg-gray-400"
+                      animate={{ opacity: [0.3, 0.9, 0.3] }}
+                      transition={{ duration: 1, repeat: Infinity, ease: 'easeInOut', delay }}
+                    />
+                  ))}
+                </motion.div>
+              )}
+              {state.followUpSuggestions.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                >
+                  <AIFollowUpSuggestions
+                    suggestions={state.followUpSuggestions}
+                    onSuggestionClick={props.sendMessage}
+                    disabled={props.isInputDisabled}
+                  />
+                </motion.div>
+              )}
+            </>
+          )}
+        </AnimatePresence>
+      </div>
+    )
+  }
+
+  return (
+    <div
+      ref={props.containerRef}
+      className="min-h-0 flex-auto overflow-y-auto scroll-smooth px-4 py-4"
+      style={{ scrollbarWidth: 'thin', scrollbarColor: 'var(--color-gray-300) transparent' }}
+    >
+      {body}
+    </div>
+  )
+}
+
+function ChatComposer(props: {
+  value: string
+  disabled: boolean
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void
+  onSend: () => void
+  wide?: boolean
+}) {
+  const { t } = useTranslation()
+  const canSend = !props.disabled && !!props.value?.trim()
+  return (
+    <div className="shrink-0 border-t border-gray-200 bg-gray-50/60 p-3">
+      <div
+        className={`flex items-center gap-2 rounded-md border border-gray-300 bg-white py-1.5 pe-1.5 ps-3 transition-colors focus-within:border-wine-700 focus-within:ring-2 focus-within:ring-wine-100 ${
+          props.wide ? 'mx-auto w-full max-w-3xl' : ''
+        } ${props.disabled ? 'opacity-60' : ''}`}
+      >
+        <input
+          onKeyDown={props.onKeyDown}
+          onChange={props.onChange}
+          disabled={props.disabled}
+          value={props.value}
+          aria-label={t('ai.ask_ai_placeholder')}
+          placeholder={t('ai.ask_ai_placeholder')}
+          type="text"
+          className="min-w-0 flex-1 bg-transparent py-1 text-sm text-gray-900 outline-hidden placeholder:text-gray-400 disabled:cursor-not-allowed"
+        />
+        <button
+          type="button"
+          onClick={() => canSend && props.onSend()}
+          disabled={!canSend}
+          title={t('common.submit')}
+          aria-label={t('common.submit')}
+          className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded bg-wine-900 text-white transition-colors hover:bg-wine-800 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
+        >
+          <ArrowUp size={15} strokeWidth={2.25} />
+        </button>
+      </div>
+    </div>
+  )
 }
 
 type ActivityChatMessageBoxProps = {
@@ -112,9 +413,6 @@ function ActivityChatMessageBox(props: ActivityChatMessageBoxProps) {
   const { mode, setMode } = useAIPanelMode()
 
   const isInputDisabled = aiChatBotState.isWaitingForResponse || aiChatBotState.isStreaming
-  const inputClass = isInputDisabled
-    ? 'ring-1 ring-inset ring-white/10 bg-gray-950/40 w-full rounded-lg outline-hidden px-4 py-2 text-white text-sm placeholder:text-white/30 opacity-30 '
-    : 'ring-1 ring-inset ring-white/10 bg-gray-950/40 w-full rounded-lg outline-hidden px-4 py-2 text-white text-sm placeholder:text-white/30'
 
   useEffect(() => {
     if (aiChatBotState.isModalOpen) {
@@ -250,11 +548,6 @@ function ActivityChatMessageBox(props: ActivityChatMessageBoxProps) {
     dispatchAIChatBot({ type: 'toggleFullscreen' })
   }
 
-  function openSidePanel() {
-    dispatchAIChatBot({ type: 'setSidePanelOpen' })
-  }
-
-  const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
 
   // Smooth scroll to bottom with easing
@@ -284,435 +577,62 @@ function ActivityChatMessageBox(props: ActivityChatMessageBoxProps) {
   return (
     <AnimatePresence>
       {aiChatBotState.isModalOpen && (
-        <>
-          <motion.div
-            initial={{ y: 20, opacity: 0.3, filter: 'blur(5px)' }}
-            animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-            exit={{ y: 50, opacity: 0, filter: 'blur(25px)' }}
-            transition={{
-              type: 'spring',
-              bounce: 0.35,
-              duration: 1.7,
-              mass: 0.2,
-              velocity: 2,
-            }}
-            className="fixed top-0 start-0 w-full h-full z-[9999] flex justify-center items-center "
-            style={{ pointerEvents: 'none' }}
+        <motion.div
+          initial={{ y: 16, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 16, opacity: 0 }}
+          transition={{ duration: 0.22, ease: 'easeOut' }}
+          className="fixed top-0 start-0 w-full h-full z-[9999] flex justify-center items-center"
+          style={{ pointerEvents: 'none' }}
+        >
+          <div
+            style={{ pointerEvents: 'auto' }}
+            className={`fixed bottom-4 left-1/2 z-[10000] mx-auto flex w-10/12 max-w-(--breakpoint-2xl) -translate-x-1/2 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white text-gray-900 shadow-[0_18px_50px_-20px_rgba(28,25,23,0.35)] transition-[height] duration-300 max-md:bottom-[calc(var(--lh-mobile-nav-h)+8px)] max-md:w-[calc(100%-16px)] ${
+              aiChatBotState.isFullscreen ? 'h-[80vh]' : 'h-[350px]'
+            }`}
           >
-            <div
-              style={{
-                pointerEvents: 'auto',
-                background:
-                  'linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), radial-gradient(105.16% 105.16% at 50% -5.16%, rgba(255, 255, 255, 0.18) 0%, rgba(0, 0, 0, 0) 100%), rgb(2 1 25 / 98%)',
-              }}
-              className={`bg-black z-[10000] shadow-lg ring-1 ring-inset ring-white/10 text-white p-4 backdrop-blur-md transition-all duration-300 flex flex-col rounded-2xl max-w-(--breakpoint-2xl) w-10/12 max-md:w-[calc(100%-16px)] mx-auto fixed bottom-4 max-md:bottom-[calc(var(--lh-mobile-nav-h)+8px)] left-1/2 transform -translate-x-1/2 ${
-                aiChatBotState.isFullscreen
-                  ? 'h-[80vh]'
-                  : 'h-[350px]'
-              }`}
-            >
-              <div className="flex flex-row-reverse pb-3 justify-between items-center">
-                <div className="flex space-x-2 items-center">
-                  <button
-                    onClick={() => {
-                      setMode('side')
-                      dispatchAIChatBot({ type: 'switchToSideMode' })
-                    }}
-                    className="text-white/50 hover:text-white/70 hover:cursor-pointer bg-white/10 p-1 rounded-full items-center transition-colors"
-                    title={t('ai.switch_to_side_mode')}
-                  >
-                    <PanelRightOpen size={18} />
-                  </button>
-                  <button
-                    onClick={toggleFullscreen}
-                    className="text-white/50 hover:text-white/70 hover:cursor-pointer bg-white/10 p-1 rounded-full items-center transition-colors"
-                    title={aiChatBotState.isFullscreen ? t('ai.exit_fullscreen') : t('ai.fullscreen')}
-                  >
-                    {aiChatBotState.isFullscreen ? (
-                      <Minimize2 size={18} />
-                    ) : (
-                      <Maximize2 size={18} />
-                    )}
-                  </button>
-                  <X
-                    size={20}
-                    className="text-white/50 hover:cursor-pointer bg-white/10 p-1 rounded-full items-center"
-                    onClick={closeModal}
-                  />
-                </div>
-                <div
-                  className={`flex space-x-2 items-center -ms-[100px] ${isInputDisabled ? 'animate-pulse' : ''
-                    }`}
-                >
-                  <Image
-                    className={`outline outline-1 outline-neutral-200/20 rounded-lg ${isInputDisabled ? 'animate-pulse' : ''
-                      }`}
-                    width={24}
-                    src={learnhouseAI_icon}
-                    alt=""
-                  />
-                  <span className="text-sm font-semibold text-white/70">
-                    {' '}
-                    AI
-                  </span>
-                </div>
-                <div className="bg-white/5 text-white/40 py-0.5 px-3 flex space-x-1 rounded-full items-center">
-                  <FlaskConical size={14} />
-                  <span className="text-xs font-semibold antialiased ">
-                    {t('ai.experimental')}
-                  </span>
-                </div>
-              </div>
-              <div
-                className={`w-100 h-0.5 bg-white/5 rounded-full mx-auto mb-3 ${isInputDisabled ? 'animate-pulse' : ''
-                  }`}
-              ></div>
-              {aiChatBotState.messages.length > 0 &&
-                !aiChatBotState.error.isError ? (
-                <div
-                  ref={messagesContainerRef}
-                  className={`flex flex-col w-full space-y-3 overflow-y-auto scroll-smooth pe-2 ${
-                    aiChatBotState.isFullscreen ? 'flex-1' : 'h-[237px]'
-                  }`}
-                  style={{
-                    scrollbarWidth: 'thin',
-                    scrollbarColor: 'rgba(255,255,255,0.1) transparent'
-                  }}
-                >
-                  <AnimatePresence mode="popLayout">
-                    {aiChatBotState.messages.map(
-                      (message: AIMessage, index: number) => {
-                        return (
-                          <motion.div
-                            key={`msg-${index}`}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{
-                              duration: 0.3,
-                              ease: [0.25, 0.46, 0.45, 0.94]
-                            }}
-                          >
-                            <AIMessageComponent
-                              message={message}
-                              isAI={message.sender === 'ai'}
-                            />
-                          </motion.div>
-                        )
-                      }
-                    )}
-                  </AnimatePresence>
+            <PanelHeader busy={isInputDisabled}>
+              <PanelIconButton
+                onClick={() => {
+                  setMode('side')
+                  dispatchAIChatBot({ type: 'switchToSideMode' })
+                }}
+                label={t('ai.switch_to_side_mode')}
+              >
+                <PanelRightOpen size={17} />
+              </PanelIconButton>
+              <PanelIconButton
+                onClick={toggleFullscreen}
+                label={aiChatBotState.isFullscreen ? t('ai.exit_fullscreen') : t('ai.fullscreen')}
+              >
+                {aiChatBotState.isFullscreen ? <Minimize2 size={17} /> : <Maximize2 size={17} />}
+              </PanelIconButton>
+              <PanelIconButton onClick={closeModal} label={t('common.close')}>
+                <X size={18} />
+              </PanelIconButton>
+            </PanelHeader>
 
-                  {/* Show "thinking" indicator when waiting for first chunk */}
-                  <AnimatePresence>
-                    {aiChatBotState.isStreaming && !aiChatBotState.streamingContent && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="flex space-x-3 w-full antialiased font-medium"
-                      >
-                        <div className="shrink-0">
-                          <UserAvatar
-                            rounded="rounded-lg"
-                            border="border-2"
-                            predefined_avatar="ai"
-                            width={35}
-                            shadow="shadow-none"
-                          />
-                        </div>
-                        <div className="flex items-center space-x-1.5 px-2 py-2">
-                          <motion.span
-                            className="w-2 h-2 bg-purple-400/80 rounded-full"
-                            animate={{ opacity: [0.4, 1, 0.4], scale: [0.85, 1, 0.85] }}
-                            transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                          />
-                          <motion.span
-                            className="w-2 h-2 bg-purple-400/80 rounded-full"
-                            animate={{ opacity: [0.4, 1, 0.4], scale: [0.85, 1, 0.85] }}
-                            transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-                          />
-                          <motion.span
-                            className="w-2 h-2 bg-purple-400/80 rounded-full"
-                            animate={{ opacity: [0.4, 1, 0.4], scale: [0.85, 1, 0.85] }}
-                            transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-                          />
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+            <ChatThread
+              state={aiChatBotState}
+              sendMessage={sendMessage}
+              isInputDisabled={isInputDisabled}
+              containerRef={messagesContainerRef}
+              keyPrefix="msg"
+              wide
+            />
 
-                  {/* Show streaming content */}
-                  <AnimatePresence>
-                    {aiChatBotState.isStreaming && aiChatBotState.streamingContent && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                      >
-                        <AIMessageComponent
-                          message={{
-                            sender: 'ai',
-                            message: aiChatBotState.streamingContent,
-                            type: 'ai',
-                          }}
-                          isAI={true}
-                          isStreaming={true}
-                        />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {/* Show follow-up suggestions loading or actual suggestions */}
-                  <AnimatePresence>
-                    {!aiChatBotState.isStreaming && (
-                      <>
-                        {aiChatBotState.isLoadingFollowUps && aiChatBotState.followUpSuggestions.length === 0 && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="flex justify-center items-center gap-1.5 text-white/30 text-xs py-2"
-                          >
-                            <motion.span
-                              className="w-1 h-1 bg-white/40 rounded-full"
-                              animate={{ opacity: [0.3, 0.8, 0.3] }}
-                              transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-                            />
-                            <motion.span
-                              className="w-1 h-1 bg-white/40 rounded-full"
-                              animate={{ opacity: [0.3, 0.8, 0.3] }}
-                              transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.15 }}
-                            />
-                            <motion.span
-                              className="w-1 h-1 bg-white/40 rounded-full"
-                              animate={{ opacity: [0.3, 0.8, 0.3] }}
-                              transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-                            />
-                          </motion.div>
-                        )}
-                        {aiChatBotState.followUpSuggestions.length > 0 && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, ease: 'easeOut' }}
-                          >
-                            <AIFollowUpSuggestions
-                              suggestions={aiChatBotState.followUpSuggestions}
-                              onSuggestionClick={sendMessage}
-                              disabled={isInputDisabled}
-                            />
-                          </motion.div>
-                        )}
-                      </>
-                    )}
-                  </AnimatePresence>
-                  <div ref={messagesEndRef} />
-                </div>
-              ) : (
-                <AIMessagePlaceHolder
-                  sendMessage={sendMessage}
-                  activity_uuid={props.activity.activity_uuid}
-                  isFullscreen={aiChatBotState.isFullscreen}
-                />
-              )}
-              {aiChatBotState.error.isError && (
-                <div className={`flex items-center justify-center ${aiChatBotState.isFullscreen ? 'flex-1' : 'h-[237px]'}`}>
-                  <div className="flex flex-col mx-auto w-full max-w-[600px] space-y-2 p-5 rounded-lg bg-red-500/20 outline outline-1 outline-red-500">
-                    <AlertTriangle size={20} className="text-red-500" />
-                    <div className="flex flex-col">
-                      <h3 className="font-semibold text-red-200">
-                        {t('common.something_wrong_happened')}
-                      </h3>
-                      <span className="text-red-100 text-sm ">
-                        {aiChatBotState.error.error_message}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div className="flex space-x-2 items-center">
-                <div className="">
-                  <UserAvatar
-                    rounded="rounded-lg"
-                    border="border-2"
-                    width={35}
-                    shadow="shadow-none"
-                  />
-                </div>
-                <div className="w-full">
-                  <input
-                    onKeyDown={handleKeyDown}
-                    onChange={handleChange}
-                    disabled={isInputDisabled}
-                    value={aiChatBotState.chatInputValue}
-                    aria-label={t('ai.ask_ai_placeholder')}
-                    placeholder={t('ai.ask_ai_placeholder')}
-                    type="text"
-                    className={inputClass}
-                    name=""
-                    id=""
-                  />
-                </div>
-                <div className="">
-                  <MessageCircle
-                    size={20}
-                    className={`text-white/50 ${isInputDisabled ? 'opacity-30 cursor-not-allowed' : 'hover:cursor-pointer hover:text-white/70'}`}
-                    onClick={() => !isInputDisabled && sendMessage(aiChatBotState.chatInputValue)}
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </>
+            <ChatComposer
+              value={aiChatBotState.chatInputValue}
+              disabled={isInputDisabled}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              onSend={() => sendMessage(aiChatBotState.chatInputValue)}
+              wide
+            />
+          </div>
+        </motion.div>
       )}
     </AnimatePresence>
-  )
-}
-
-type AIMessageComponentProps = {
-  message: AIMessage
-  isAI: boolean
-  isStreaming?: boolean
-}
-
-function AIMessageComponent({ message, isAI, isStreaming = false }: AIMessageComponentProps) {
-  return (
-    <div className={`flex space-x-3 w-full antialiased ${isAI ? 'items-start' : 'items-start'}`}>
-      <div className="shrink-0 pt-0.5">
-        {isAI ? (
-          <UserAvatar
-            rounded="rounded-lg"
-            border="border-2"
-            predefined_avatar="ai"
-            width={32}
-            shadow="shadow-none"
-          />
-        ) : (
-          <UserAvatar rounded="rounded-lg" border="border-2" width={32} shadow="shadow-none" />
-        )}
-      </div>
-      <div className="flex-1 min-w-0">
-        {isAI ? (
-          <div className="w-full">
-            <AIMarkdownRenderer
-              content={message.message}
-              isStreaming={isStreaming}
-            />
-          </div>
-        ) : (
-          <div className="inline-block bg-white/5 rounded-xl rounded-ss-sm px-3 py-2 max-w-[85%]">
-            <p className="text-white/90 text-sm leading-relaxed">
-              {message.message}
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-const AIMessagePlaceHolder = (props: {
-  activity_uuid: string
-  sendMessage: any
-  isFullscreen?: boolean
-}) => {
-  const session = useLHSession() as any
-  const aiChatBotState = useAIChatBot() as AIChatBotStateTypes
-  const { t } = useTranslation()
-
-  if (!aiChatBotState.error.isError) {
-    return (
-      <div className={`w-full ${props.isFullscreen ? 'flex-1 flex items-center justify-center' : 'h-[237px]'}`}>
-        <div className="flex flex-col text-center justify-center pt-6">
-          <motion.div
-            initial={{ y: 20, opacity: 0, filter: 'blur(5px)' }}
-            animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-            exit={{ y: 50, opacity: 0 }}
-            transition={{
-              type: 'spring',
-              bounce: 0.35,
-              duration: 1.7,
-              mass: 0.2,
-              velocity: 2,
-              delay: 0.17,
-            }}
-          >
-            <Image
-              width={100}
-              className="mx-auto"
-              src={learnhouseAI_logo_black}
-              alt=""
-            />
-            <p className="pt-3 text-2xl font-semibold text-white/70 flex justify-center space-x-2 items-center">
-              <span className="items-center">{t('common.hello')}</span>
-              <span className="capitalize flex space-x-2 items-center">
-                <UserAvatar rounded="rounded-lg" border="border-2" width={35} shadow="shadow-none" />
-                <span>{session.data.user.username},</span>
-              </span>
-              <span>{t('ai.how_can_we_help')}</span>
-            </p>
-          </motion.div>
-          <motion.div
-            initial={{ y: 20, opacity: 0, filter: 'blur(5px)' }}
-            animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-            exit={{ y: 50, opacity: 0 }}
-            transition={{
-              type: 'spring',
-              bounce: 0.35,
-              duration: 1.7,
-              mass: 0.2,
-              velocity: 2,
-              delay: 0.27,
-            }}
-            className="questions flex space-x-3 mx-auto pt-6 flex-wrap justify-center"
-          >
-            <AIChatPredefinedQuestion
-              sendMessage={props.sendMessage}
-              label="about"
-            />
-            <AIChatPredefinedQuestion
-              sendMessage={props.sendMessage}
-              label="flashcards"
-            />
-            <AIChatPredefinedQuestion
-              sendMessage={props.sendMessage}
-              label="examples"
-            />
-          </motion.div>
-        </div>
-      </div>
-    )
-  }
-}
-
-const AIChatPredefinedQuestion = (props: {
-  sendMessage: any
-  label: string
-}) => {
-  const { t } = useTranslation()
-  function getQuestion(label: string) {
-    if (label === 'about') {
-      return t('ai.about_question')
-    } else if (label === 'flashcards') {
-      return t('ai.flashcards_question')
-    } else if (label === 'examples') {
-      return t('ai.examples_question')
-    }
-  }
-
-  return (
-    <div
-      onClick={() => props.sendMessage(getQuestion(props.label))}
-      className="flex space-x-1.5 items-center bg-white/5 cursor-pointer px-4 py-1.5 rounded-xl outline outline-1 outline-neutral-100/10 text-xs font-semibold text-white/40 hover:text-white/60 hover:bg-white/10 hover:outline-neutral-200/40 delay-75 ease-linear transition-all"
-    >
-      {props.label === 'about' && <BadgeInfo size={15} />}
-      {props.label === 'flashcards' && <NotebookTabs size={15} />}
-      {props.label === 'examples' && <div className="text-white/50">Ex</div>}
-      <span>{getQuestion(props.label)}</span>
-    </div>
   )
 }
 
@@ -730,15 +650,11 @@ function AISidePanelInline(props: AISidePanelProps) {
   const { mode, setMode } = useAIPanelMode()
   const isInitialRender = useRef(true)
   const accumulatedContentRef = useRef('')
-  const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const [isSecondaryBarVisible, setIsSecondaryBarVisible] = React.useState(false)
   const isPhone = useIsPhone()
 
   const isInputDisabled = aiChatBotState?.isWaitingForResponse || aiChatBotState?.isStreaming
-  const inputClass = isInputDisabled
-    ? 'ring-1 ring-inset ring-white/10 bg-gray-950/40 w-full rounded-lg outline-hidden px-4 py-2 text-white text-sm placeholder:text-white/30 opacity-30'
-    : 'ring-1 ring-inset ring-white/10 bg-gray-950/40 w-full rounded-lg outline-hidden px-4 py-2 text-white text-sm placeholder:text-white/30'
 
   // Mark initial render complete after mount
   useEffect(() => {
@@ -898,344 +814,63 @@ function AISidePanelInline(props: AISidePanelProps) {
     dispatchAIChatBot({ type: 'setSidePanelClose' })
   }
 
-  function openModal() {
-    dispatchAIChatBot({ type: 'setSidePanelClose' })
-    dispatchAIChatBot({ type: 'setIsModalOpen' })
-  }
-
   // Adjust top position based on secondary bar visibility
   const topPosition = isSecondaryBarVisible ? '144px' : '80px'
-  const panelHeight = isSecondaryBarVisible ? 'calc(100vh - 220px)' : 'calc(100vh - 160px)'
+  // The panel is as tall as its content and only grows to this cap, so an
+  // empty chat is a compact card instead of a full-height column. The 720px
+  // ceiling keeps the input on screen before the panel has stuck to the top.
+  const panelMaxHeight = isSecondaryBarVisible
+    ? 'min(calc(100vh - 220px), 720px)'
+    : 'min(calc(100vh - 160px), 720px)'
 
   return (
     <motion.div
-      initial={isInitialRender.current ? false : { opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={isInitialRender.current ? { duration: 0 } : {
-        type: 'spring',
-        bounce: 0.2,
-        duration: 0.4,
-      }}
-      style={{
-        background:
-          'linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), radial-gradient(105.16% 105.16% at 50% -5.16%, rgba(255, 255, 255, 0.18) 0%, rgba(0, 0, 0, 0) 100%), rgb(2 1 25 / 98%)',
-        ...(isPhone
-          ? { height: 'min(70dvh, 560px)' }
-          : { height: panelHeight, top: topPosition }),
-      }}
+      initial={isInitialRender.current ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={isInitialRender.current ? { duration: 0 } : { duration: 0.22, ease: 'easeOut' }}
+      style={
+        isPhone
+          ? { maxHeight: 'min(70dvh, 560px)' }
+          : { maxHeight: panelMaxHeight, top: topPosition }
+      }
       className={`${
         isPhone
-          ? 'fixed inset-x-2 bottom-[calc(var(--lh-mobile-nav-h)+8px)] z-[9998] rounded-2xl'
-          : 'sticky w-[380px] shrink-0 rounded-xl'
-      } nice-shadow ring-1 ring-inset ring-white/10 text-white p-4 backdrop-blur-md flex flex-col transition-all duration-300`}
+          ? 'fixed inset-x-2 bottom-[calc(var(--lh-mobile-nav-h)+8px)] z-[9998] shadow-[0_18px_50px_-20px_rgba(28,25,23,0.35)]'
+          : 'sticky w-[380px] shrink-0 self-start'
+      } flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white text-gray-900 transition-[top] duration-300`}
     >
-          {/* Header */}
-          <div className="flex flex-row-reverse pb-3 justify-between items-center">
-            <div className="flex space-x-2 items-center">
-              <button
-                onClick={() => {
-                  setMode('hover')
-                  dispatchAIChatBot({ type: 'switchToHoverMode' })
-                }}
-                className="text-white/50 hover:text-white/70 hover:cursor-pointer bg-white/10 p-1 rounded-full items-center transition-colors"
-                title={t('ai.switch_to_hover_mode')}
-              >
-                <PanelTop size={18} />
-              </button>
-              <X
-                size={20}
-                className="text-white/50 hover:cursor-pointer bg-white/10 p-1 rounded-full items-center"
-                onClick={closeSidePanel}
-              />
-            </div>
-            <div
-              className={`flex space-x-2 items-center ${isInputDisabled ? 'animate-pulse' : ''}`}
-            >
-              <Image
-                className={`outline outline-1 outline-neutral-200/20 rounded-lg ${isInputDisabled ? 'animate-pulse' : ''}`}
-                width={24}
-                src={learnhouseAI_icon}
-                alt=""
-              />
-              <span className="text-sm font-semibold text-white/70">AI</span>
-            </div>
-            <div className="bg-white/5 text-white/40 py-0.5 px-3 flex space-x-1 rounded-full items-center">
-              <FlaskConical size={14} />
-              <span className="text-xs font-semibold antialiased">
-                {t('ai.experimental')}
-              </span>
-            </div>
-          </div>
+      <PanelHeader busy={isInputDisabled}>
+        <PanelIconButton
+          onClick={() => {
+            setMode('hover')
+            dispatchAIChatBot({ type: 'switchToHoverMode' })
+          }}
+          label={t('ai.switch_to_hover_mode')}
+        >
+          <PanelTop size={17} />
+        </PanelIconButton>
+        <PanelIconButton onClick={closeSidePanel} label={t('common.close')}>
+          <X size={18} />
+        </PanelIconButton>
+      </PanelHeader>
 
-          <div
-            className={`w-full h-0.5 bg-white/5 rounded-full mx-auto mb-3 ${isInputDisabled ? 'animate-pulse' : ''}`}
-          ></div>
+      <ChatThread
+        state={aiChatBotState}
+        sendMessage={sendMessage}
+        isInputDisabled={isInputDisabled}
+        containerRef={messagesContainerRef}
+        keyPrefix="side-msg"
+      />
 
-          {/* Messages Area */}
-          {aiChatBotState.messages.length > 0 && !aiChatBotState.error.isError ? (
-            <div
-              ref={messagesContainerRef}
-              className="flex flex-col flex-1 w-full space-y-3 overflow-y-auto scroll-smooth pe-2"
-              style={{
-                scrollbarWidth: 'thin',
-                scrollbarColor: 'rgba(255,255,255,0.1) transparent'
-              }}
-            >
-              <AnimatePresence mode="popLayout">
-                {aiChatBotState.messages.map((message: AIMessage, index: number) => (
-                  <motion.div
-                    key={`side-msg-${index}`}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.3,
-                      ease: [0.25, 0.46, 0.45, 0.94]
-                    }}
-                  >
-                    <AIMessageComponent
-                      message={message}
-                      isAI={message.sender === 'ai'}
-                    />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-
-              {/* Thinking indicator */}
-              <AnimatePresence>
-                {aiChatBotState.isStreaming && !aiChatBotState.streamingContent && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex space-x-3 w-full antialiased font-medium"
-                  >
-                    <div className="shrink-0">
-                      <UserAvatar
-                        rounded="rounded-lg"
-                        border="border-2"
-                        predefined_avatar="ai"
-                        width={35}
-                        shadow="shadow-none"
-                      />
-                    </div>
-                    <div className="flex items-center space-x-1.5 px-2 py-2">
-                      <motion.span
-                        className="w-2 h-2 bg-purple-400/80 rounded-full"
-                        animate={{ opacity: [0.4, 1, 0.4], scale: [0.85, 1, 0.85] }}
-                        transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                      />
-                      <motion.span
-                        className="w-2 h-2 bg-purple-400/80 rounded-full"
-                        animate={{ opacity: [0.4, 1, 0.4], scale: [0.85, 1, 0.85] }}
-                        transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-                      />
-                      <motion.span
-                        className="w-2 h-2 bg-purple-400/80 rounded-full"
-                        animate={{ opacity: [0.4, 1, 0.4], scale: [0.85, 1, 0.85] }}
-                        transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-                      />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Streaming content */}
-              <AnimatePresence>
-                {aiChatBotState.isStreaming && aiChatBotState.streamingContent && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                  >
-                    <AIMessageComponent
-                      message={{
-                        sender: 'ai',
-                        message: aiChatBotState.streamingContent,
-                        type: 'ai',
-                      }}
-                      isAI={true}
-                      isStreaming={true}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Follow-up suggestions */}
-              <AnimatePresence>
-                {!aiChatBotState.isStreaming && (
-                  <>
-                    {aiChatBotState.isLoadingFollowUps && aiChatBotState.followUpSuggestions.length === 0 && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="flex justify-center items-center gap-1.5 text-white/30 text-xs py-2"
-                      >
-                        <motion.span
-                          className="w-1 h-1 bg-white/40 rounded-full"
-                          animate={{ opacity: [0.3, 0.8, 0.3] }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-                        />
-                        <motion.span
-                          className="w-1 h-1 bg-white/40 rounded-full"
-                          animate={{ opacity: [0.3, 0.8, 0.3] }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.15 }}
-                        />
-                        <motion.span
-                          className="w-1 h-1 bg-white/40 rounded-full"
-                          animate={{ opacity: [0.3, 0.8, 0.3] }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-                        />
-                      </motion.div>
-                    )}
-                    {aiChatBotState.followUpSuggestions.length > 0 && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeOut' }}
-                      >
-                        <AIFollowUpSuggestions
-                          suggestions={aiChatBotState.followUpSuggestions}
-                          onSuggestionClick={sendMessage}
-                          disabled={isInputDisabled}
-                        />
-                      </motion.div>
-                    )}
-                  </>
-                )}
-              </AnimatePresence>
-              <div ref={messagesEndRef} />
-            </div>
-          ) : (
-            <AISidePanelPlaceholder
-              sendMessage={sendMessage}
-              activity_uuid={props.activity.activity_uuid}
-            />
-          )}
-
-          {/* Error state */}
-          {aiChatBotState.error.isError && (
-            <div className="flex items-center justify-center flex-1">
-              <div className="flex flex-col mx-auto w-full space-y-2 p-4 rounded-lg bg-red-500/20 outline outline-1 outline-red-500">
-                <AlertTriangle size={20} className="text-red-500" />
-                <div className="flex flex-col">
-                  <h3 className="font-semibold text-red-200">
-                    {t('common.something_wrong_happened')}
-                  </h3>
-                  <span className="text-red-100 text-sm">
-                    {aiChatBotState.error.error_message}
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Input Area */}
-          <div className="flex space-x-2 items-center pt-3">
-            <div className="shrink-0">
-              <UserAvatar
-                rounded="rounded-lg"
-                border="border-2"
-                width={35}
-                shadow="shadow-none"
-              />
-            </div>
-            <div className="w-full">
-              <input
-                onKeyDown={handleKeyDown}
-                onChange={handleChange}
-                disabled={isInputDisabled}
-                value={aiChatBotState.chatInputValue}
-                aria-label={t('ai.ask_ai_placeholder')}
-                placeholder={t('ai.ask_ai_placeholder')}
-                type="text"
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <MessageCircle
-                size={20}
-                className={`text-white/50 ${isInputDisabled ? 'opacity-30 cursor-not-allowed' : 'hover:cursor-pointer hover:text-white/70'}`}
-                onClick={() => !isInputDisabled && sendMessage(aiChatBotState.chatInputValue)}
-              />
-            </div>
-          </div>
-        </motion.div>
+      <ChatComposer
+        value={aiChatBotState.chatInputValue}
+        disabled={isInputDisabled}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        onSend={() => sendMessage(aiChatBotState.chatInputValue)}
+      />
+    </motion.div>
   )
-}
-
-const AISidePanelPlaceholder = (props: {
-  activity_uuid: string
-  sendMessage: any
-}) => {
-  const session = useLHSession() as any
-  const aiChatBotState = useAIChatBot() as AIChatBotStateTypes
-  const { t } = useTranslation()
-
-  if (!aiChatBotState.error.isError) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="flex flex-col text-center justify-center">
-          <motion.div
-            initial={{ y: 20, opacity: 0, filter: 'blur(5px)' }}
-            animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-            transition={{
-              type: 'spring',
-              bounce: 0.35,
-              duration: 1.7,
-              mass: 0.2,
-              velocity: 2,
-              delay: 0.17,
-            }}
-          >
-            <Image
-              width={80}
-              className="mx-auto"
-              src={learnhouseAI_logo_black}
-              alt=""
-            />
-            <p className="pt-3 text-lg font-semibold text-white/70 flex flex-col justify-center items-center">
-              <span className="flex items-center space-x-2">
-                <span>{t('common.hello')}</span>
-                <UserAvatar rounded="rounded-lg" border="border-2" width={28} shadow="shadow-none" />
-                <span className="capitalize">{session?.data?.user?.username},</span>
-              </span>
-              <span>{t('ai.how_can_we_help')}</span>
-            </p>
-          </motion.div>
-          <motion.div
-            initial={{ y: 20, opacity: 0, filter: 'blur(5px)' }}
-            animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-            transition={{
-              type: 'spring',
-              bounce: 0.35,
-              duration: 1.7,
-              mass: 0.2,
-              velocity: 2,
-              delay: 0.27,
-            }}
-            className="questions flex flex-col space-y-2 mx-auto pt-4"
-          >
-            <AIChatPredefinedQuestion
-              sendMessage={props.sendMessage}
-              label="about"
-            />
-            <AIChatPredefinedQuestion
-              sendMessage={props.sendMessage}
-              label="flashcards"
-            />
-            <AIChatPredefinedQuestion
-              sendMessage={props.sendMessage}
-              label="examples"
-            />
-          </motion.div>
-        </div>
-      </div>
-    )
-  }
 }
 
 // Type for AI panel display mode

@@ -262,7 +262,7 @@ export async function devCommand(opts: { ee?: boolean; adminEmail?: string; admi
   const root = findProjectRoot()
   if (!root) {
     p.log.error('Not inside a LearnHouse project.')
-    p.log.info('Run this command from within the learnhouse monorepo (must contain dev/docker-compose.yml, apps/api/, and apps/web/).')
+    p.log.info('Run this command from within the learnhouse monorepo (must contain apps/api/ and apps/web/).')
     process.exit(1)
   }
 

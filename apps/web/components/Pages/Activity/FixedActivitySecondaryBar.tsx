@@ -7,6 +7,7 @@ import { getCourseThumbnailMediaDirectory } from '@services/media/media'
 import { useOrg } from '@components/Contexts/OrgContext'
 import { useTranslation } from 'react-i18next'
 import { Keys } from '@components/Objects/Shortcuts/Kbd'
+import { useCompleteActivity, completesOnNext, findCourseActivity } from '@components/Pages/Activity/useCompleteActivity'
 
 interface FixedActivitySecondaryBarProps {
   course: any
@@ -129,6 +130,7 @@ CourseInfo.displayName = 'CourseInfo';
 
 export default function FixedActivitySecondaryBar(props: FixedActivitySecondaryBarProps): React.ReactNode {
   const router = useRouter();
+  const completeActivity = useCompleteActivity();
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldShow, setShouldShow] = useState(false);
   const mainActivityInfoRef = useRef<HTMLDivElement | null>(null);
@@ -166,6 +168,11 @@ export default function FixedActivitySecondaryBar(props: FixedActivitySecondaryB
 
   const navigateToActivity = (activity: any) => {
     const cleanCourseUuid = props.course.course_uuid?.replace('course_', '');
+    // Prakto: moving forward completes a reading item (videos complete by watching).
+    if (activity === nextActivity) {
+      const current = findCourseActivity(props.course, props.currentActivityId);
+      if (completesOnNext(current)) completeActivity(props.course, current);
+    }
     if (!activity) {
       if (isLastActivity) {
         router.push(getUriWithOrg(props.orgslug, '') + `/course/${cleanCourseUuid}/activity/end`);

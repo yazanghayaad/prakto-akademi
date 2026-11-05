@@ -1293,3 +1293,62 @@ a, button, input, [role='tab'] {
   font-size: 0.875rem;
   color: var(--lh-fg-muted);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Prakto Akademi
+   The academy's own look: Source Sans 3 for text, Source Serif 4 for
+   headings, a warm off-white page and the wine accent (#4C0606), the same
+   as the learning platform itself.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --lh-font: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --lh-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --lh-wine: #4c0606;
+  --lh-wine-700: #7a1f1f;
+  --lh-wine-50: #f7eeee;
+  --lh-bg: #fbfaf8;
+  --lh-bg-subtle: #f6f4f1;
+  --lh-bg-muted: #f1eeea;
+  --lh-fg: #1c1a17;
+  --lh-fg-muted: #5f5852;
+  --lh-fg-faint: #9a928b;
+  --lh-border: #e7e3de;
+}
+
+html { letter-spacing: 0; }
+
+::selection { background: var(--lh-wine); color: #fff; }
+
+.lh-navbar { box-shadow: inset 0 3px 0 var(--lh-wine), var(--lh-nice-shadow); }
+.lh-navbar-badge { font-family: var(--lh-font); letter-spacing: 0.04em; }
+
+.lh-prose h1, .lh-prose h2, .lh-prose h3 {
+  font-family: var(--lh-serif);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+.lh-prose h1 { font-size: 2.15rem; }
+.lh-prose h2 { font-size: 1.5rem; }
+.lh-prose h3 { font-size: 1.2rem; }
+
+.lh-prose p, .lh-prose ul, .lh-prose ol { font-size: 15.5px; color: #4a4440; }
+
+.lh-prose a:not(h1 a):not(h2 a):not(h3 a):not(h4 a) {
+  color: var(--lh-wine-700);
+  text-decoration-color: rgba(122, 31, 31, 0.35);
+}
+.lh-prose a:hover { text-decoration-color: var(--lh-wine-700); }
+
+.lh-sidebar-link-active {
+  color: var(--lh-wine) !important;
+  background: var(--lh-wine-50) !important;
+}
+.lh-sidebar-link-active .lh-sidebar-icon { color: var(--lh-wine); opacity: 1; }
+
+.lh-toc-link-active {
+  color: var(--lh-wine) !important;
+  border-left-color: var(--lh-wine);
+}
+
+.lh-help-card-cta { color: var(--lh-wine-700); }

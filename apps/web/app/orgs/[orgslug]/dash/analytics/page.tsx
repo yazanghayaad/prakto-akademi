@@ -6,7 +6,7 @@ import { ChartBar, ChartLine, SquaresFour } from '@phosphor-icons/react'
 import { motion } from 'motion/react'
 import { useTranslation } from 'react-i18next'
 import { useAnalyticsStatus } from '@components/Dashboard/Analytics/useAnalyticsDashboard'
-import { planMeetsRequirement } from '@services/plans/plans'
+import { hasAdvancedAnalytics } from '@services/plans/plans'
 import { DashTabBar } from '@components/Dashboard/Shared/DashTabBar/DashTabBar'
 import FeatureGate from '@components/Dashboard/Shared/FeatureGate/FeatureGate'
 import { usePlan } from '@components/Hooks/usePlan'
@@ -63,9 +63,9 @@ export default function AnalyticsDashboard() {
   const { data: analyticsStatus } = useAnalyticsStatus()
   const plan = usePlan()
   // Advanced analytics is the enterprise tier; usePlan() returns the right
-  // pseudo-plan for EE ('enterprise') and OSS ('oss'), so planMeetsRequirement
-  // resolves all modes correctly.
-  const isAdvanced = planMeetsRequirement(plan, 'enterprise')
+  // pseudo-plan for EE ('enterprise') and OSS ('oss'); hasAdvancedAnalytics
+  // also honours the local OSS unlock of 'analytics_advanced'.
+  const isAdvanced = hasAdvancedAnalytics(plan)
   const isConfigured = analyticsStatus?.configured === true
 
   return (

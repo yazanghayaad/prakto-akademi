@@ -77,6 +77,18 @@ interface Editor {
 
 
 
+// Prakto: a quiz is a list of questions, not something to navigate by
+// heading, so it gets no table of contents. A quiz is a page named "quiz" or a
+// page made of nothing but quiz blocks with headings and short text around
+// them; lessons that end with a quiz keep theirs.
+const QUIZ_PAGE_BLOCKS = new Set(['blockQuiz', 'heading', 'paragraph', 'callout', 'horizontalRule'])
+
+function isQuizPage(activity: any, content: any): boolean {
+  if (/\bquiz\b/i.test(activity?.name ?? '')) return true
+  const blocks: any[] = Array.isArray(content?.content) ? content.content : []
+  return blocks.some((b) => b?.type === 'blockQuiz') && blocks.every((b) => QUIZ_PAGE_BLOCKS.has(b?.type))
+}
+
 function Canva(props: Editor) {
   /**
    * Important Note : This is a workaround to enable user interaction features to be implemented easily, like text selection, AI features and other planned features, this is set to true but otherwise it should be set to false.
@@ -98,6 +110,7 @@ function Canva(props: Editor) {
       return props.content;
     }
   }, [props.content]);
+  const quizPage = useMemo(() => isQuizPage(props.activity, normalizedContent), [props.activity, normalizedContent])
 
   const editor: any = useEditor({
     immediatelyRender: false,
@@ -241,7 +254,7 @@ function Canva(props: Editor) {
       <div className="w-full mx-auto">
         <AICanvaToolkit activity={props.activity} editor={editor} />
         <div className="canva-content-wrapper">
-          {!props.hideTableOfContents && <TableOfContents editor={editor} />}
+          {!props.hideTableOfContents && !quizPage && <TableOfContents editor={editor} />}
           <EditorContent editor={editor} />
         </div>
       </div>

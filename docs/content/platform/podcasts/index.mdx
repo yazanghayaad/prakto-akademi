@@ -1,72 +1,70 @@
 import { Callout } from 'nextra/components'
 
-# Podcasts
+# Poddar
 
-Podcasts let you publish audio shows inside your organization. Each podcast holds a list of episodes that learners can stream, and every podcast has an RSS feed you can submit to podcast directories.
-
-<YouTube video="guide-9" />
+Med poddar kan du publicera ljudprogram i din organisation. Varje podd har en lista med avsnitt som eleverna kan lyssna på direkt, och varje podd har ett RSS-flöde som du kan skicka in till poddkataloger.
 
 <Callout>
-Podcasts must be enabled in your [Organization Settings](/platform/organizations/settings). On LearnHouse Cloud they need the Standard plan or higher.
+Poddar måste vara påslaget i [organisationsinställningarna](/platform/organizations/settings).
 </Callout>
 
-## Creating a podcast
+## Skapa en podd
 
-Go to **Podcasts** in the dashboard and create a podcast. Give it a **Podcast Name** (3 to 100 characters), an optional **Description** (up to 500 characters), and choose **Make this podcast public**.
+Gå till **Poddar** i adminpanelen och skapa en podd med **Ny podd**. Ge den ett **Poddnamn** (3 till 100 tecken), en **Beskrivning** om du vill (högst 500 tecken) och välj om du vill kryssa i **Gör den här podden offentlig**.
 
-Each podcast then has three tabs: **General**, **Episodes** and **Distribution**.
+Varje podd har sedan tre flikar: **Allmänt**, **Avsnitt** och **Distribution**.
 
-## General
+## Allmänt
 
-| Setting | Notes |
+| Inställning | Kommentar |
 | --- | --- |
-| **Thumbnail** | The podcast artwork. JPG or PNG, 1400x1400 pixels recommended. You can also generate one with AI. |
-| **About** | A longer presentation, up to 2000 characters. |
-| **Tags** | Comma-separated keywords. |
-| **Visibility Settings** | **Public**: anyone can find and listen, even without an account. **Published**: the podcast shows on your organization's Podcasts page. |
+| **Miniatyrbild** | Poddens omslagsbild. JPG eller PNG, 1400x1400 pixlar rekommenderas. Du kan också generera en med AI. |
+| **Om** | En längre presentation, högst 2000 tecken. |
+| **Taggar** | Nyckelord separerade med kommatecken. |
+| **Synlighetsinställningar** | **Offentlig**: vem som helst kan hitta och lyssna på podden, även utan konto. **Publicerad**: podden visas på organisationens sida Poddar. |
 
-Click **Save Changes**. **View Podcast** opens the page learners see.
+Klicka på **Spara ändringar**. **Visa podd** öppnar sidan som eleverna ser.
 
-<img src="/img/pages/podcasts/podcast-general.webp" alt="The General tab of a podcast, with description, about, tags and the Public and Published checkboxes" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/podcasts/podcast-general.webp" alt="Fliken Allmänt i en podd, med beskrivning, om-text, taggar och kryssrutorna Offentlig och Publicerad" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-## Episodes
+## Avsnitt
 
-Click **New Episode** (or **Create First Episode** on a new podcast) and give it a **Title**, a **Description** and an **Audio File**: MP3, WAV, OGG or M4A, up to 1 GB. Click **Create Episode**. The episode starts as **Unpublished**, so nobody hears it before you are ready.
+Klicka på **Nytt avsnitt** (eller **Skapa första avsnittet** i en ny podd) och fyll i **Titel**, **Beskrivning** och **Ljudfil**: MP3, WAV, OGG eller M4A, högst 1 GB. Klicka på **Skapa avsnitt**. Avsnittet börjar som **Avpublicerad**, så ingen hör det innan du är redo.
 
-Hover an episode and press play to check the audio, then open its menu and choose **Publish**. Each episode gets the next number. Drag episodes to reorder them. From the menu you can also **Edit** an episode to fix its title and notes or replace its audio file, unpublish it, or delete it. Only published episodes are visible to learners and included in the feed.
+Håll muspekaren över ett avsnitt och tryck på spela för att kontrollera ljudet. Öppna sedan avsnittets meny och välj **Publicera**. Varje avsnitt får nästa lediga nummer. Dra avsnitten för att ändra ordningen. I menyn kan du också välja **Redigera** för att rätta titel och anteckningar eller byta ljudfil, eller **Avpublicera** och **Radera** avsnittet. Bara publicerade avsnitt syns för eleverna och finns med i flödet.
 
-<img src="/img/pages/podcasts/podcast-episodes.webp" alt="The Episodes tab with three numbered, published episodes" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/podcasts/podcast-episodes.webp" alt="Fliken Avsnitt med tre numrerade, publicerade avsnitt" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-## Listening
+## Lyssna
 
-Learners find every published podcast under **Podcasts** in the top menu. A podcast's page lists its episodes with their number, notes and length, next to the host and tags. One click on an episode starts it in a player at the bottom of the screen.
+Eleverna hittar alla publicerade poddar under **Poddar** i toppmenyn. En podds sida visar avsnitten med nummer, anteckningar och längd, tillsammans med värd och taggar. Ett klick på ett avsnitt startar det i en spelare längst ned på skärmen.
 
-Expand the player for the full waveform, 15-second skips back and forward, and the volume. The player keeps playing while learners move around the site, and closes with its cross. Press `p` to play or pause it.
+Expandera spelaren för att se hela vågformen, hoppa 15 sekunder bakåt eller framåt och ändra volymen. Spelaren fortsätter spela medan eleven går runt på webbplatsen och stängs med krysset. Tryck på `p` för att spela upp eller pausa.
 
-<img src="/img/pages/podcasts/podcast-player.webp" alt="A podcast page with an episode playing in the expanded player at the bottom of the screen" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/podcasts/podcast-player.webp" alt="En podds sida med ett avsnitt som spelas i den expanderade spelaren längst ned på skärmen" width={1600} height={900} style={{ borderRadius: 10 }} />
 
 ## Distribution
 
-Every podcast has an RSS feed at `/podcast/{id}/feed` on your organization's domain, where `{id}` is the podcast UUID without its `podcast_` prefix. The **Distribution** tab shows the feed URL with copy and open buttons, and step-by-step instructions to submit it to Apple Podcasts, Spotify, YouTube Music and Amazon Music / Audible.
+Varje podd har ett RSS-flöde på `/podcast/{id}/feed` på organisationens webbadress, där `{id}` är poddens UUID utan prefixet `podcast_`. Fliken **Distribution** visar flödets webbadress med knappar för att kopiera och öppna den, och steg-för-steg-instruktioner för att skicka in flödet till Apple Podcasts, Spotify, YouTube Music och Amazon Music / Audible.
 
-<img src="/img/pages/podcasts/podcast-distribution.webp" alt="The Distribution tab with the RSS feed URL and submission steps for Apple Podcasts and Spotify" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/podcasts/podcast-distribution.webp" alt="Fliken Distribution med RSS-flödets webbadress och stegen för att skicka in podden till Apple Podcasts och Spotify" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-**Preview** opens the feed itself. The tab also has tips before you submit: a cover of at least 1400x1400 pixels, a clear description, and at least one published episode.
+**Förhandsgranska** öppnar själva flödet. På fliken finns också tips innan du skickar in: en omslagsbild på minst 1400x1400 pixlar, en tydlig beskrivning och minst ett publicerat avsnitt.
 
-LearnHouse does not submit the feed for you. You submit it once, then each directory reads new episodes from the feed on its own schedule. The feed is cached for up to an hour, so a new episode can take that long to appear in it.
+Prakto Akademi skickar inte in flödet åt dig. Du skickar in det en gång, och sedan hämtar varje katalog nya avsnitt från flödet enligt sitt eget schema. Flödet cachas i upp till en timme, så det kan dröja så länge innan ett nytt avsnitt syns i det.
 
-## Podcasts in courses
+## Poddar i kurser
 
-The [Audio block](/platform/editor/blocks#the-audio-block) in a course page can embed a single episode (**Episode** tab) or a whole podcast as a playlist (**Playlist** tab). A playlist stays in sync with the podcast, so new episodes appear in the lesson by themselves, and it moves on to the next episode when one ends. Podcast episodes can also be added to [boards](/platform/boards).
+[Ljud-blocket](/platform/editor/blocks) på en kurssida kan bädda in ett enskilt avsnitt (fliken **Avsnitt**) eller en hel podd som spellista (fliken **Spellista**). En spellista hålls i takt med podden, så nya avsnitt dyker upp i lektionen av sig själva, och den går vidare till nästa avsnitt när ett avsnitt tar slut. Poddavsnitt kan också läggas till på [tavlor](/platform/boards).
 
-<img src="/img/pages/podcasts/podcast-audio-blocks.webp" alt="A lesson with a single-episode Audio block and a playlist of a whole podcast" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/podcasts/podcast-audio-blocks.webp" alt="En lektion med ett Ljud-block för ett enskilt avsnitt och en spellista med en hel podd" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-To give a podcast its own step in a course, add a **Resource** activity, open the **Podcasts** tab and add the podcast. Learners then open the podcast inside the course. You can also add podcasts to your [Library](/platform/courses/library) next to your courses.
+Om en podd ska vara ett eget steg i en kurs lägger du till en aktivitet av typen **Resurs**, öppnar fliken **Poddar** och lägger till podden. Eleverna öppnar då podden inne i kursen. Du kan också lägga till poddar i ditt [bibliotek](/platform/courses/library) bredvid dina kurser.
 
-<img src="/img/pages/podcasts/podcast-resource-activity.webp" alt="The Create Activity dialog for a Resource activity, with the Podcasts tab listing the organization's podcasts" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/podcasts/podcast-resource-activity.webp" alt="Dialogrutan Skapa aktivitet för en Resurs-aktivitet, med fliken Poddar som listar organisationens poddar" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-A podcast can also be sold as a [product](/platform/payments/offers). Until someone buys it, the episode list stays visible as a preview and the audio is locked. New episodes also appear on your members' [Calendar](/platform/calendar) on the day they are published.
+Nya avsnitt visas också i medlemmarnas [kalender](/platform/calendar) samma dag som de publiceras.
 
 <Callout type="info">
-AI audio generation (text to speech, two-voice podcast, single-voice talk) lives in the Audio block of a course page, not in the podcast dashboard. See [AI for Teachers](/platform/ai/for-teachers#audio-generation).
+AI-genererat ljud (text till tal, podd med två röster och föredrag med en röst) finns i Ljud-blocket på en kurssida, inte i adminpanelen för poddar. Läs mer under [AI för lärare](/platform/ai/for-teachers).
 </Callout>

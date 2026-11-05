@@ -5,7 +5,6 @@ import { menuIcon } from '@components/Objects/Menus/menuIcons'
 import Link from 'next/link'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { getMenuColorClasses } from '@services/utils/ts/colorUtils'
 import { ShortcutHint } from '@components/Objects/Shortcuts/ShortcutHint'
 import { sitePages } from '@/lib/site-search/registry'
 
@@ -91,18 +90,19 @@ export function useOrgMenuItems(orgslug: string): OrgMenuItem[] {
 
 function MenuLinks(props: { orgslug: string; primaryColor?: string }) {
   const { t } = useTranslation()
-  const colors = getMenuColorClasses(props.primaryColor || '')
   const rendered = useOrgMenuItems(props.orgslug)
 
   return (
     <div className="ps-1">
-      <ul className="flex space-x-4 xl:space-x-5">
+      <ul className="flex space-x-4 xl:space-x-6">
         {rendered.map((it) => {
           // Icons only until xl: with labels, a full menu pushes the search
           // and account controls out of a small laptop's header.
           const content = (
-            <li className={`flex space-x-2 items-center ${colors.text} font-semibold`} title={it.label}>
-              <it.Icon size={20} weight="fill" aria-hidden /> <span className="sr-only xl:not-sr-only">{it.label}</span>
+            // Prakto: plain text links at full width (an icon on every item read
+            // busy); the icon only stands in for the label when space is short.
+            <li className="flex items-center text-[15px] font-medium text-gray-600 hover:text-gray-950 transition-colors" title={it.label}>
+              <it.Icon size={19} weight="regular" aria-hidden className="xl:hidden" /> <span className="sr-only xl:not-sr-only">{it.label}</span>
             </li>
           )
           if (it.external) {

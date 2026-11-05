@@ -22,6 +22,7 @@ from src.routers import calendar as calendar_router_module
 from src.routers import webhooks
 from src.routers.integrations import zapier as zapier_integration
 from src.routers.ai import ai, magicblocks, courseplanning, rag, images, quiz, assignment_gen, scenario, audio
+from src.routers.ai import agent as ai_agent
 from src.routers.boards import boards_playground
 from src.routers.orgs import ai_credits
 from src.routers.orgs import custom_domains
@@ -364,6 +365,12 @@ v1_router.include_router(
     scenario.router,
     prefix="/ai",
     tags=["ai", "scenario"],
+    dependencies=[Depends(require_authenticated_user)]
+)
+v1_router.include_router(
+    ai_agent.router,
+    prefix="/ai",
+    tags=["ai", "atlas"],
     dependencies=[Depends(require_authenticated_user)]
 )
 v1_router.include_router(

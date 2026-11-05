@@ -1,0 +1,421 @@
+/* --- Prakto Akademi theme -------------------------------------------------
+   The app's look is set here, in one place, instead of in ~770 components.
+
+   1. Five house palettes: warm neutrals, wine (the brand, #4C0606 sits at
+      wine-900), ink (a muted navy), forest (success) and ochre (warnings).
+      `static` makes Tailwind emit every step, because the remapped palettes
+      below reference them through var().
+   2. Tailwind's stock palettes are pointed at those. Components keep their
+      class names (bg-emerald-600, text-indigo-500, border-gray-200 ...) but
+      render in the house colours, so the playful rainbow of accents becomes
+      one restrained scheme. red and rose are left alone: they mean "error".
+   3. Corners are tightened: large radii read as playful. */
+@theme static {
+  --font-serif: var(--font-serif-face), 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --color-paper: oklch(0.984 0.004 80);
+  --color-warm-50: oklch(0.985 0.002 70);
+  --color-warm-100: oklch(0.967 0.003 70);
+  --color-warm-200: oklch(0.928 0.004 70);
+  --color-warm-300: oklch(0.872 0.005 70);
+  --color-warm-400: oklch(0.707 0.008 70);
+  --color-warm-500: oklch(0.551 0.009 70);
+  --color-warm-600: oklch(0.446 0.009 70);
+  --color-warm-700: oklch(0.373 0.008 70);
+  --color-warm-800: oklch(0.278 0.007 70);
+  --color-warm-900: oklch(0.21 0.006 70);
+  --color-warm-950: oklch(0.13 0.005 70);
+  --color-wine-50: oklch(0.975 0.008 25);
+  --color-wine-100: oklch(0.94 0.02 25);
+  --color-wine-200: oklch(0.88 0.045 25);
+  --color-wine-300: oklch(0.79 0.08 25);
+  --color-wine-400: oklch(0.67 0.12 25);
+  --color-wine-500: oklch(0.555 0.14 25);
+  --color-wine-600: oklch(0.465 0.14 25);
+  --color-wine-700: oklch(0.395 0.125 25);
+  --color-wine-800: oklch(0.335 0.11 25);
+  --color-wine-900: oklch(0.285 0.095 25);
+  --color-wine-950: oklch(0.215 0.065 25);
+  --color-ink-50: oklch(0.975 0.006 250);
+  --color-ink-100: oklch(0.94 0.014 250);
+  --color-ink-200: oklch(0.88 0.03 250);
+  --color-ink-300: oklch(0.79 0.05 250);
+  --color-ink-400: oklch(0.67 0.07 250);
+  --color-ink-500: oklch(0.555 0.08 250);
+  --color-ink-600: oklch(0.465 0.08 250);
+  --color-ink-700: oklch(0.395 0.072 250);
+  --color-ink-800: oklch(0.335 0.062 250);
+  --color-ink-900: oklch(0.285 0.052 250);
+  --color-ink-950: oklch(0.215 0.04 250);
+  --color-forest-50: oklch(0.975 0.012 160);
+  --color-forest-100: oklch(0.94 0.028 160);
+  --color-forest-200: oklch(0.88 0.05 160);
+  --color-forest-300: oklch(0.79 0.07 160);
+  --color-forest-400: oklch(0.67 0.085 160);
+  --color-forest-500: oklch(0.555 0.09 160);
+  --color-forest-600: oklch(0.465 0.085 160);
+  --color-forest-700: oklch(0.395 0.075 160);
+  --color-forest-800: oklch(0.335 0.065 160);
+  --color-forest-900: oklch(0.285 0.055 160);
+  --color-forest-950: oklch(0.215 0.04 160);
+  --color-ochre-50: oklch(0.975 0.02 75);
+  --color-ochre-100: oklch(0.94 0.045 75);
+  --color-ochre-200: oklch(0.88 0.08 75);
+  --color-ochre-300: oklch(0.79 0.11 75);
+  --color-ochre-400: oklch(0.67 0.125 75);
+  --color-ochre-500: oklch(0.555 0.11 75);
+  --color-ochre-600: oklch(0.465 0.095 75);
+  --color-ochre-700: oklch(0.395 0.08 75);
+  --color-ochre-800: oklch(0.335 0.068 75);
+  --color-ochre-900: oklch(0.285 0.055 75);
+  --color-ochre-950: oklch(0.215 0.04 75);
+}
+
+@theme {
+  --color-gray-50: var(--color-warm-50);
+  --color-gray-100: var(--color-warm-100);
+  --color-gray-200: var(--color-warm-200);
+  --color-gray-300: var(--color-warm-300);
+  --color-gray-400: var(--color-warm-400);
+  --color-gray-500: var(--color-warm-500);
+  --color-gray-600: var(--color-warm-600);
+  --color-gray-700: var(--color-warm-700);
+  --color-gray-800: var(--color-warm-800);
+  --color-gray-900: var(--color-warm-900);
+  --color-gray-950: var(--color-warm-950);
+  --color-neutral-50: var(--color-warm-50);
+  --color-neutral-100: var(--color-warm-100);
+  --color-neutral-200: var(--color-warm-200);
+  --color-neutral-300: var(--color-warm-300);
+  --color-neutral-400: var(--color-warm-400);
+  --color-neutral-500: var(--color-warm-500);
+  --color-neutral-600: var(--color-warm-600);
+  --color-neutral-700: var(--color-warm-700);
+  --color-neutral-800: var(--color-warm-800);
+  --color-neutral-900: var(--color-warm-900);
+  --color-neutral-950: var(--color-warm-950);
+  --color-zinc-50: var(--color-warm-50);
+  --color-zinc-100: var(--color-warm-100);
+  --color-zinc-200: var(--color-warm-200);
+  --color-zinc-300: var(--color-warm-300);
+  --color-zinc-400: var(--color-warm-400);
+  --color-zinc-500: var(--color-warm-500);
+  --color-zinc-600: var(--color-warm-600);
+  --color-zinc-700: var(--color-warm-700);
+  --color-zinc-800: var(--color-warm-800);
+  --color-zinc-900: var(--color-warm-900);
+  --color-zinc-950: var(--color-warm-950);
+  --color-slate-50: var(--color-warm-50);
+  --color-slate-100: var(--color-warm-100);
+  --color-slate-200: var(--color-warm-200);
+  --color-slate-300: var(--color-warm-300);
+  --color-slate-400: var(--color-warm-400);
+  --color-slate-500: var(--color-warm-500);
+  --color-slate-600: var(--color-warm-600);
+  --color-slate-700: var(--color-warm-700);
+  --color-slate-800: var(--color-warm-800);
+  --color-slate-900: var(--color-warm-900);
+  --color-slate-950: var(--color-warm-950);
+  --color-stone-50: var(--color-warm-50);
+  --color-stone-100: var(--color-warm-100);
+  --color-stone-200: var(--color-warm-200);
+  --color-stone-300: var(--color-warm-300);
+  --color-stone-400: var(--color-warm-400);
+  --color-stone-500: var(--color-warm-500);
+  --color-stone-600: var(--color-warm-600);
+  --color-stone-700: var(--color-warm-700);
+  --color-stone-800: var(--color-warm-800);
+  --color-stone-900: var(--color-warm-900);
+  --color-stone-950: var(--color-warm-950);
+  --color-indigo-50: var(--color-wine-50);
+  --color-indigo-100: var(--color-wine-100);
+  --color-indigo-200: var(--color-wine-200);
+  --color-indigo-300: var(--color-wine-300);
+  --color-indigo-400: var(--color-wine-400);
+  --color-indigo-500: var(--color-wine-500);
+  --color-indigo-600: var(--color-wine-600);
+  --color-indigo-700: var(--color-wine-700);
+  --color-indigo-800: var(--color-wine-800);
+  --color-indigo-900: var(--color-wine-900);
+  --color-indigo-950: var(--color-wine-950);
+  --color-violet-50: var(--color-wine-50);
+  --color-violet-100: var(--color-wine-100);
+  --color-violet-200: var(--color-wine-200);
+  --color-violet-300: var(--color-wine-300);
+  --color-violet-400: var(--color-wine-400);
+  --color-violet-500: var(--color-wine-500);
+  --color-violet-600: var(--color-wine-600);
+  --color-violet-700: var(--color-wine-700);
+  --color-violet-800: var(--color-wine-800);
+  --color-violet-900: var(--color-wine-900);
+  --color-violet-950: var(--color-wine-950);
+  --color-purple-50: var(--color-wine-50);
+  --color-purple-100: var(--color-wine-100);
+  --color-purple-200: var(--color-wine-200);
+  --color-purple-300: var(--color-wine-300);
+  --color-purple-400: var(--color-wine-400);
+  --color-purple-500: var(--color-wine-500);
+  --color-purple-600: var(--color-wine-600);
+  --color-purple-700: var(--color-wine-700);
+  --color-purple-800: var(--color-wine-800);
+  --color-purple-900: var(--color-wine-900);
+  --color-purple-950: var(--color-wine-950);
+  --color-fuchsia-50: var(--color-wine-50);
+  --color-fuchsia-100: var(--color-wine-100);
+  --color-fuchsia-200: var(--color-wine-200);
+  --color-fuchsia-300: var(--color-wine-300);
+  --color-fuchsia-400: var(--color-wine-400);
+  --color-fuchsia-500: var(--color-wine-500);
+  --color-fuchsia-600: var(--color-wine-600);
+  --color-fuchsia-700: var(--color-wine-700);
+  --color-fuchsia-800: var(--color-wine-800);
+  --color-fuchsia-900: var(--color-wine-900);
+  --color-fuchsia-950: var(--color-wine-950);
+  --color-pink-50: var(--color-wine-50);
+  --color-pink-100: var(--color-wine-100);
+  --color-pink-200: var(--color-wine-200);
+  --color-pink-300: var(--color-wine-300);
+  --color-pink-400: var(--color-wine-400);
+  --color-pink-500: var(--color-wine-500);
+  --color-pink-600: var(--color-wine-600);
+  --color-pink-700: var(--color-wine-700);
+  --color-pink-800: var(--color-wine-800);
+  --color-pink-900: var(--color-wine-900);
+  --color-pink-950: var(--color-wine-950);
+  --color-blue-50: var(--color-ink-50);
+  --color-blue-100: var(--color-ink-100);
+  --color-blue-200: var(--color-ink-200);
+  --color-blue-300: var(--color-ink-300);
+  --color-blue-400: var(--color-ink-400);
+  --color-blue-500: var(--color-ink-500);
+  --color-blue-600: var(--color-ink-600);
+  --color-blue-700: var(--color-ink-700);
+  --color-blue-800: var(--color-ink-800);
+  --color-blue-900: var(--color-ink-900);
+  --color-blue-950: var(--color-ink-950);
+  --color-sky-50: var(--color-ink-50);
+  --color-sky-100: var(--color-ink-100);
+  --color-sky-200: var(--color-ink-200);
+  --color-sky-300: var(--color-ink-300);
+  --color-sky-400: var(--color-ink-400);
+  --color-sky-500: var(--color-ink-500);
+  --color-sky-600: var(--color-ink-600);
+  --color-sky-700: var(--color-ink-700);
+  --color-sky-800: var(--color-ink-800);
+  --color-sky-900: var(--color-ink-900);
+  --color-sky-950: var(--color-ink-950);
+  --color-cyan-50: var(--color-ink-50);
+  --color-cyan-100: var(--color-ink-100);
+  --color-cyan-200: var(--color-ink-200);
+  --color-cyan-300: var(--color-ink-300);
+  --color-cyan-400: var(--color-ink-400);
+  --color-cyan-500: var(--color-ink-500);
+  --color-cyan-600: var(--color-ink-600);
+  --color-cyan-700: var(--color-ink-700);
+  --color-cyan-800: var(--color-ink-800);
+  --color-cyan-900: var(--color-ink-900);
+  --color-cyan-950: var(--color-ink-950);
+  --color-emerald-50: var(--color-forest-50);
+  --color-emerald-100: var(--color-forest-100);
+  --color-emerald-200: var(--color-forest-200);
+  --color-emerald-300: var(--color-forest-300);
+  --color-emerald-400: var(--color-forest-400);
+  --color-emerald-500: var(--color-forest-500);
+  --color-emerald-600: var(--color-forest-600);
+  --color-emerald-700: var(--color-forest-700);
+  --color-emerald-800: var(--color-forest-800);
+  --color-emerald-900: var(--color-forest-900);
+  --color-emerald-950: var(--color-forest-950);
+  --color-green-50: var(--color-forest-50);
+  --color-green-100: var(--color-forest-100);
+  --color-green-200: var(--color-forest-200);
+  --color-green-300: var(--color-forest-300);
+  --color-green-400: var(--color-forest-400);
+  --color-green-500: var(--color-forest-500);
+  --color-green-600: var(--color-forest-600);
+  --color-green-700: var(--color-forest-700);
+  --color-green-800: var(--color-forest-800);
+  --color-green-900: var(--color-forest-900);
+  --color-green-950: var(--color-forest-950);
+  --color-teal-50: var(--color-forest-50);
+  --color-teal-100: var(--color-forest-100);
+  --color-teal-200: var(--color-forest-200);
+  --color-teal-300: var(--color-forest-300);
+  --color-teal-400: var(--color-forest-400);
+  --color-teal-500: var(--color-forest-500);
+  --color-teal-600: var(--color-forest-600);
+  --color-teal-700: var(--color-forest-700);
+  --color-teal-800: var(--color-forest-800);
+  --color-teal-900: var(--color-forest-900);
+  --color-teal-950: var(--color-forest-950);
+  --color-lime-50: var(--color-forest-50);
+  --color-lime-100: var(--color-forest-100);
+  --color-lime-200: var(--color-forest-200);
+  --color-lime-300: var(--color-forest-300);
+  --color-lime-400: var(--color-forest-400);
+  --color-lime-500: var(--color-forest-500);
+  --color-lime-600: var(--color-forest-600);
+  --color-lime-700: var(--color-forest-700);
+  --color-lime-800: var(--color-forest-800);
+  --color-lime-900: var(--color-forest-900);
+  --color-lime-950: var(--color-forest-950);
+  --color-amber-50: var(--color-ochre-50);
+  --color-amber-100: var(--color-ochre-100);
+  --color-amber-200: var(--color-ochre-200);
+  --color-amber-300: var(--color-ochre-300);
+  --color-amber-400: var(--color-ochre-400);
+  --color-amber-500: var(--color-ochre-500);
+  --color-amber-600: var(--color-ochre-600);
+  --color-amber-700: var(--color-ochre-700);
+  --color-amber-800: var(--color-ochre-800);
+  --color-amber-900: var(--color-ochre-900);
+  --color-amber-950: var(--color-ochre-950);
+  --color-yellow-50: var(--color-ochre-50);
+  --color-yellow-100: var(--color-ochre-100);
+  --color-yellow-200: var(--color-ochre-200);
+  --color-yellow-300: var(--color-ochre-300);
+  --color-yellow-400: var(--color-ochre-400);
+  --color-yellow-500: var(--color-ochre-500);
+  --color-yellow-600: var(--color-ochre-600);
+  --color-yellow-700: var(--color-ochre-700);
+  --color-yellow-800: var(--color-ochre-800);
+  --color-yellow-900: var(--color-ochre-900);
+  --color-yellow-950: var(--color-ochre-950);
+  --color-orange-50: var(--color-ochre-50);
+  --color-orange-100: var(--color-ochre-100);
+  --color-orange-200: var(--color-ochre-200);
+  --color-orange-300: var(--color-ochre-300);
+  --color-orange-400: var(--color-ochre-400);
+  --color-orange-500: var(--color-ochre-500);
+  --color-orange-600: var(--color-ochre-600);
+  --color-orange-700: var(--color-ochre-700);
+  --color-orange-800: var(--color-ochre-800);
+  --color-orange-900: var(--color-ochre-900);
+  --color-orange-950: var(--color-ochre-950);
+
+  --radius-xl: 0.5rem;
+  --radius-2xl: 0.625rem;
+  --radius-3xl: 0.75rem;
+}
+
+/* --- Global type and surfaces ------------------------------------------- */
+
+@layer base {
+  /* Page and section titles are set in the serif. Arabic and Persian keep
+     Tajawal, which globals.css forces on the containers. */
+  :where(:root:not([dir='rtl'])) :is(h1, h2):not(:lang(ar)):not(:lang(fa)) {
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+    letter-spacing: -0.01em;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Pill-shaped buttons read as consumer-app playful. Interactive elements get
+   the house corner instead. Unlayered so it outranks the rounded-full utility.
+   Left round on purpose: switches (role/aria-checked, or a button that holds
+   its own round thumb) and buttons that are just an avatar image. Small dots
+   stay circular anyway, since the radius clamps at half the height. */
+:where(button, a, [role='button']).rounded-full:not(
+    [role='switch'],
+    [aria-checked],
+    :has(> span.rounded-full),
+    :has(> img:only-child)
+  ) {
+  border-radius: 0.375rem;
+}
+
+/* The page editor shows headings the way learners will see them. */
+.activity-editor-content-wrapper .ProseMirror :is(h1, h2, h3) {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+}
+
+/* A serif at bold/extrabold turns into a slab. Titles that components mark
+   font-bold or font-extrabold are held at semibold, where Source Serif is at
+   its best. Unlayered, so it outranks the weight utilities. */
+:where(:root:not([dir='rtl'])) :is(h1, h2):not(:lang(ar)):not(:lang(fa)) {
+  font-weight: 600;
+}
+
+/* --- Course covers (components/Objects/Thumbnails/CourseCover.tsx) ------ */
+/* Everything is sized off the cover itself (cqw/cqh), so the same markup reads
+   as a book jacket on a card, a hero on the course page and a small mark in
+   the 100px header chip. */
+.prakto-cover {
+  container-type: size;
+}
+
+.prakto-cover__seal {
+  width: 78cqh;
+  height: 78cqh;
+  top: -20cqh;
+  inset-inline-end: -14cqh;
+}
+
+.prakto-cover__text {
+  padding: 7cqw 7.5cqw 6.5cqw;
+}
+
+.prakto-cover__rule {
+  width: 8cqw;
+  height: max(1px, 0.45cqw);
+  margin-bottom: 2.6cqw;
+}
+
+.prakto-cover__eyebrow {
+  font-size: clamp(8px, 2.5cqw, 13px);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  margin-bottom: 1.4cqw;
+}
+
+.prakto-cover__title {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: clamp(12px, 7cqw, 46px);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.prakto-cover__mark {
+  display: none;
+}
+
+@container (max-width: 180px) {
+  .prakto-cover__text,
+  .prakto-cover__seal {
+    display: none;
+  }
+
+  .prakto-cover__mark {
+    display: block;
+    width: 36cqh;
+    height: 36cqh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Artwork-only cover: the star alone, centred, when the title sits beside it. */
+.prakto-cover__mark.is-art {
+  display: block;
+  width: 30cqh;
+  height: 30cqh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+}

@@ -2,6 +2,10 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import type { ChatMessage, Presence, UserSummary } from '@services/messaging/messaging'
 import { getUserAvatarMediaDirectory } from '@services/media/media'
+import i18n from '@/lib/i18n'
+
+const tr = (key: string, defaultValue: string, opts: Record<string, unknown> = {}) =>
+  i18n.t(`messaging.${key}`, { defaultValue, ...opts }) as string
 
 dayjs.extend(relativeTime)
 
@@ -53,10 +57,11 @@ export function clockTime(iso: string): string {
 export function dayLabel(iso: string): string {
   const d = dayjs(iso)
   const now = dayjs()
-  if (d.isSame(now, 'day')) return 'Today'
-  if (d.isSame(now.subtract(1, 'day'), 'day')) return 'Yesterday'
+  if (d.isSame(now, 'day')) return tr('today', 'Today')
+  if (d.isSame(now.subtract(1, 'day'), 'day')) return tr('yesterday', 'Yesterday')
   if (now.diff(d, 'day') < 7) return d.format('dddd')
-  return d.format(d.isSame(now, 'year') ? 'dddd, MMMM D' : 'MMMM D, YYYY')
+  // 'LL' is the locale's long date ("5 november 2026" in Swedish).
+  return d.isSame(now, 'year') ? d.format('dddd D MMMM') : d.format('LL')
 }
 
 export function sameDay(a: string, b: string): boolean {
@@ -67,11 +72,11 @@ export function presenceLine(p: Presence | undefined): string {
   if (!p) return ''
   const status = p.status_text ? `${p.status_emoji ? p.status_emoji + ' ' : ''}${p.status_text}` : ''
   let state = ''
-  if (p.state === 'online') state = 'Online'
-  else if (p.state === 'away') state = 'Away'
-  else if (p.state === 'dnd') state = 'Do not disturb'
-  else if (p.last_seen_at) state = `Last seen ${dayjs(p.last_seen_at).fromNow()}`
-  else state = 'Offline'
+  if (p.state === 'online') state = tr('presence_online', 'Online')
+  else if (p.state === 'away') state = tr('presence_away', 'Away')
+  else if (p.state === 'dnd') state = tr('presence_dnd', 'Do not disturb')
+  else if (p.last_seen_at) state = tr('presence_last_seen', 'Last seen {{time}}', { time: dayjs(p.last_seen_at).fromNow() })
+  else state = tr('presence_offline', 'Offline')
   return status ? `${state} · ${status}` : state
 }
 
@@ -96,7 +101,7 @@ export function isGrouped(prev: ChatMessage | undefined, cur: ChatMessage): bool
 
 export function senderName(m: ChatMessage): string {
   const s = m.sender
-  if (!s) return 'Someone'
+  if (!s) return tr('someone', 'Someone')
   if (s.type === 'agent') return s.name
   return `${s.first_name || ''} ${s.last_name || ''}`.trim() || s.username
 }
@@ -115,10 +120,10 @@ const BLOCK_LABELS: Record<string, string> = {
 
 export function previewText(m: ChatMessage | null | undefined): string {
   if (!m) return ''
-  if (m.deleted) return 'Message deleted'
-  if (m.kind === 'course_share') return `${m.attachment?.course?.name ?? 'Shared a course'}${m.content ? ' · ' + m.content : ''}`
+  if (m.deleted) return tr('deleted_short', 'Message deleted')
+  if (m.kind === 'course_share') return `${m.attachment?.course?.name ?? tr('shared_course', 'Shared a course')}${m.content ? ' · ' + m.content : ''}`
   if (m.kind === 'announcement') return m.content
-  if (m.kind === 'reminder') return `Reminder · ${m.content}`
+  if (m.kind === 'reminder') return `${tr('reminder', 'Reminder')} · ${m.content}`
   // Strip the fenced rich blocks agents write so previews stay readable.
   return m.content
     .replace(/```(quiz|flashcards|steps|course|chart|mindmap|timeline|exercise|reminder)[\s\S]*?(```|$)/g, (_, kind: string) => `${BLOCK_LABELS[kind] ?? ''} · `)

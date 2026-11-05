@@ -19,7 +19,7 @@ function CoursePaths({ courseUuid, orgslug }: { courseUuid: string; orgslug: str
   if (!enabled || !paths?.length) return null
 
   return (
-    <div className="bg-white shadow-md shadow-gray-300/25 outline outline-1 outline-neutral-200/40 rounded-lg overflow-hidden p-4 space-y-3">
+    <div className="bg-white nice-shadow rounded-lg overflow-hidden p-4 space-y-3">
       <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
         <Route size={13} />
         {t('paths.part_of_paths')}

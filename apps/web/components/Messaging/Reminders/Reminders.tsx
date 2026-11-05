@@ -7,6 +7,7 @@
 
 import React, { useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { Bell, BellSimpleSlash, Clock } from '@phosphor-icons/react'
 import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover'
 import { useMessaging } from '@components/Messaging/MessagingProvider'
@@ -27,6 +28,7 @@ export function useReminders() {
 
 /** Bell button with upcoming and recently delivered reminders. */
 export function RemindersButton({ onOpenConversation }: { onOpenConversation?: (uuid: string) => void }) {
+  const { t } = useTranslation()
   const { token, orgId } = useMessaging()
   const qc = useQueryClient()
   const { data: reminders = [] } = useReminders()
@@ -44,13 +46,17 @@ export function RemindersButton({ onOpenConversation }: { onOpenConversation?: (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
-          className="relative p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors"
-          title="Reminders"
-          aria-label={upcoming.length ? `Reminders, ${upcoming.length} upcoming` : 'Reminders'}
+          className="relative p-2 rounded-md text-gray-500 hover:bg-gray-100 hover:text-wine-900 transition-colors"
+          title={t('messaging.reminders', { defaultValue: 'Reminders' })}
+          aria-label={
+            upcoming.length
+              ? t('messaging.reminders_upcoming', { defaultValue: 'Reminders, {{count}} upcoming', count: upcoming.length })
+              : t('messaging.reminders', { defaultValue: 'Reminders' })
+          }
         >
-          <Bell size={18} weight="fill" />
+          <Bell size={18} />
           {upcoming.length > 0 && (
-            <span className="absolute top-1 end-1 h-2 w-2 rounded-full bg-gray-900 ring-2 ring-white" />
+            <span className="absolute top-1 end-1 h-2 w-2 rounded-full bg-wine-900 ring-2 ring-white" />
           )}
         </button>
       </PopoverTrigger>

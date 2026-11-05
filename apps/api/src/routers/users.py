@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from typing import Literal, List, Optional, Union
 from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, Query
 from pydantic import BaseModel, EmailStr
@@ -51,6 +52,20 @@ from src.services.courses.courses import get_user_courses
 _get_redis_client = _get_redis_pool_client
 
 logger = logging.getLogger(__name__)
+
+
+def _enforce_self_signup_enabled() -> None:
+    """Prakto Akademi: nobody creates an account here.
+
+    With LEARNHOUSE_SELF_SIGNUP_DISABLED=true, accounts only come from
+    "Fortsätt med Prakto-konto" (services/auth/prakto.py) or an admin, so every
+    public signup endpoint (open, invite code, org-less) refuses.
+    """
+    if os.environ.get("LEARNHOUSE_SELF_SIGNUP_DISABLED", "").strip().lower() in ("1", "true", "yes"):
+        raise HTTPException(
+            status_code=403,
+            detail="Det går inte att skapa konto här. Logga in med ditt Prakto-konto.",
+        )
 
 
 def _enforce_signup_rate_limit(request: Request) -> None:
@@ -214,6 +229,7 @@ async def api_create_user_with_orgid(
     """
     Create User with Org ID
     """
+    _enforce_self_signup_enabled()
     _enforce_signup_rate_limit(request)
     # An org that has turned email+password off must not hand out password
     # accounts for itself; they could never be used to sign in to it.
@@ -255,6 +271,7 @@ async def api_create_user_with_orgid_and_invite(
     """
     Create User with Org ID and invite code
     """
+    _enforce_self_signup_enabled()
     _enforce_signup_rate_limit(request)
     await _enforce_password_signup_allowed(db_session, org_id)
 
@@ -309,6 +326,7 @@ async def api_create_user_without_org(
     """
     Create User
     """
+    _enforce_self_signup_enabled()
     _enforce_signup_rate_limit(request)
     return await create_user_without_org(request, db_session, current_user, user_object)
 

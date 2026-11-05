@@ -1,4 +1,2 @@
-// OSS stub: Atlas requires Enterprise Edition.
-export default function AtlasNavItem(_props: { isCollapsed: boolean; isActive: boolean }) {
-  return null
-}
+// Open-source Atlas (components/Atlas) in place of the Enterprise stub.
+export { default } from '@components/Atlas/AtlasNavItem'

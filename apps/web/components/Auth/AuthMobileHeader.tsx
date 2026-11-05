@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import learnhouseIcon from 'public/learnhouse_bigicon_1.png'
 import { getOrgAuthBackgroundMediaDirectory } from '@services/media/media'
-import OrgSquareLogo from '@components/Objects/Org/OrgSquareLogo'
+import OrgSquareLogo, { getOrgWideLogoUrl, useTrimmedLogo } from '@components/Objects/Org/OrgSquareLogo'
 import { getUriWithOrg } from '@services/config/config'
 import { usePlan } from '@components/Hooks/usePlan'
 import { isWhiteLabelPlan } from '@components/Hooks/useLearnHouseBranding'
@@ -30,6 +30,7 @@ export default function AuthMobileHeader({ org, welcomeText }: AuthMobileHeaderP
     welcome_message = '',
   } = authBranding
   const displayMessage = welcome_message || welcomeText || ''
+  const wideLogo = useTrimmedLogo(getOrgWideLogoUrl(org))
   const UNSPLASH_UTM = '?utm_source=LearnHouse&utm_medium=referral'
   const withUtm = (url: string) => (url ? `${url}${UNSPLASH_UTM}` : '')
 
@@ -85,6 +86,11 @@ export default function AuthMobileHeader({ org, welcomeText }: AuthMobileHeaderP
         </div>
 
         <Link prefetch href={getUriWithOrg(org?.slug, '/')} className="relative z-10 w-fit">
+          {wideLogo ? (
+            <div className="rounded-md bg-white px-4 py-3 ring-1 ring-inset ring-black/5">
+              <img src={wideLogo} alt={org?.name || ''} className="block h-auto w-auto max-h-8 max-w-[150px]" />
+            </div>
+          ) : (
           <div className="w-14 h-14 rounded-2xl ring-1 ring-inset ring-white/10 bg-white flex items-center justify-center overflow-hidden shrink-0">
             <OrgSquareLogo
               org={org}
@@ -107,6 +113,7 @@ export default function AuthMobileHeader({ org, welcomeText }: AuthMobileHeaderP
               }
             />
           </div>
+          )}
         </Link>
 
         <div className="relative z-10 mt-4 min-w-0">

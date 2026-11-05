@@ -28,8 +28,9 @@ import {
   MagnifyingGlass,
   Code,
   DotsNine,
+  LinkedinLogo,
 } from '@phosphor-icons/react'
-import { DiscordIcon } from '@components/Objects/Icons/DiscordIcon'
+import { HELP_LINKS } from '@/lib/helpLinks'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -43,7 +44,6 @@ import OrgSquareLogo, { hasOrgLogo, OrgInitial } from '@components/Objects/Org/O
 import { cn } from '@/lib/utils'
 import { usePlan } from '@components/Hooks/usePlan'
 import { planMeetsRequirement } from '@services/plans/plans'
-import { FeedbackModal } from '@components/Objects/Modals/FeedbackModal'
 import { useCommandPalette } from '@components/Dashboard/CommandPalette/CommandPaletteContext'
 import { isWhiteLabelPlan } from '@components/Hooks/useLearnHouseBranding'
 import { Dialog, DialogContent, DialogTitle } from '@components/ui/dialog'
@@ -61,7 +61,6 @@ function DashMobileMenu() {
   const plan = usePlan()
   const { toggle: openSearch } = useCommandPalette()
   const [moreOpen, setMoreOpen] = useState(false)
-  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false)
   const [langExpanded, setLangExpanded] = useState(false)
   const [mounted, setMounted] = useState(false)
 
@@ -240,13 +239,10 @@ function DashMobileMenu() {
                   ))}
                 </div>
               )}
-              <SheetRow href="https://docs.learnhouse.app" external Icon={Book} label={t('common.help_menu.documentation')} />
-              <SheetRow href="http://learnhouse.to/discord" external Icon={DiscordIcon} label={t('common.help_menu.discord')} />
-              <SheetRow
-                Icon={ChatCircleDots}
-                label={t('common.help_menu.report_feedback')}
-                onClick={() => { close(); setFeedbackModalOpen(true) }}
-              />
+              <SheetRow href={HELP_LINKS.docs} external Icon={Book} label={t('common.help_menu.documentation')} />
+              <SheetRow href={HELP_LINKS.website} external Icon={Globe} label={t('common.help_menu.website')} />
+              <SheetRow href={HELP_LINKS.linkedin} external Icon={LinkedinLogo} label={t('common.help_menu.linkedin')} />
+              <SheetRow href={HELP_LINKS.report} external Icon={ChatCircleDots} label={t('common.help_menu.report_feedback')} />
             </div>
 
             {/* User */}
@@ -269,13 +265,6 @@ function DashMobileMenu() {
         </DialogContent>
       </Dialog>
 
-      <FeedbackModal
-        open={feedbackModalOpen}
-        onOpenChange={setFeedbackModalOpen}
-        theme="dark"
-        userName={session?.data?.user?.username}
-        userEmail={session?.data?.user?.email}
-      />
     </>,
     document.body
   )

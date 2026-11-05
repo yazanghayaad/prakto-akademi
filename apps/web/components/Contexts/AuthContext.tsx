@@ -1012,6 +1012,39 @@ export function SessionProvider({
           return
         }
 
+        if (provider === 'prakto') {
+          // "Fortsätt med Prakto-konto" (lib/auth/prakto-sso.ts): same CSRF cookie
+          // and server-signed state as Google. The callback runs on this origin,
+          // so there is no custom-domain bounce.
+          const csrfToken = generateSecureToken()
+          setOAuthStateCookie(csrfToken)
+
+          const authResponse = await fetch('/api/auth/prakto/authorize', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              redirect_uri: `${window.location.origin}/auth/callback/prakto`,
+              state: { callbackUrl, csrf: csrfToken, timestamp: Date.now() },
+            }),
+          })
+
+          if (!authResponse.ok) {
+            const errorData = await authResponse.json().catch(() => ({}))
+            console.error('Prakto sign-in initiation failed:', errorData)
+            return {
+              ok: false,
+              error: errorData.error || i18n.t('auth.errors.prakto_not_configured'),
+              url: null,
+              status: authResponse.status,
+            }
+          }
+
+          const { url: praktoAuthUrl } = await authResponse.json()
+          const safePraktoUrl = safeExternalUrl(praktoAuthUrl)
+          if (safePraktoUrl) window.location.href = safePraktoUrl
+          return
+        }
+
         // Unknown provider
         return {
           ok: false,

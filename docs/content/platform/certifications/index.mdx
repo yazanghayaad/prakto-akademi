@@ -1,77 +1,73 @@
 import { Callout } from 'nextra/components'
 
-# Certifications
+# Certifikat
 
-A course can award a certificate to learners who complete it, and so can a [learning path](/platform/paths). Each certificate has a unique credential ID and a public page anyone can use to check it is genuine. Course and path certificates share the same design, the same designer and the same verification page.
-
-<YouTube video="guide-7" />
+En kurs kan dela ut ett certifikat till elever som slutför den, och det kan även en [lärväg](/platform/paths). Varje certifikat har ett unikt ID och en offentlig sida där vem som helst kan kontrollera att det är äkta. Certifikat för kurser och lärvägar har samma utseende, samma formgivningsverktyg och samma verifieringssida.
 
 <Callout>
-On LearnHouse Cloud, certifications need the **Pro** plan or higher. Setting one up also needs permission to create certifications in the organization.
+För att sätta upp ett certifikat behöver du behörighet att skapa certifieringar i organisationen.
 </Callout>
 
-## Setting up a course certificate
+## Sätta upp ett kurscertifikat
 
-Open the course in the dashboard and go to the **Certification** tab. Turn on the **Course Certification** switch, or click **Enable Certification**, then fill in:
+Öppna kursen i adminpanelen och gå till fliken **Certifiering**. Slå på reglaget **Kurscertifiering**, eller klicka på **Aktivera certifiering**, och fyll sedan i:
 
-| Field | Notes |
+| Fält | Kommentar |
 | --- | --- |
-| **Certification Name** | Required. Up to 100 characters. |
-| **Certification Description** | Required. Up to 500 characters. |
-| **Certification Type** | Course Completion (default), Achievement Based, Assessment Based, Participation, Skill Mastery, Professional Development, Continuing Education, Workshop Attendance or Specialization. The type is printed in the top corner of the certificate. |
-| **Signed by (optional)** | A name printed at the bottom left, under **Instructor**. Without it, that spot shows your organization under **Issued by**. |
-| **Style** | Professional (default), Minimal, Modern, Academic, Royal, Vintage, Tech, Nature, Geometric or Waves. Each style sets an accent color and a frame. |
+| **Certifieringsnamn** | Obligatoriskt. Högst 100 tecken. |
+| **Certifieringsbeskrivning** | Obligatoriskt. Högst 500 tecken. |
+| **Certifieringstyp** | Slutförd kurs (standard), Prestationsbaserad, Bedömningsbaserad, Deltagande, Färdighetsbehärskning, Professionell utveckling, Fortbildning, Workshopdeltagande eller Specialisering. Typen skrivs ut i certifikatets övre hörn. |
+| **Undertecknad av (valfritt)** | Ett namn som skrivs ut längst ner till vänster, under **Lärare**. Utan namn visas i stället din organisation under **Utfärdat av**. |
+| **Stil** | Professionell (standard), Minimal, Modern, Akademisk, Royal, Vintage, Tech, Natur, Geometrisk eller Vågor. Varje stil har en egen accentfärg och ram. |
 
-Click **Save** at the top of the course editor to apply your changes. Turning the switch off removes the certification from the course, but only while no learner has earned it: once certificates have been awarded, LearnHouse refuses to delete it so their verification links keep working.
+Klicka på **Spara** högst upp i kursredigeraren för att spara ändringarna. Om du stänger av reglaget tas certifieringen bort från kursen, men bara så länge ingen elev har fått certifikatet. När certifikat har delats ut vägrar Prakto Akademi att ta bort certifieringen, så att verifieringslänkarna fortsätter att fungera.
 
-The live preview next to the form shows the certificate as learners will get it, with your organization's logo and name at the top. Learners see their own name, the award date and their credential ID.
+Förhandsvisningen bredvid formuläret visar certifikatet som eleverna kommer att få det, med organisationens logotyp och namn högst upp. Eleverna ser sitt eget namn, datumet då de fick certifikatet och sitt eget ID.
 
-<img src="/img/pages/paths/path-certificate-designer.webp" alt="The certificate designer: name, description, type, signer and style on the left, and a live preview of the certificate on the right" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/paths/path-certificate-designer.webp" alt="Formgivningsverktyget för certifikat: namn, beskrivning, typ, undertecknare och stil till vänster och en förhandsvisning av certifikatet till höger" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-The same designer is used on the **Certificate** tab of a [learning path](/platform/paths#the-path-certificate).
+Samma verktyg används på fliken **Certifikat** i en [lärväg](/platform/paths).
 
-## What a certificate shows
+## Vad ett certifikat visar
 
-Every certificate is an A4 landscape page with:
+Varje certifikat är en liggande A4-sida med:
 
-- Your organization's logo (the square logo, or the wide logo when there is no square one) and name. See [Branding](/platform/organizations/settings#logos).
-- The certification type, the learner's name and the certification name and description.
-- The signer, or your organization, and the date awarded.
-- A QR code that opens the verification page, and the credential ID.
+- Organisationens logotyp (den kvadratiska logotypen, eller den breda om det inte finns någon kvadratisk) och namn. Se [Inställningar](/platform/organizations/settings).
+- Certifieringstypen, elevens namn och certifieringens namn och beskrivning.
+- Undertecknaren, eller organisationen, och datumet då certifikatet delades ut.
+- En QR-kod som öppnar verifieringssidan, och certifikatets ID.
 
-## When a course certificate is awarded
+## När ett kurscertifikat delas ut
 
-A learner earns the certificate when both are true:
+En elev får certifikatet när båda de här villkoren är uppfyllda:
 
-- Every published activity in the course is complete.
-- Every graded assignment in the course is graded and passed at its passing threshold. [Formative](/platform/assignments/formative) assignments only need to be handed in.
+- Alla publicerade aktiviteter i kursen är slutförda.
+- Alla uppgifter i kursen som betygsätts är bedömda och godkända enligt sin gräns för godkänt. [Formativa](/platform/assignments/formative) uppgifter behöver bara lämnas in.
 
-A course without assignments awards the certificate on completion alone. If an assignment is still waiting for a grade, the certificate is issued once it is graded and passed.
+En kurs utan uppgifter delar ut certifikatet när kursen är slutförd. Om en uppgift fortfarande väntar på betyg delas certifikatet ut när den har bedömts och blivit godkänd.
 
-## What learners get
+## Det här får eleverna
 
-At the end of the course, learners see their certificate with **Download Certificate PDF** and **View and share**. All their certificates, from courses and paths, are listed under **My Certificates** on their [Progress page](/platform/courses/trails).
+I slutet av kursen ser eleverna sitt certifikat med **Ladda ner certifikat som PDF** och **Visa och dela**. Alla deras certifikat, från både kurser och lärvägar, listas under **Mina certifikat** på sidan [Framsteg](/platform/courses/trails).
 
-The PDF is the same page as the on-screen certificate, logo included.
+PDF:en är samma sida som certifikatet på skärmen, logotypen inräknad.
 
-## Verifying a certificate
+## Verifiera ett certifikat
 
-Each course certificate has an ID like `AB-20261102-1a2b-3c4d5e6f`: two letters, the award date, part of the learner's ID and a random suffix. Its verification page is at `/certificates/{id}/verify`.
+Varje kurscertifikat har ett ID som `AB-20261102-1a2b-3c4d5e6f`: två bokstäver, datumet då det delades ut, en del av elevens ID och ett slumpat slut. Verifieringssidan finns på `/certificates/{id}/verify`.
 
-The page shows **Verified credential**, the certificate itself, and the **Recipient**, **Issued by**, **Issued on** and **Credential ID**. Anyone can use **Copy verification link**. The holder also sees **Download PDF** and **Add to LinkedIn**, which opens LinkedIn with the certificate name, your organization, the issue month, the credential ID and the verification link already filled in.
+Sidan visar **Verifierad legitimation**, själva certifikatet och **Mottagare**, **Utfärdat av**, **Utfärdat den** och **Legitimations-ID**. Alla kan använda **Kopiera verifieringslänk**. Den som äger certifikatet ser också **Ladda ner PDF** och **Lägg till på LinkedIn**. Det senare öppnar LinkedIn med certifikatets namn, din organisation, utfärdandemånaden, ID:t och verifieringslänken redan ifyllda.
 
-<img src="/img/pages/paths/path-certificate-verify.webp" alt="A certificate verification page with the Verified credential badge, the certificate, Download PDF, Add to LinkedIn and Copy verification link" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/paths/path-certificate-verify.webp" alt="En verifieringssida för ett certifikat med märket Verifierad legitimation, certifikatet och knapparna Ladda ner PDF, Lägg till på LinkedIn och Kopiera verifieringslänk" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-A revoked certificate, or a wrong ID, shows **Certificate not found**.
+Ett återkallat certifikat, eller ett felaktigt ID, visar **Certifikatet hittades inte**.
 
-## Path certificates
+## Certifikat för lärvägar
 
-A [learning path](/platform/paths) can award its own certificate when a learner finishes it, on top of the course certificates. It uses the same designer and the same page layout. Path certificate IDs start with `PATH-`, and their verification page is at `/paths/certificate/{id}`. Under the certificate, the page lists the courses the learner completed to earn it.
+En [lärväg](/platform/paths) kan dela ut ett eget certifikat när en elev har gått klart den, utöver kurscertifikaten. Det använder samma formgivningsverktyg och samma sidlayout. ID:n för lärvägscertifikat börjar med `PATH-`, och verifieringssidan finns på `/paths/certificate/{id}`. Under certifikatet listar sidan de kurser eleven slutförde för att få det.
 
-## Revocation
+## Återkallade certifikat
 
-A course certificate is revoked automatically when the learner no longer meets the conditions: an assignment is re-graded below its passing threshold, rejected, or reset for a retry. It is issued again once they pass. Admins can also revoke a course certificate through the admin API with an API token.
+Ett kurscertifikat återkallas automatiskt när eleven inte längre uppfyller villkoren: en uppgift bedöms om under gränsen för godkänt, underkänns eller återställs för ett nytt försök. Certifikatet delas ut igen när eleven blir godkänd.
 
-Every course certificate revocation fires a `certificate_revoked` [webhook](/platform/automations/webhooks) event.
-
-Path certificates are revoked by hand. Open the path's **Learners** tab and click **Revoke** next to the learner, and **Reinstate** to undo it. See [Following learners](/platform/paths#following-learners).
+Certifikat för lärvägar återkallas för hand. Öppna lärvägens flik **Deltagare** och klicka på **Återkalla** bredvid eleven, eller på **Återställ** för att ångra. Se [Lärvägar](/platform/paths).

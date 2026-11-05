@@ -23,6 +23,7 @@ import {
   DropdownMenuPortal,
 } from "@components/ui/dropdown-menu"
 import { signOut } from '@components/Contexts/AuthContext'
+import { isSelfSignupDisabled } from '@services/config/signup'
 import { useTranslation } from 'react-i18next'
 import { changeLanguage } from '@/lib/i18n'
 import { AVAILABLE_LANGUAGES } from '@/lib/languages'
@@ -182,9 +183,11 @@ export const HeaderProfileBox = ({ primaryColor = '' }: { primaryColor?: string 
                 className={`px-3 py-2 rounded-lg transition-colors text-sm font-bold ${colors.hoverBg} ${colors.text}`}
                 href={getUriWithOrg(org?.slug, '/login')} >{t('auth.login')}</Link>
             </li>
+            {!isSelfSignupDisabled() && (
             <li className={`rounded-lg shadow-sm transition-colors px-4 py-2 text-xs sm:text-sm font-bold ms-1 sm:ms-2 ${colors.signUpBtn}`}>
               <Link href={getUriWithOrg(org?.slug, '/signup')}>{t('auth.sign_up')}</Link>
             </li>
+            )}
           </ul>
         </div>
       )}

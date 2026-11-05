@@ -45,11 +45,12 @@ import {
   Lightning,
   Steps,
   SlidersHorizontal,
+  LinkedinLogo,
 } from '@phosphor-icons/react'
 import { motion } from 'motion/react'
 import { useAtlasMini } from '@ee/components/Atlas/AtlasMiniContext'
 import AtlasNavItem from '@ee/components/Atlas/AtlasNavItem'
-import { DiscordIcon } from '@components/Objects/Icons/DiscordIcon'
+import { HELP_LINKS } from '@/lib/helpLinks'
 import CommandPaletteTrigger from '@components/Dashboard/CommandPalette/CommandPaletteTrigger'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -73,9 +74,7 @@ import {
   HoverMenuLabel,
   HoverMenuSeparator,
 } from "@components/ui/hover-menu"
-import { FeedbackModal } from '@components/Objects/Modals/FeedbackModal'
 import { AVAILABLE_LANGUAGES } from '@/lib/languages'
-import OrgSquareLogo, { hasOrgLogo, OrgInitial } from '@components/Objects/Org/OrgSquareLogo'
 import { cn } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { queryKeys } from '@/lib/query/keys'
@@ -83,6 +82,7 @@ import { RequestBodyWithAuthHeader } from '@services/utils/ts/requests'
 import { getAssignmentsFromACourse } from '@services/courses/assignments'
 import { getDeploymentMode } from '@services/config/config'
 import PlanBadge from '@components/Dashboard/Shared/PlanRestricted/PlanBadge'
+import { hasAdvancedAnalytics } from '@services/plans/plans'
 import {
   FEATURES_SETTINGS_HREF,
   OPTIONAL_FEATURES,
@@ -90,12 +90,10 @@ import {
   getOptionalFeatureState,
 } from '@services/features/optionalFeatures'
 import { usePlan } from '@components/Hooks/usePlan'
-import { planMeetsRequirement } from '@services/plans/plans'
 import useAdminStatus, { seesPlatformHubFromSession } from '@components/Hooks/useAdminStatus'
 import { useLHAnalytics, AnalyticsEvent } from '@services/analytics'
 import OnboardingSidebarBox from '@components/Dashboard/Onboarding/OnboardingSidebarBox'
 import { useOnboarding } from '@components/Hooks/useOnboarding'
-import { isWhiteLabelPlan } from '@components/Hooks/useLearnHouseBranding'
 
 // Scattered night-sky starfield for the free-plan upgrade box. Fixed positions
 // (top/left %) so the constellation is stable across renders; `north` is the
@@ -138,7 +136,6 @@ function DashLeftMenu() {
     return pathname === path || pathname.startsWith(path + '/')
   }
   const [recentAssignments, setRecentAssignments] = useState<any[]>([])
-  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false)
   const access_token = session?.data?.tokens?.access_token
 
   // Fetch recent courses
@@ -277,7 +274,7 @@ function DashLeftMenu() {
         isCollapsed ? "w-[72px]" : "w-64",
         isOnAtlas
           ? "bg-[#05040c] border-white/5"
-          : "bg-[#0f0f10] border-white/[0.08]"
+          : "bg-[#1c1a17] border-white/[0.08]"
       )}
     >
       {/* Header with Logo and Toggle */}
@@ -289,17 +286,15 @@ function DashLeftMenu() {
           className={cn("flex items-center transition-opacity hover:opacity-70", isCollapsed ? "" : "space-x-3")}
           href={'/'}
         >
-          {(planMeetsRequirement(plan, 'standard') && hasOrgLogo(org)) || isWhiteLabelPlan(plan) ? (
-            <div className="h-9 w-9 rounded-lg overflow-hidden bg-white shrink-0">
-              <OrgSquareLogo org={org} wideInsetClassName="p-1" fallback={<OrgInitial org={org} />} />
-            </div>
-          ) : (
+          {/* Prakto: always the square P mark. The org logo is the wide PRKTO
+              wordmark, which a square tile cropped down to "RKT". */}
+          <div className="h-9 w-9 rounded-lg overflow-hidden bg-white shrink-0 p-1">
             <img
-              src="/lrn-dash.svg"
-              alt="Learnhouse logo"
-              className="h-8 w-8"
+              src="/lrn-dash.svg?v=prakto-1"
+              alt="Prakto Akademi"
+              className="h-full w-full object-contain"
             />
-          )}
+          </div>
           {!isCollapsed && (
             <div className="flex flex-col min-w-0">
               <span className="font-semibold text-sm text-white truncate">
@@ -334,9 +329,9 @@ function DashLeftMenu() {
             <motion.div
               className="absolute -bottom-px start-0 h-[2px] rounded-e-full"
               style={{
-                background: 'linear-gradient(90deg, #6366f1 0%, #8b5cf6 55%, #a855f7 100%)',
+                background: 'linear-gradient(90deg, #7c2121 0%, #b74c47 55%, #d5766f 100%)',
                 boxShadow:
-                  '0 0 6px rgba(139,92,246,0.85), 0 0 14px rgba(168,85,247,0.55), 0 0 2px rgba(99,102,241,0.9)',
+                  '0 0 6px rgba(183,76,71,0.85), 0 0 14px rgba(213,118,111,0.55), 0 0 2px rgba(124,33,33,0.9)',
               }}
               initial={false}
               animate={{ width: `${Math.max(onboarding.progress * 100, 6)}%` }}
@@ -357,13 +352,13 @@ function DashLeftMenu() {
       </div>
 
       {/* Main Navigation: scrolls once the list outgrows the viewport.
-          Centered with `my-auto`, not `justify-center`: the latter would push
-          the first items above scroll origin, out of reach. No
+          Prakto: starts right under the search box instead of floating in
+          the middle of the sidebar, which left a large empty gap above it. No
           `overscroll-contain`: it stops the wheel from scrolling the page
           over the sidebar even when the list fits. */}
-      <div className="flex-1 min-h-0 overflow-y-auto flex flex-col py-4 px-3">
+      <div className="flex-1 min-h-0 overflow-y-auto flex flex-col pt-3 pb-4 px-3">
         <AdminAuthorization authorizationMode="component">
-          <div className="space-y-1 my-auto">
+          <div className="space-y-1">
             <MenuLink
               href="/dash"
               icon={<House size={20} weight="fill" />}
@@ -852,7 +847,7 @@ function DashLeftMenu() {
                   <HoverMenuItem asChild>
                     <Link href="/dash/analytics" className="flex items-center gap-2 px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/[0.08] cursor-pointer transition-colors">
                       <ChartLine size={16} weight="fill" />
-                      <span className="flex items-center">{t('analytics.tabs.advanced')}<PlanBadge currentPlan={plan} requiredPlan="enterprise" variant="dark" /></span>
+                      <span className="flex items-center">{t('analytics.tabs.advanced')}{!hasAdvancedAnalytics(plan) && <PlanBadge currentPlan={plan} requiredPlan="enterprise" variant="dark" />}</span>
                     </Link>
                   </HoverMenuItem>
                 </HoverMenuContent>
@@ -1174,7 +1169,7 @@ function DashLeftMenu() {
                 <HoverMenuSeparator />
                 <HoverMenuItem asChild>
                   <a
-                    href="https://docs.learnhouse.app"
+                    href={HELP_LINKS.docs}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/[0.08] cursor-pointer transition-colors"
@@ -1185,7 +1180,7 @@ function DashLeftMenu() {
                 </HoverMenuItem>
                 <HoverMenuItem asChild>
                   <a
-                    href="https://learnhouse.app"
+                    href={HELP_LINKS.website}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/[0.08] cursor-pointer transition-colors"
@@ -1196,22 +1191,26 @@ function DashLeftMenu() {
                 </HoverMenuItem>
                 <HoverMenuItem asChild>
                   <a
-                    href="http://learnhouse.to/discord"
+                    href={HELP_LINKS.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/[0.08] cursor-pointer transition-colors"
                   >
-                    <DiscordIcon size={16} />
-                    <span>{t('common.help_menu.discord')}</span>
+                    <LinkedinLogo size={16} weight="fill" />
+                    <span>{t('common.help_menu.linkedin')}</span>
                   </a>
                 </HoverMenuItem>
                 <HoverMenuSeparator />
-                <HoverMenuItem
-                  onClick={() => setFeedbackModalOpen(true)}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/[0.08] cursor-pointer transition-colors"
-                >
-                  <ChatCircleDots size={16} weight="fill" />
-                  <span>{t('common.help_menu.report_feedback')}</span>
+                <HoverMenuItem asChild>
+                  <a
+                    href={HELP_LINKS.report}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/[0.08] cursor-pointer transition-colors"
+                  >
+                    <ChatCircleDots size={16} weight="fill" />
+                    <span>{t('common.help_menu.report_feedback')}</span>
+                  </a>
                 </HoverMenuItem>
               </HoverMenuContent>
             }
@@ -1343,14 +1342,6 @@ function DashLeftMenu() {
       </div>
     </nav>
 
-      {/* Feedback Modal */}
-      <FeedbackModal
-        open={feedbackModalOpen}
-        onOpenChange={setFeedbackModalOpen}
-        theme="dark"
-        userName={session?.data?.user?.username}
-        userEmail={session?.data?.user?.email}
-      />
     </TooltipProvider>
   )
 }

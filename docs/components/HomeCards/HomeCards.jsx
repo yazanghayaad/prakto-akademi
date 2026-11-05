@@ -3,57 +3,47 @@
 import Link from 'next/link'
 import {
   RocketLaunch,
+  Student,
   BookOpen,
-  Cloud,
-  Code,
-  GraduationCap,
+  UsersThree,
 } from '@phosphor-icons/react/dist/ssr'
 
 const cards = [
   {
     href: '/getting-started',
     icon: RocketLaunch,
-    color: '#6366f1',
-    title: 'Getting Started',
-    desc: 'Set up your first organization and course in minutes',
+    color: '#7a1f1f',
+    title: 'Kom igång',
+    desc: 'Logga in, hitta din första kurs och kom igång på några minuter',
     pattern: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
     patternSize: '14px 14px',
   },
   {
-    href: '/platform',
-    icon: BookOpen,
-    color: '#10b981',
-    title: 'Platform Guide',
-    desc: 'Courses, editor, AI, assignments, and more',
+    href: '/platform/courses/taking-a-course',
+    icon: Student,
+    color: '#1f3a5f',
+    title: 'Studera en kurs',
+    desc: 'Moduler, framsteg, quiz och certifikat',
     pattern: 'linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)',
     patternSize: '20px 20px',
   },
   {
-    href: '/self-hosting',
-    icon: Cloud,
-    color: '#f97316',
-    title: 'Self Hosting',
-    desc: 'Deploy on your own infrastructure with the CLI',
+    href: '/platform/courses',
+    icon: BookOpen,
+    color: '#2f5d46',
+    title: 'Skapa kurser',
+    desc: 'Kapitel, aktiviteter, redigeraren och biblioteket',
     pattern: 'repeating-linear-gradient(45deg, currentColor 0px, currentColor 1px, transparent 1px, transparent 8px)',
     patternSize: '12px 12px',
   },
   {
-    href: '/developers',
-    icon: Code,
-    color: '#8b5cf6',
-    title: 'Developers',
-    desc: 'Architecture, REST API, and contributing guide',
+    href: '/platform/users',
+    icon: UsersThree,
+    color: '#a8741a',
+    title: 'Administration',
+    desc: 'Användare, roller, grupper och inställningar',
     pattern: 'repeating-linear-gradient(0deg, currentColor 0px, currentColor 1px, transparent 1px, transparent 6px)',
     patternSize: '6px 6px',
-  },
-  {
-    href: '/guides',
-    icon: GraduationCap,
-    color: '#0ea5e9',
-    title: 'Guides',
-    desc: 'Build your own learning platform and custom features',
-    pattern: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
-    patternSize: '16px 16px',
   },
 ]
 
@@ -110,8 +100,8 @@ export default function HomeCards() {
 
             {/* Text */}
             <div style={{ position: 'relative', zIndex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 15, fontWeight: 650, color: '#1a1a1a', lineHeight: 1.3, margin: 0 }}>{card.title}</div>
-              <div style={{ fontSize: 13, color: '#9ca3af', lineHeight: 1.45, margin: 0, marginTop: 3 }}>{card.desc}</div>
+              <div style={{ fontSize: 15, fontWeight: 650, color: '#1c1a17', lineHeight: 1.3, margin: 0 }}>{card.title}</div>
+              <div style={{ fontSize: 13, color: '#7a726b', lineHeight: 1.45, margin: 0, marginTop: 3 }}>{card.desc}</div>
             </div>
           </Link>
         )

@@ -1,72 +1,66 @@
-import { Callout } from 'nextra/components'
+# Kodkörning
 
-# Code Execution
+Prakto Akademi kör elevernas kod i en isolerad miljö. Du använder kodkörning på två ställen:
 
-LearnHouse runs learners' code in a sandbox through [Judge0](https://judge0.com/). You use it in two places:
+- Blocket **Kodlekplats**, en kodutmaning som du kan lägga till på vilken dynamisk sida som helst från `/`-menyn.
+- Deluppgiftstypen **Kod** i [uppgifter](/platform/assignments/task-types#kod), för kodövningar som bedöms.
 
-- The **Code Playground** block, a coding challenge you add to any Dynamic Page from the `/` menu.
-- The **Code** task type in [assignments](/platform/assignments/task-types#code), for graded code exercises.
+Båda kör kod på samma sätt. Den här sidan handlar om blocket Kodlekplats.
 
-Both run code the same way. This page covers the Code Playground block.
+## Språk som stöds
 
-<Callout>
-Code execution needs a Judge0 instance. On self-hosted installs set `LEARNHOUSE_JUDGE0_API_URL` (see [Environment Variables](/self-hosting/configuration/environment-variables)).
-</Callout>
+Python 3, JavaScript (Node), TypeScript, Java, C++, C, Rust, Go, PHP, Ruby, Kotlin, C#, Swift, Scala, Perl, R, Dart, Haskell, Lua, Elixir, Clojure, SQL, Bash, Objective-C, Pascal, Fortran, Prolog, Common Lisp, PowerShell och Assembly (NASM). Det är 30 språk. Nya block börjar med Python 3.
 
-## Supported languages
+## Skapa en utmaning
 
-Python 3, JavaScript (Node), TypeScript, Java, C++, C, Rust, Go, PHP, Ruby, Kotlin, C#, Swift, Scala, Perl, R, Dart, Haskell, Lua, Elixir, Clojure, SQL, Bash, Objective-C, Pascal, Fortran, Prolog, Common Lisp, PowerShell and Assembly (NASM). That is 30 languages. New blocks start in Python 3.
+Infoga ett block av typen **Kodlekplats** och fyll i inställningarna:
 
-## Setting up a challenge
-
-Insert a **Code Playground** block and fill in its settings:
-
-| Setting | What it does |
+| Inställning | Vad den gör |
 | --- | --- |
-| **Language** | The language learners write in. |
-| **Description** | The challenge statement. Supports Markdown. |
-| **Difficulty** | **Easy**, **Medium** or **Hard**. Shown as a badge. |
-| **Starter code** | The code learners start from. |
-| **Test cases** | Each one has a label, an **Input** (sent to stdin) and an **Expected Output**. |
-| **Hints** | A list of hints learners can open one by one. |
-| **Solution Code** | Your model solution. Revealed to learners after enough attempts. |
-| **Attempts to unlock** | How many test runs a learner needs before the solution unlocks. Default 3. |
-| **Time Limit** | Maximum run time per execution. Default 10 seconds. |
-| **Expected Speed** / **Expected Memory** | The time and space complexity you expect, shown to learners. |
-| **Timed Challenge** | Adds a countdown timer. Set its **Duration (minutes)**. Default 5 minutes. |
-| **Additional Files** | Extra files available to the learner's code, such as `data.txt` or `utils.py`. |
+| **Språk** | Språket som eleverna skriver i. |
+| **Beskrivning** | Själva uppgiften. Du kan använda Markdown. |
+| **Svårighetsgrad** | **Lätt**, **Medel** eller **Svår**. Visas som en etikett. |
+| **Startkod** | Koden som eleverna utgår från. |
+| **Testfall** | Varje testfall har ett namn, **Indata** (skickas till stdin) och **Förväntad utdata**. |
+| **Ledtrådar** | En lista med ledtrådar som eleverna kan öppna en i taget. |
+| **Lösningskod** | Din exempellösning. Visas för eleverna efter tillräckligt många försök. |
+| **Försök för att låsa upp** | Hur många testkörningar en elev behöver göra innan lösningen låses upp. Standard är 3. |
+| **Tidsgräns** | Längsta körtid per körning. Standard är 10 sekunder. |
+| **Förväntad hastighet** / **Förväntat minne** | Den tids- och minneskomplexitet du förväntar dig. Visas för eleverna. |
+| **Tidsutmaning** | Lägger till en nedräkningstimer. Ställ in **Längd (minuter)**. Standard är 5 minuter. |
+| **Ytterligare filer** | Extra filer som elevens kod kan använda, till exempel `data.txt` eller `utils.py`. |
 
-For **SQL** challenges you can also upload a SQLite database (`.sqlite`, `.db` or `.sqlite3`). Learners' queries run against it.
+För **SQL**-utmaningar kan du också ladda upp en SQLite-databas (`.sqlite`, `.db` eller `.sqlite3`). Elevernas frågor körs mot den.
 
-### Locked lines and blanks
+### Låsta rader och luckor
 
-Two markers in the starter code change how learners can edit it:
+Två markeringar i startkoden ändrar vad eleverna kan redigera:
 
-- Lines between two `// --- locked ---` markers are read-only for learners.
-- Lines between two `// --- blank ---` markers become fill-in-the-blank regions: learners only fill in that part.
+- Rader mellan två `// --- locked ---`-markeringar är skrivskyddade för eleverna.
+- Rader mellan två `// --- blank ---`-markeringar blir luckor: eleverna fyller bara i den delen.
 
-## What learners see
+## Det här ser eleverna
 
-Learners write code in an editor with syntax highlighting and autocomplete, then run it.
+Eleverna skriver kod i en redigerare med syntaxmarkering och automatisk komplettering, och kör den sedan.
 
-- **Run**: `Ctrl+Enter` (`Cmd+Enter` on macOS). With test cases, every case runs and the block shows which passed, the output against the expected output, and a score.
-- **Reset code**: `Ctrl+Shift+R` (`Cmd+Shift+R` on macOS) restores the starter code.
-- **Own test cases**: learners can add their own inputs to check edge cases.
-- **Errors**: compile and runtime errors are marked on the line they come from.
-- **Solution**: once the attempt count is reached, learners can open the solution and compare it with their own code side by side.
-- **Submission history**: each learner's runs are saved, so they can go back to a previous attempt. The newest 500 per activity are kept.
+- **Kör kod**: `Ctrl+Enter` (`Cmd+Enter` på macOS). Finns det testfall körs alla, och blocket visar vilka som gick igenom, utdata jämfört med förväntad utdata och en poäng.
+- **Återställ kod**: `Ctrl+Shift+R` (`Cmd+Shift+R` på macOS) tar fram startkoden igen.
+- **Dina testfall**: eleverna kan lägga till egna indata för att testa gränsfall.
+- **Fel**: kompilerings- och körfel markeras på raden där de uppstår.
+- **Visa lösning**: när antalet försök är uppnått kan eleverna öppna lösningen och jämföra den med sin egen kod sida vid sida.
+- **Historik**: varje elevs körningar sparas, så att eleven kan gå tillbaka till ett tidigare försök. De senaste 500 per aktivitet sparas.
 
-Code Playground results are for practice. They are not graded. For graded code, use a Code task in an assignment.
+Resultaten i Kodlekplats är till för övning och bedöms inte. Vill du bedöma kod använder du en deluppgift av typen Kod i en uppgift.
 
-## Limits
+## Begränsningar
 
-| Limit | Value |
+| Begränsning | Värde |
 | --- | --- |
-| Test cases per run | 50 |
-| Single runs per learner | 60 per minute |
-| Test case batches per learner | 20 per minute |
-| Source code size | 64 KB |
-| Input size per test case | 64 KB |
-| Additional files | 20 files, 128 KB each |
+| Testfall per körning | 50 |
+| Enskilda körningar per elev | 60 per minut |
+| Testkörningar med alla testfall per elev | 20 per minut |
+| Källkodens storlek | 64 kB |
+| Indata per testfall | 64 kB |
+| Ytterligare filer | 20 filer, 128 kB per fil |
 
-API tokens cannot run code. Execution only works for signed-in users with access to the activity.
+Kod kan bara köras av inloggade användare som har tillgång till aktiviteten.

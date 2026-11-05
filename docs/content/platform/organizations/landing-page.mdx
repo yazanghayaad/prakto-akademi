@@ -1,65 +1,63 @@
 import { Callout } from 'nextra/components'
 
-# Landing Page
+# Startsida
 
-By default, your organization's home page lists your courses and other content. The landing page builder lets you replace it with your own page, made of sections you stack and style: a hero, course lists, testimonials, pricing, an FAQ and more.
+Som standard visar organisationens startsida dina kurser och annat innehåll. Med **Landningssida** kan du ersätta den med en egen sida, uppbyggd av sektioner som du staplar och formger: en hero, kurslistor, omdömen, priser, vanliga frågor och mycket mer.
 
-<YouTube video="growth-2" />
+Gå till **Organisation** → **Landningssida** och slå på reglaget högst upp. Så länge reglaget är avstängt ser besökarna den vanliga startsidan. Dina sektioner sparas oavsett.
 
-Go to **Organization** → **Landing Page** and turn on the switch at the top. While it is off, visitors see the default home page. Your sections are kept either way.
+## Att börja med
 
-## Starting points
+- **Börja från en mall**: **Akademi**, **Lansering**, **Produktutbildning** eller **Minimal**. Mallen fyller sidan med exempelsektioner som du sedan redigerar.
+- **Importera**: läs in en sida från en JSON-fil (1 till 60 sektioner). En importerad sida publiceras inte förrän du sparar.
+- **Exportera**: ladda ner sidan som en JSON-fil som du kan importera igen senare.
 
-- **Start from a template**: **Academy**, **Launch**, **Product training** or **Minimal**. A template fills the page with example sections you then edit.
-- **Import**: load a page from a JSON file (1 to 60 sections). Imported pages are not live until you save.
-- **Export**: download the current page as a JSON file you can import again later.
+<img src="/docs/img/pages/organizations/landing-page-templates.webp" alt="Fliken Landningssida med reglaget påslaget, knapparna Lägg till sektion, Sidinställningar, Importera och Exportera, och de fyra mallarna" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-<img src="/img/pages/organizations/landing-page-templates.webp" alt="The Landing Page tab with the switch on, Add Section, Page settings, Import and Export, and the four templates" width={1600} height={900} style={{ borderRadius: 10 }} />
+## Sidinställningar
 
-## Page settings
+**Sidinställningar** gäller hela sidan: bakgrunden, **Innehållsbredd** (Normal eller Bred) och **Mellanrum mellan sektioner** (inget, litet eller mellan).
 
-**Page settings** apply to the whole page: the background, the **Content width** (Normal or Wide) and the **Gap between sections** (none, small or medium).
+## Sektioner
 
-## Sections
+Klicka på **Lägg till sektion** och välj en typ:
 
-Click **Add Section** and pick a type:
-
-| Section | Description |
+| Sektion | Beskrivning |
 | --- | --- |
-| **Hero** | A heading, subheading and buttons, with an optional illustration, background and dark overlay. Height can go up to full screen. |
-| **Text & Image** | Text and an image side by side, with buttons |
-| **Logos** | A row of logos, such as partners or clients |
-| **People** | Team members with name, description and photo |
-| **Courses** | Courses you pick, or your latest courses (you set how many) |
-| **Video** | Embed a YouTube, Vimeo or Loom video, or upload your own |
-| **Text** | A heading and formatted text, written in Markdown |
-| **Features** | A grid of 2 to 4 columns of cards with an emoji icon, a title and a description |
-| **Stats** | Big numbers with a label, like learners or courses |
-| **Testimonials** | Quotes with name, role or company and photo |
-| **FAQ** | Questions that expand to show their answer |
-| **Call to action** | A bold banner with a heading and buttons |
-| **Gallery** | A grid of 2 to 4 columns of images |
-| **Spacer** | Empty space, with an optional dividing line |
-| **Pricing** | Plan cards with a price, a feature list and a button. A card can be linked to a store product so its price and checkout link stay in sync with your [offers](/platform/payments/offers). |
-| **Steps** | A numbered sequence, side by side or stacked |
-| **Columns** | Two to four columns of Markdown text |
-| **Image** | A single large image with an optional caption and link |
-| **Embed** | A form, calendar, map or board from a supported service: Calendly, Typeform, Tally, Airtable, Google Docs, Forms and Maps, Figma, Loom, Canva, Miro, YouTube or Vimeo |
-| **Announcement** | A slim bar for news or promotions, with an optional link |
-| **Countdown** | A live timer to a launch or deadline, with text to show once it is over |
+| **Hero** | En rubrik, en underrubrik och knappar, med valfri illustration, bakgrund och mörk överton. Höjden kan vara upp till hela skärmen. |
+| **Text och bild** | Text och en bild sida vid sida, med knappar |
+| **Logotyper** | En rad med logotyper, till exempel från partner eller kunder |
+| **Personer** | Personer i teamet med namn, beskrivning och foto |
+| **Kurser** | Kurser som du väljer, eller dina senaste kurser (du bestämmer hur många) |
+| **Video** | Bädda in en video från YouTube, Vimeo eller Loom, eller ladda upp en egen |
+| **Text** | En rubrik och formaterad text, skriven i Markdown |
+| **Funktioner** | Ett rutnät med 2 till 4 kolumner av kort med en emoji-ikon, en rubrik och en beskrivning |
+| **Statistik** | Stora siffror med en etikett, till exempel antal elever eller kurser |
+| **Omdömen** | Citat med namn, roll eller företag och foto |
+| **Vanliga frågor** | Frågor som fälls ut och visar svaret |
+| **Uppmaning till handling** | En tydlig banderoll med en rubrik och knappar |
+| **Galleri** | Ett rutnät med 2 till 4 kolumner av bilder |
+| **Mellanrum** | Tomt utrymme, med en valfri skiljelinje |
+| **Priser** | Priskort med ett pris, en lista med fördelar och en knapp |
+| **Steg** | En numrerad följd, sida vid sida eller staplad |
+| **Kolumner** | Två till fyra kolumner med Markdown-text |
+| **Bild** | En enda stor bild med valfri bildtext och länk |
+| **Inbäddning** | Ett formulär, en kalender, en karta eller en tavla från en tjänst som stöds: Calendly, Typeform, Tally, Airtable, Google Dokument, Formulär och Maps, Figma, Loom, Canva, Miro, YouTube eller Vimeo |
+| **Meddelande** | En smal list för nyheter eller kampanjer, med en valfri länk |
+| **Nedräkning** | En timer som räknar ner till en lansering eller ett slutdatum, med en text som visas när tiden har gått ut |
 
-## Options on every section
+## Inställningar för varje sektion
 
-| Option | Choices |
+| Inställning | Val |
 | --- | --- |
-| Visibility | **Everyone**, **Signed-in users only** or **Signed-out visitors only** |
-| **Hide this section** | Keep it in the editor without showing it |
-| **Devices** | **All devices**, **Desktop only** or **Mobile only** |
-| **Show from** / **Show until** | A date and time window, handy for launches and promotions |
-| Styling | Background (none, solid color, gradient or image), **Text color**, **Vertical spacing**, **Width** (Normal or Narrow), **Title alignment**, an **Anchor** to link to the section, and an **Entrance animation** (none, fade in or slide up) |
+| Synlighet | **Alla**, **Endast inloggade användare** eller **Endast utloggade besökare** |
+| **Dölj detta avsnitt** | Behåll sektionen i redigeraren utan att visa den |
+| **Enheter** | **Alla enheter**, **Endast dator** eller **Endast mobil** |
+| **Visa från** / **Visa till** | Ett tidsfönster med datum och tid, praktiskt för lanseringar och kampanjer |
+| Utseende | Bakgrund (ingen, enfärgad, gradient eller bild), **Textfärg**, **Vertikalt avstånd**, **Bredd** (Normal eller Smal), **Rubrikjustering**, ett **Ankare** så att du kan länka till sektionen, och en **Ingångsanimation** (ingen, tona in eller glid upp) |
 
-Save to publish your changes.
+Klicka på **Spara ändringar** för att publicera.
 
 <Callout type="info">
-Visibility rules make it easy to show a sign-up pitch to visitors and a "continue learning" section to members on the same page.
+Med synlighetsreglerna är det enkelt att visa en uppmaning att registrera sig för besökare och en sektion för att fortsätta lära sig för medlemmar, på samma sida.
 </Callout>

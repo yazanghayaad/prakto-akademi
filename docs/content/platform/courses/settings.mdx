@@ -1,79 +1,73 @@
 import { Callout } from 'nextra/components'
 
-# Course Settings
+# Kursinställningar
 
-Open a course from **Courses** in the dashboard. Its settings are split into tabs. You only see the tabs your role allows:
+Öppna en kurs från **Kurser** i adminpanelen. Inställningarna är uppdelade i flikar. Du ser bara de flikar som din roll ger dig tillgång till:
 
-| Tab | What it covers |
+| Flik | Vad den innehåller |
 | --- | --- |
-| **General** | Name, description, learnings, tags and thumbnail. |
-| **Content** | Chapters and activities. See [Chapters & Activities](/platform/courses/chapters-and-activities). |
-| **Schedule** | Release chapters over time. See [Drip Content](/platform/courses/drip-content). |
-| **Access** | Who can see the course. |
-| **Contributors** | Who can edit the course. |
-| **SEO** | How the course appears in search engines and on social media. See [SEO](#seo) below. |
-| **Certification** | The certificate learners earn. See [Certifications](/platform/certifications). |
-| **Analytics** | Course analytics. See [Course Analytics](/platform/analytics/course-analytics). |
+| **Allmänt** | Namn, beskrivning, lärandemål, taggar och miniatyrbild. |
+| **Innehåll** | Kapitel och aktiviteter. Se [Kapitel och aktiviteter](/platform/courses/chapters-and-activities). |
+| **Schema** | Släpp kapitel över tid. Se [Stegvis innehåll](/platform/courses/drip-content). |
+| **Åtkomst** | Vem som kan se kursen. |
+| **Medarbetare** | Vem som kan redigera kursen. |
+| **SEO** | Hur kursen visas i sökmotorer och i sociala medier. Se [SEO](#seo) nedan. |
+| **Certifiering** | Certifikatet som eleverna får. Se [Certifikat](/platform/certifications). |
+| **Statistik** | Statistik för kursen. Se [Kursstatistik](/platform/analytics/course-analytics). |
 
-<YouTube video="guide-5" />
+## Allmänt
 
-## General
-
-| Field | Notes |
+| Fält | Att tänka på |
 | --- | --- |
-| **Name** | Up to 100 characters. |
-| **Description** | Up to 1000 characters. |
-| **About** | A longer presentation shown on the course page. |
-| **Learnings** | What learners will get out of the course. At least one is required. |
-| **Tags** | Keywords for the course. |
-| **Thumbnail Type** | **Image**, **Video** or **Both**. |
-| **Thumbnail** | **Upload Image** (PNG or JPG, up to 8 MB), **Upload Video** (MP4 or WebM, up to 100 MB), or generate one with AI. |
+| **Namn** | Högst 100 tecken. |
+| **Beskrivning** | Högst 1000 tecken. |
+| **Om** | En längre presentation som visas på kurssidan. |
+| **Lärandemål** | Vad eleverna får ut av kursen. Minst ett krävs. |
+| **Taggar** | Nyckelord för kursen. |
+| **Miniatyrbildstyp** | **Bild**, **Video** eller **Båda**. |
+| **Miniatyrbild** | **Ladda upp bild** (PNG eller JPG, högst 8 MB), **Ladda upp video** (MP4 eller WebM, högst 100 MB) eller skapa en med AI. |
 
-## Access
+## Åtkomst
 
-Choose one of two modes:
+Välj ett av två lägen:
 
-- **Public**: anyone on the internet can see the course, and search engines can index it.
-- **Users Only**: only signed-in users can see it.
+- **Offentlig**: alla på internet kan se kursen, och sökmotorer kan indexera den.
+- **Endast användare**: bara inloggade användare kan se den.
 
-Under **UserGroups**, click **Link to a UserGroup** to give access only to the members of specific user groups. Users outside the linked groups lose access. Use **Delete link** to remove a group.
+Under **Användargrupper** klickar du på **Länka till en användargrupp** för att bara ge medlemmarna i vissa användargrupper åtkomst. Användare utanför de länkade grupperna förlorar åtkomsten. Använd **Ta bort länk** för att ta bort en grupp.
 
-For finer control, chapters and activities each have their own lock. See [Locking chapters and activities](/platform/courses/chapters-and-activities#locking-chapters-and-activities).
+Vill du styra mer i detalj har varje kapitel och aktivitet ett eget lås. Se [Lås kapitel och aktiviteter](/platform/courses/chapters-and-activities#lås-kapitel-och-aktiviteter).
 
-## Contributors
+## Medarbetare
 
-Contributors are users who can work on the course with you. Each has a role and a status (**ACTIVE**, **INACTIVE** or **PENDING**). Only **ACTIVE** contributors get access.
+Medarbetare är användare som kan arbeta med kursen tillsammans med dig. Var och en har en roll och en status (**AKTIV**, **INAKTIV** eller **VÄNTANDE**). Bara medarbetare med status **AKTIV** får åtkomst.
 
-| Role | Can edit the course | Can manage contributors |
+| Roll | Kan redigera kursen | Kan hantera medarbetare |
 | --- | --- | --- |
-| **CREATOR** | Yes | Yes. The creator's role and status can't be changed. |
-| **MAINTAINER** | Yes | Yes |
-| **CONTRIBUTOR** | Yes | No |
-| **REPORTER** | No | No |
+| **SKAPARE** | Ja | Ja. Skaparens roll och status kan inte ändras. |
+| **REDAKTÖR** | Ja | Ja |
+| **BIDRAGSGIVARE** | Ja | Nej |
+| **RAPPORTÖR** | Nej | Nej |
 
-To add contributors, search users by name or username, select them and click **Add Selected**. You can then change a contributor's role and status, or remove them.
+För att lägga till medarbetare söker du efter användare på namn eller användarnamn, markerar dem och klickar på **Lägg till valda**. Sedan kan du ändra en medarbetares roll och status eller ta bort personen.
 
-<img src="/img/pages/courses/course-contributors.webp" alt="The Contributors tab with Open to Contributors and Closed to Contributors, the user search and the course creator listed as CREATOR and ACTIVE" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/courses/course-contributors.webp" alt="Fliken Medarbetare med valen Öppen för bidragsgivare och Stängd för bidragsgivare, sökfältet för användare och kursens skapare med rollen SKAPARE och status AKTIV" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-Set the course to **Open to Contributors** to let users apply from the course page with **Apply to contribute**. A user who applies is added as a **CONTRIBUTOR** with the **PENDING** status until a creator, maintainer or admin approves them. **Closed to Contributors** stops new applications; existing contributors keep their access.
+Ställ in kursen på **Öppen för bidragsgivare** om du vill att användare ska kunna ansöka från kurssidan med **Ansök om att bidra**. Den som ansöker läggs till som **BIDRAGSGIVARE** med status **VÄNTANDE** tills en skapare, redaktör eller admin godkänner ansökan. **Stängd för bidragsgivare** stoppar nya ansökningar. De som redan är medarbetare behåller sin åtkomst.
 
 ## SEO
 
-The course **SEO** tab overrides your organization's SEO defaults for this one course. The organization-wide settings (sitemap, robots.txt, default tags) are described in [SEO](/platform/organizations/seo).
+Fliken **SEO** i kursen ersätter organisationens standardinställningar för SEO för just den här kursen. Inställningarna för hela organisationen (webbplatskarta, robots.txt och standardtaggar) beskrivs i [SEO](/platform/organizations/seo).
 
-The tab has four sections:
+Fliken har fyra delar:
 
-| Section | Fields |
+| Del | Fält |
 | --- | --- |
-| **Basic SEO** | **SEO Title** (up to 70 characters), **Meta Description** (up to 160), **Keywords**, **Canonical URL**. Empty fields fall back to the course name and description. |
-| **Open Graph** | **OG Title**, **OG Description** (up to 200), **OG Image URL**. The course thumbnail is used when no image is set. |
-| **Twitter Card** | **Card Type** (**Summary** or **Summary with Large Image**), **Twitter Title**, **Twitter Description** (up to 200). |
-| **Robots & Structured Data** | **Prevent search engine indexing (noindex)**, **Prevent following links (nofollow)**, **Enable JSON-LD Structured Data**. |
+| **Grundläggande SEO** | **SEO-titel** (högst 70 tecken), **Metabeskrivning** (högst 160), **Nyckelord**, **Kanonisk URL**. Tomma fält ersätts med kursens namn och beskrivning. |
+| **Open Graph** | **OG-titel**, **OG-beskrivning** (högst 200), **OG-bild-URL**. Kursens miniatyrbild används om ingen bild är angiven. |
+| **Twitter-kort** | **Korttyp** (**Sammanfattning** eller **Sammanfattning med stor bild**), **Twitter-titel**, **Twitter-beskrivning** (högst 200). |
+| **Robots och strukturerad data** | **Förhindra indexering av sökmotorer (noindex)**, **Förhindra att länkar följs (nofollow)**, **Aktivera JSON-LD-strukturerad data**. |
 
-<Callout>
-On LearnHouse Cloud, SEO and Schedule settings need the Standard plan or higher. Certification and Analytics need the Pro plan or higher; see [Course Analytics](/platform/analytics/course-analytics) for what the Analytics tab shows. Self-hosted instances do not apply these plan restrictions.
-</Callout>
+## Kursuppdateringar
 
-## Course updates
-
-On the public course page, course editors can post updates (a title and some content) with **New Update**. Learners see them under **Course Updates**. Each course also has an RSS feed of its updates at `/course/{course_id}/updates/feed`, where `{course_id}` is the course UUID without its `course_` prefix.
+På kurssidan kan de som redigerar kursen publicera uppdateringar (en rubrik och en text) med **Ny uppdatering**. Eleverna ser dem under **Kursuppdateringar**. Varje kurs har också ett RSS-flöde med sina uppdateringar på `/course/{course_id}/updates/feed`, där `{course_id}` är kursens UUID utan prefixet `course_`.

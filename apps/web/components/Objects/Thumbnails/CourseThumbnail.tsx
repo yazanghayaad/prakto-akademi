@@ -28,6 +28,7 @@ import { useTranslation } from 'react-i18next'
 import { formatDate } from '@/lib/format'
 import { useLHAnalytics, AnalyticsEvent } from '@services/analytics'
 import ThumbnailImage from '@components/Objects/Thumbnails/ThumbnailImage'
+import CourseCover from '@components/Objects/Thumbnails/CourseCover'
 
 // Admin-only; course cards are mostly seen by learners.
 const ManageAccessPopover = dynamic(() => import('@components/Dashboard/Library/ManageAccessPopover'), { ssr: false })
@@ -63,11 +64,13 @@ type PropsType = {
   isSelected?: boolean
   onToggleSelect?: (_courseUuid: string) => void
   isPriority?: boolean
+  /** Overrides the small line on a generated cover, e.g. "Kurs 3 av 11". */
+  coverEyebrow?: string
 }
 
 export const removeCoursePrefix = (course_uuid: string) => course_uuid.replace('course_', '')
 
-function CourseThumbnail({ course, orgslug, customLink, isDashboard = false, isSelected = false, onToggleSelect, isPriority = false }: PropsType) {
+function CourseThumbnail({ course, orgslug, customLink, isDashboard = false, isSelected = false, onToggleSelect, isPriority = false, coverEyebrow }: PropsType) {
   const { t, i18n } = useTranslation()
   const org = useOrg() as any
   const session = useLHSession() as any
@@ -189,15 +192,25 @@ function CourseThumbnail({ course, orgslug, customLink, isDashboard = false, isS
       />
 
       <Link prefetch={false} href={courseLink} onClick={handleCardOpen} className="block relative aspect-video overflow-hidden bg-gray-50">
-        <ThumbnailImage
-          src={thumbnailImage}
-          fetchPriority={isPriority ? 'high' : undefined}
-          loading={isPriority ? 'eager' : 'lazy'}
-          className="w-full h-full transition-transform duration-500 group-hover:scale-105"
-        />
+        {course.thumbnail_image ? (
+          <ThumbnailImage
+            src={thumbnailImage}
+            fetchPriority={isPriority ? 'high' : undefined}
+            loading={isPriority ? 'eager' : 'lazy'}
+            className="w-full h-full transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <CourseCover
+            title={course.name}
+            paletteSeed={course.description || undefined}
+            eyebrow={coverEyebrow ?? (course.description && course.description.length <= 48 ? course.description : undefined)}
+            className="transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+        )}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
         {isDashboard && (
-          <div className="absolute bottom-2 start-2">
+          // Top corner: at the bottom it sat on the cover's title.
+          <div className="absolute top-2.5 start-2.5">
             {course.published ? (
               <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide bg-green-100 text-green-700 rounded-full">
                 {t('courses.published')}
@@ -217,13 +230,14 @@ function CourseThumbnail({ course, orgslug, customLink, isDashboard = false, isS
             prefetch={false}
             href={courseLink}
             onClick={handleCardOpen}
-            className="text-base font-bold text-gray-900 leading-tight hover:text-black transition-colors line-clamp-1"
+            className={`text-base font-bold text-gray-900 leading-tight hover:text-black transition-colors line-clamp-1 ${course.thumbnail_image ? '' : 'sr-only'}`}
            dir="auto">
             {course.name}
           </Link>
         </div>
         
-        {course.description && (
+        {/* With a generated cover the programme already sits on the jacket. */}
+        {course.description && (course.thumbnail_image || course.description.length > 48) && (
           <p className="text-[11px] text-gray-500 line-clamp-2 min-h-[1.5rem]">
             {course.description}
           </p>
@@ -261,7 +275,7 @@ function CourseThumbnail({ course, orgslug, customLink, isDashboard = false, isS
             )}
             
             {course.update_date && (
-              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">
+              <span className="text-xs text-gray-400">
                 {formatDate(course.update_date, i18n.language, { dateStyle: undefined, month: 'short', day: 'numeric' })}
               </span>
             )}
@@ -271,9 +285,9 @@ function CourseThumbnail({ course, orgslug, customLink, isDashboard = false, isS
             prefetch={false}
             href={courseLink}
             onClick={handleCardOpen}
-            className="text-[10px] font-bold text-gray-400 hover:text-gray-900 transition-colors uppercase tracking-wider"
+            className="text-[13px] font-semibold text-wine-800 hover:text-wine-950 transition-colors"
           >
-            {t('courses.start_learning')}
+            {t('courses.start_learning')} <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
       </div>

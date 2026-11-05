@@ -1,72 +1,69 @@
 import { Callout } from 'nextra/components'
 
-# AI for Teachers
+# AI för lärare
 
-These are the AI tools available when you build courses. Each one uses [AI credits](/platform/ai#ai-credits); the cost is listed on the AI overview page.
+Här är AI-verktygen du har tillgång till när du bygger kurser.
 
-<YouTube video="guide-6" />
-<YouTube video="growth-9" />
+## Skapa en kurs
 
-## Creating a course
+Med **AI-kursskapare** (**Ny kurs** > **Börja med AI**) planerar du en kurs i en chatt. Den utgår från din beskrivning och från bilder, dokument eller YouTube-videor som du bifogar, och skriver sedan varje aktivitet. Se [AI-kursskapare](/platform/courses/ai-course-creator).
 
-The **AI Course Creator** (**New Course** > **Start with AI**) plans a course with you in a chat, using your description and any photos, documents or YouTube videos you attach, then writes each activity. See [AI Course Creator](/platform/courses/ai-course-creator).
+När du bygger en kurs av en mapp med filer (**Från befintligt innehåll**) sorterar **Organisera med AI** filerna i kapitel och aktiviteter. Se [Import och export](/platform/courses/import-export).
 
-When you build a course from a folder of files (**From Existing Content**), **Organize with AI** sorts the files into chapters and activities. See [Import & Export](/platform/courses/import-export#from-existing-content).
+## AI-redigeraren
 
-## AI Editor
+Klicka på **AI-redigerare** i sidredigeraren för att öppna en chatt som redigerar sidan tillsammans med dig. Markera ett block för att bara arbeta med det blocket, eller fråga om hela sidan. Snabbåtgärder:
 
-In the page editor, click **AI Editor** to open a chat that edits the page with you. Select a block to work on just that block, or ask about the whole page. Quick actions:
+**Förbättra språket**, **Lägg till exempel**, **Förenkla**, **Utöka**, **Lägg till quiz**, **Översätt**, **Lägg till sammanfattning**, **Lägg till tips**, **Lägg till definition**.
 
-**Improve writing**, **Add examples**, **Simplify**, **Expand**, **Add quiz**, **Translate**, **Add summary**, **Add tip**, **Add definition**.
+Ändringarna skrivs in på sidan, där du kan fortsätta redigera dem. Se [Redigeraren](/platform/editor).
 
-The changes are written into the page, where you can keep editing them. See [Editor](/platform/editor#ai-editor).
+<img src="/docs/img/pages/ai/ai-editor-improved.webp" alt="AI-redigeraren efter Förbättra språket: det omskrivna stycket på sidan och förslag på nästa steg i panelen" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-<img src="/img/pages/ai/ai-editor-improved.webp" alt="The AI Editor after Improve writing: the rewritten paragraph in the page and follow-up suggestions in the panel" width={1600} height={900} style={{ borderRadius: 10 }} />
+## Block som genererar innehåll
 
-## Blocks that generate content
-
-| Block | What AI does |
+| Block | Vad AI gör |
 | --- | --- |
-| **Magic Block** | Builds an interactive element (simulation, chart, game, calculator, timeline) from your description. You can refine it up to 6 times. |
-| **Quiz** | **Generate with AI** writes questions from the page content. Choose single-answer or select-all-that-apply questions, preview, regenerate, then insert. |
-| **Scenarios** | **Generate with AI** drafts a branching scenario. |
-| **Image** | **Generate with AI** creates an image from a prompt. You can refine a previous image, and find past images under **History**. |
-| **Audio** | Generates narrated audio. See below. |
+| **Magiskt block** | Bygger ett interaktivt element (simulering, diagram, spel, miniräknare, tidslinje) utifrån din beskrivning. Du kan förfina det upp till 6 gånger. |
+| **Quiz** | **Generera med AI** skriver frågor utifrån sidans innehåll. Välj **Ett svar** eller **Välj alla som stämmer**, förhandsgranska, generera om och infoga sedan. |
+| **Scenarier** | **Generera med AI** tar fram ett förgrenat scenario. |
+| **Bild** | **Generera med AI** skapar en bild utifrån en beskrivning. Du kan förbättra en tidigare bild och hitta gamla bilder under **Historik**. |
+| **Ljud** | Genererar inläst ljud. Se nedan. |
 
-AI image generation is also available for course, podcast, community, board and playground thumbnails.
+Du kan också generera miniatyrbilder med AI för kurser, poddar, communities, tavlor och lekplatser.
 
-<img src="/img/pages/editor/magic-block.webp" alt="The Magic Block window: a generated refund calculator on the left and the Magic Chat on the right" width={1600} height={900} style={{ borderRadius: 10 }} />
+<img src="/docs/img/pages/editor/magic-block.webp" alt="Fönstret Magiskt block: en genererad kalkylator för återbetalningar till vänster och Magisk chatt till höger" width={1600} height={900} style={{ borderRadius: 10 }} />
 
-## Audio generation
+## Generera ljud
 
-In an **Audio** block, open the **Generate** tab and pick a mode:
+Öppna fliken **Generera** i ett **Ljud**-block och välj ett läge:
 
-| Mode | What it does |
+| Läge | Vad det gör |
 | --- | --- |
-| **Text to speech** | Narrates text you write, in the voice you choose. Up to 11,000 characters. |
-| **Podcast (2 voices)** | Enter a topic or paste source material. The AI writes a discussion between two speakers, each with a name and a voice. |
-| **Speak** | Enter a subject. The AI writes a single-speaker talk and narrates it. |
+| **Text till tal** | Läser upp text som du skriver, med den röst du väljer. Upp till 11 000 tecken. |
+| **Podd (2 röster)** | Ange ett ämne eller klistra in källmaterial. AI skriver ett samtal mellan två talare, var och en med eget namn och egen röst. |
+| **Tala** | Ange ett ämne. AI skriver ett föredrag för en talare och läser upp det. |
 
-For **Podcast (2 voices)** and **Speak** you also choose:
+För **Podd (2 röster)** och **Tala** väljer du också:
 
-- **Length**: 2, 3, 5 or 10 minutes.
-- **Language**: one of 18 languages, or **Auto-detect**.
-- **Tone / style**: for example "warm and upbeat".
+- **Längd**: 2, 3, 5 eller 10 minuter.
+- **Språk**: ett av 18 språk, eller **Identifiera automatiskt**.
+- **Ton / stil**: till exempel ”varm och pigg”.
 
-Click **Generate discussion script** or **Generate talk script** first. The script is fully editable. Then click **Generate audio**. The audio is saved in the block like an uploaded file. A script costs 1 credit and the narration 3 credits.
+Klicka först på **Generera diskussionsmanus** eller **Generera talmanus**. Du kan redigera hela manuset. Klicka sedan på **Generera ljud**. Ljudet sparas i blocket precis som en uppladdad fil.
 
-## Assignments
+## Uppgifter
 
-In an assignment's **Editor** tab, **Generate tasks with AI** drafts up to 10 tasks grounded in the course content. You preview and edit them before adding them. See [Task Types](/platform/assignments/task-types#generating-tasks-with-ai).
+På fliken **Redigerare** i en uppgift tar **Generera deluppgifter med AI** fram upp till 10 deluppgifter som bygger på kursinnehållet. Du förhandsgranskar och redigerar dem innan du lägger till dem. Se [Typer av deluppgifter](/platform/assignments/task-types).
 
-## Videos
+## Videor
 
-For uploaded videos, AI can transcribe and translate captions into the languages you choose, and split the video into chapters from those captions. See [AI Video Captions](/platform/courses/video-captions).
+För uppladdade videor kan AI transkribera och översätta undertexter till de språk du väljer, och dela upp videon i kapitel utifrån undertexterna. Se [AI-undertexter för video](/platform/courses/video-captions).
 
-## Playgrounds and boards
+## Lekplatser och tavlor
 
-[Playgrounds](/platform/playgrounds) are interactive pages written by AI from your description, optionally grounded in one of your courses. On [boards](/platform/boards), the **AI Playground** tool does the same on the canvas.
+[Lekplatser](/platform/playgrounds) är interaktiva sidor som AI skriver utifrån din beskrivning, om du vill med en av dina kurser som underlag. På [tavlor](/platform/boards) gör verktyget **AI-lekplats** samma sak direkt på tavlan.
 
 <Callout>
-AI output can be wrong. Review generated content, especially facts, figures and code, before you publish it.
+AI kan ha fel. Granska det som genereras, särskilt fakta, siffror och kod, innan du publicerar det.
 </Callout>

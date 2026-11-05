@@ -12,25 +12,16 @@ interface BreadcrumbsProps {
   items: BreadcrumbItem[]
 }
 
-const ChevronDivider = () => (
-  <svg
-    width="8"
-    height="100%"
-    viewBox="0 0 8 28"
-    fill="none"
-    className="h-full text-gray-200"
-    preserveAspectRatio="none"
-    aria-hidden="true"
-    focusable="false"
-  >
-    <path d="M1 0 L7 14 L1 28" stroke="currentColor" strokeWidth="1" fill="none" />
-  </svg>
+// Prakto: a plain line of text, not a boxed control. Quiet grey links, a thin
+// slash between them, the current page in ink.
+const Divider = () => (
+  <span className="text-gray-300 select-none" aria-hidden="true">/</span>
 )
 
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
-    <nav className="flex items-center min-w-0 max-w-full">
-      <ol className="flex items-center min-w-0 max-w-full text-[13px] font-medium rounded-lg bg-white overflow-hidden nice-shadow">
+    <nav aria-label="Breadcrumb" className="flex items-center min-w-0 max-w-full">
+      <ol className="flex items-center gap-2 min-w-0 max-w-full text-[13px]">
         {items.map((item, index) => {
           const isLast = index === items.length - 1
           const isFirst = index === 0
@@ -38,29 +29,29 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
           return (
             <React.Fragment key={index}>
               {index > 0 && (
-                <li className="flex items-center shrink-0 h-9 sm:h-8">
-                  <ChevronDivider />
+                <li className="flex items-center shrink-0">
+                  <Divider />
                 </li>
               )}
               {/* min-w-0 lets a long trail shrink to the phone's width;
                   the last crumb gives way first. */}
-              <li className={`flex items-center h-9 sm:h-8 ${isLast ? 'min-w-0' : 'shrink-0'}`}>
+              <li className={`flex items-center h-8 ${isLast ? 'min-w-0' : 'shrink-0'}`}>
                 {item.href && !isLast ? (
                   <Link
                     href={item.href}
-                    className={`flex items-center h-full text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors ${
-                      isFirst && item.icon ? 'gap-1.5 px-2.5' : 'px-2.5'
+                    className={`flex items-center text-gray-500 hover:text-gray-900 underline-offset-4 hover:underline transition-colors ${
+                      isFirst && item.icon ? 'gap-1.5' : ''
                     }`}
                   >
                     {item.icon}
-                    <span className="truncate max-w-[110px] sm:max-w-[150px]">{item.label}</span>
+                    <span className="truncate max-w-[110px] sm:max-w-[180px]">{item.label}</span>
                   </Link>
                 ) : (
-                  <span className={`flex items-center min-w-0 h-full text-gray-900 ${
-                    isFirst && item.icon ? 'gap-1.5 px-2.5' : 'px-2.5'
+                  <span aria-current="page" className={`flex items-center min-w-0 font-medium text-gray-800 ${
+                    isFirst && item.icon ? 'gap-1.5' : ''
                   }`}>
                     {item.icon}
-                    <span className="truncate max-w-[200px]">{item.label}</span>
+                    <span className="truncate max-w-[260px]">{item.label}</span>
                   </span>
                 )}
               </li>
